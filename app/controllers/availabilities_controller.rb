@@ -21,7 +21,7 @@ class AvailabilitiesController < ApplicationController
 
   # POST /availabilities or /availabilities.json
   def create
-    @availability = Availability.new(availability_params)
+    @availability = current_user.availabilities.new(availability_params)
 
     respond_to do |format|
       if @availability.save
@@ -65,6 +65,7 @@ class AvailabilitiesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def availability_params
-      params.require(:availability).permit(:event_name, :start_time, :end_time, :user_id)
+      params.require(:availability).permit(:event_name, :start_time, :end_time)
+      # Remove :user_id
     end
 end
