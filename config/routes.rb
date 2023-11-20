@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "availabilities#index"
+  root "availabilities#index" # Or another controller#action as your homepage
   
   devise_for :users
 
@@ -7,8 +7,8 @@ Rails.application.routes.draw do
 
   resources :event_requests, only: [:create] do
     member do
-      put :accept
-      put :reject
+      post :accept
+      post :reject
     end
   end
 

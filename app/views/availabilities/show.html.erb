@@ -15,15 +15,14 @@
   <% end %>
 <% end %>
 
-<h3>Guest Requests</h3>
+  <h3>Guest Requests</h3>
 <ul>
   <% @event_requests.each do |event_request| %>
     <li>
-      <%= event_request.user.username %> - 
-      <%= event_request.status %>
-      <% if event_request.status == 'pending' %>
-        <%= link_to 'Accept', accept_event_request_path(event_request), method: :put %>
-        <%= link_to 'Reject', reject_event_request_path(event_request), method: :put %>
+      <%= event_request.user.username %> - <%= event_request.status %>
+      <% if event_request.status == 'pending' && @availability.user == current_user %>
+        <%= button_to 'Accept', accept_event_request_path(event_request), method: :post, data: { turbo: false } %>
+        <%= button_to 'Reject', reject_event_request_path(event_request), method: :post, data: { turbo: false } %>
       <% end %>
     </li>
   <% end %>

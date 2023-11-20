@@ -27,12 +27,12 @@ class EventRequest < ApplicationRecord
 
   validates :user_id, uniqueness: { scope: :availability_id }
 
-  # def accept
-  #   update(status: 'accepted')
-  # end
+  def accept
+    update(status: 'accepted')
+  end
 
-  # def reject
-  #   update(status: 'rejected')
-  # end
-  
+  def reject
+    update(status: 'rejected')
+  end
+
 end

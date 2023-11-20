@@ -70,12 +70,32 @@ end
 
 ### Set up controller to set availability creator as the host
 
-## Allow a user to join an Availability
+## Allow a user to join an Availability and accept or reject guests
+
+```ruby
+class EventRequest < ApplicationRecord
+  belongs_to :user
+  belongs_to :availability
+
+  validates :status, presence: true, inclusion: { in: %w[pending accepted rejected] }
+
+  validates :user_id, uniqueness: { scope: :availability_id }
+
+  def accept
+    update(status: 'accepted')
+  end
+
+  def reject
+    update(status: 'rejected')
+  end
+
+end
+```
 
 `rails generate controller EventRequests`
 
 ```rb
-class EventRequestsController < ApplicationController
+cclass EventRequestsController < ApplicationController
   before_action :set_event_request, only: %i[show edit update destroy]
 
   def create
@@ -88,13 +108,35 @@ class EventRequestsController < ApplicationController
     end
   end
 
+  def accept
+    event_request = EventRequest.find(params[:id])
+    if event_request.availability.user == current_user
+      event_request.accept
+      # Success message and redirect
+    else
+      # Error message and redirect
+    end
+  end
+  
+  def reject
+    event_request = EventRequest.find(params[:id])
+    if event_request.availability.user == current_user
+      event_request.reject
+      # Success message and redirect
+    else
+      # Error message and redirect
+    end
+  end
+
   private
 
   def event_request_params
     params.require(:event_request).permit(:availability_id)
     # Do not include :user_id, it's set automatically to current_user
   end
+  
 end
+
 ```
 
 ```html
@@ -106,11 +148,10 @@ end
 <% end %>
 ```
 
-
 ### Add route
 ```rb
 Rails.application.routes.draw do
-  root "availabilities#index"
+  root "availabilities#index" # Or another controller#action as your homepage
   
   devise_for :users
 
@@ -118,11 +159,8 @@ Rails.application.routes.draw do
 
   resources :event_requests, only: [:create] do
     member do
-      put :accept
-      put :reject
+      post :accept
+      post :reject
     end
   end
 ```
-
-
-## Accept or reject guests
