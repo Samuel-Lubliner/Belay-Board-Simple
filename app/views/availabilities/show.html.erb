@@ -8,3 +8,9 @@
 
   <%= button_to "Destroy this availability", @availability, method: :delete %>
 </div>
+<% if current_user && @availability.user != current_user %>
+  <%= form_for(current_user.event_requests.new, url: event_requests_path) do |f| %>
+    <%= f.hidden_field :availability_id, value: @availability.id %>
+    <%= f.submit "Join this Event" %>
+  <% end %>
+<% end %>

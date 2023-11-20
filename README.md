@@ -69,3 +69,42 @@ end
 ### Update models
 
 ### Set up controller to set availability creator as the host
+
+## Allow a user to join an Availability
+
+`rails generate controller EventRequests`
+
+```rb
+class EventRequestsController < ApplicationController
+  before_action :set_event_request, only: %i[show edit update destroy]
+
+  def create
+    @event_request = current_user.event_requests.new(event_request_params)
+
+    if @event_request.save
+      # Handle success (e.g., redirect with a success message)
+    else
+      # Handle failure (e.g., render form again with error messages)
+    end
+  end
+
+  private
+
+  def event_request_params
+    params.require(:event_request).permit(:availability_id)
+    # Do not include :user_id, it's set automatically to current_user
+  end
+end
+```
+
+```html
+<% if current_user && @availability.user != current_user %>
+  <%= form_for(current_user.event_requests.new, url: event_requests_path) do |f| %>
+    <%= f.hidden_field :availability_id, value: @availability.id %>
+    <%= f.submit "Join this Event" %>
+  <% end %>
+<% end %>
+```
+
+### Add route
+`resources :event_requests, only: [:create]`
