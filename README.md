@@ -64,3 +64,6 @@ end
 `rails g scaffold Availability event_name:string start_time:datetime end_time:datetime user:references`
 
 ### Update models
+
+## Add EventRequest
+`rails g model EventRequest user:references availability:references status:string`
