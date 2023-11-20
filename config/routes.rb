@@ -1,7 +1,32 @@
 Rails.application.routes.draw do
-  resources :availabilities
+  root "availabilities#index"
+  
   devise_for :users
-  resources :event_requests, only: [:create]
+
+  resources :availabilities
+
+  resources :event_requests, only: [:create] do
+    member do
+      put :accept
+      put :reject
+    end
+  end
+
+
+
+
+
+  # resources :availabilities
+  # devise_for :users
+
+  # resources :event_requests, only: [:create]
+
+  # resources :event_requests do
+  #   member do
+  #     put :accept
+  #     put :reject
+  #   end
+  # end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

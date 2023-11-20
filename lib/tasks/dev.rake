@@ -1,10 +1,12 @@
 if Rails.env.development?
+
+
   namespace :dev do
     desc "Drops, creates, migrates, and adds sample data to database"
     task reset: [:environment, "db:drop", "db:create", "db:migrate", "dev:sample_data"]
 
     desc "Adds sample data for development environment"
-    task sample_data: [:environment, "dev:add_users", "dev:add_availabilities"] do
+    task sample_data: [:environment, "dev:add_users", "dev:add_availabilities", "dev:add_event_requests"] do
       puts "Done adding sample data"
     end
 
@@ -34,5 +36,22 @@ if Rails.env.development?
         end
       end
     end
+
+    task add_event_requests: :environment do
+      puts "Adding event requests..."
+    
+      User.find_each do |user|
+        events = Availability.where.not(user_id: user.id).sample(100000)
+        events.each do |event|
+          status = %w[pending accepted rejected].sample
+          EventRequest.create!(user: user, availability: event, status: status)
+        end
+      end
+    
+      puts "Event requests added"
+    end
+
+
+
   end
 end

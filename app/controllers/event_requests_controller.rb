@@ -17,4 +17,17 @@ class EventRequestsController < ApplicationController
     params.require(:event_request).permit(:availability_id)
     # Do not include :user_id, it's set automatically to current_user
   end
+
+  def accept
+    event_request = EventRequest.find(params[:id])
+    event_request.update(status: 'accepted')
+    # Redirect back or to another page with a success message
+  end
+  
+  def reject
+    event_request = EventRequest.find(params[:id])
+    event_request.update(status: 'rejected')
+    # Redirect back or to another page with a success message
+  end
+  
 end

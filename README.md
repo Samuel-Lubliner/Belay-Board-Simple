@@ -106,5 +106,23 @@ end
 <% end %>
 ```
 
+
 ### Add route
-`resources :event_requests, only: [:create]`
+```rb
+Rails.application.routes.draw do
+  root "availabilities#index"
+  
+  devise_for :users
+
+  resources :availabilities
+
+  resources :event_requests, only: [:create] do
+    member do
+      put :accept
+      put :reject
+    end
+  end
+```
+
+
+## Accept or reject guests

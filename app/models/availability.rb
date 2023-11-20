@@ -20,7 +20,7 @@
 #
 class Availability < ApplicationRecord
   belongs_to :user # The host of the event
-  has_many :event_requests
+  has_many :event_requests, dependent: :destroy
   #has_many :guests, through: :event_requests, source: :user
 
   validates :event_name, presence: true

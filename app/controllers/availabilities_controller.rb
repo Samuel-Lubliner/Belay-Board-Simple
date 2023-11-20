@@ -8,6 +8,8 @@ class AvailabilitiesController < ApplicationController
 
   # GET /availabilities/1 or /availabilities/1.json
   def show
+    # Assuming @availability is already set by the set_availability callback
+    @event_requests = @availability.event_requests.includes(:user)
   end
 
   # GET /availabilities/new
