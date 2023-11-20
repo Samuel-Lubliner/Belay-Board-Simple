@@ -38,9 +38,6 @@ end
 `rails generate devise:install`
 `rails generate devise User username:citext`
 
-### User model
-`attr_accessor :username`
-
 ### User views
 `rails generate devise:views`
 
@@ -49,6 +46,7 @@ end
 ```rb
 class ApplicationController < ActionController::Base
   skip_forgery_protection
+  before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected
@@ -67,3 +65,7 @@ end
 
 ## Add EventRequest
 `rails g model EventRequest user:references availability:references status:string`
+
+### Update models
+
+### Set up controller to set availability creator as the host
