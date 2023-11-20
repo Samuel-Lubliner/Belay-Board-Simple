@@ -59,3 +59,8 @@ class ApplicationController < ActionController::Base
   end
 end
 ```
+
+## Add Availabilities
+`rails g scaffold Availability event_name:string start_time:datetime end_time:datetime user:references`
+
+### Update models
