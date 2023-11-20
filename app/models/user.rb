@@ -24,8 +24,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  attr_accessor :username
-
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
   has_many :availabilities # Events they are hosting
