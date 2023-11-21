@@ -1,3 +1,4 @@
 <% if @event_request.persisted? %>
   $("#guest_requests_list").append("<%= j(render partial: 'availabilities/event_request', locals: { event_request: @event_request }) %>");
+  $("#join-event-button").fadeOut();
 <% end %>

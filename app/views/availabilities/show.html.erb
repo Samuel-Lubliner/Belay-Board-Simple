@@ -12,9 +12,9 @@
 
 <% if current_user && @availability.user != current_user %>
   <%= form_for(current_user.event_requests.new, url: event_requests_path, remote: true) do |f| %>
-    <%= f.hidden_field :availability_id, value: @availability.id %>
-    <%= f.submit "Join this Event" %>
-  <% end %>
+  <%= f.hidden_field :availability_id, value: @availability.id %>
+  <%= f.submit "Join this Event", id: "join-event-button" %>
+<% end %>
 <% end %>
 
 <h3>Guests</h3>
