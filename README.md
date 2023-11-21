@@ -164,3 +164,26 @@ Rails.application.routes.draw do
     end
   end
 ```
+
+## Add AJAX
+At the bash prompt I ran these two commands to modify config/importmap.rb:
+
+`./bin/importmap pin @rails/ujs`
+
+`./bin/importmap pin jquery`
+
+Then in app/javascripts/application.js, I added these lines:
+
+```js
+// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+import "@hotwired/turbo-rails"
+import "controllers"
+
+import jquery from "jquery";
+window.jQuery = jquery;
+window.$ = jquery;
+import Rails from "@rails/ujs"
+Rails.start();
+```
+
+Now change Turbo-type request
