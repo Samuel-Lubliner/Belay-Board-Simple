@@ -4,10 +4,14 @@ class EventRequestsController < ApplicationController
   def create
     @event_request = current_user.event_requests.new(event_request_params)
 
-    if @event_request.save
-      # Handle success (e.g., redirect with a success message)
-    else
-      # Handle failure (e.g., render form again with error messages)
+    respond_to do |format|
+      if @event_request.save
+        format.html { redirect_to @event_request.availability, notice: 'Request submitted.' }
+        format.js   # Add this line to respond to AJAX requests
+      else
+        format.html { render 'availabilities/show', status: :unprocessable_entity }
+        format.js   # Handle AJAX failure
+      end
     end
   end
 

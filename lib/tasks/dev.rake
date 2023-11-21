@@ -40,17 +40,21 @@ if Rails.env.development?
     task add_event_requests: :environment do
       puts "Adding event requests..."
     
-      User.find_each do |user|
+      # Find users Sam and Ben
+      sam = User.find_by(username: 'sam')
+      ben = User.find_by(username: 'ben')
+    
+      User.where.not(id: [sam.id, ben.id]).find_each do |user|
         events = Availability.where.not(user_id: user.id).sample(100000)
         events.each do |event|
-          status = %w[pending accepted rejected].sample
+          status = [sam.id, ben.id].include?(event.user_id) ? 'pending' : %w[pending accepted rejected].sample
           EventRequest.create!(user: user, availability: event, status: status)
         end
       end
     
       puts "Event requests added"
     end
-
+    
 
 
   end
