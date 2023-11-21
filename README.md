@@ -187,3 +187,42 @@ Rails.start();
 ```
 
 Now change Turbo-type request
+
+```rb
+class EventRequestsController < ApplicationController
+  #...
+  def accept
+    @event_request = EventRequest.find(params[:id])
+    if @event_request.availability.user == current_user
+      @event_request.update(status: 'accepted')
+  
+      respond_to do |format|
+        format.html { redirect_to availability_path(@event_request.availability), notice: 'Request accepted.' }
+        format.js
+      end
+    end
+  end
+  #...
+```
+
+views/event_requests/accept.js.erb
+
+```js
+$("#event_request_<%= @event_request.id %>").html("<%= j(render partial: 'availabilities/event_request', locals: { event_request: @event_request }) %>");
+```
+
+views/availabilities/show.html.erb
+```html
+<h3>Guest Requests</h3>
+<ul>
+  <% @event_requests.each do |event_request| %>
+    <li id="event_request_<%= event_request.id %>">
+      <%= render partial: 'event_request', locals: { event_request: event_request } %>
+      <% if event_request.status == 'pending' && @availability.user == current_user %>
+        <%= button_to 'Accept', accept_event_request_path(event_request), method: :post, remote: true, class: 'accept-button', data: { turbo: false } %>
+        <%= button_to 'Reject', reject_event_request_path(event_request), method: :post, remote: true, class: 'reject-button', data: { turbo: false } %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+```
