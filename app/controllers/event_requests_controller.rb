@@ -12,26 +12,43 @@ class EventRequestsController < ApplicationController
   end
 
   def accept
-    event_request = EventRequest.find(params[:id])
-    if event_request.availability.user == current_user
-      event_request.accept
-      # Success message and redirect
+    @event_request = EventRequest.find(params[:id])
+    if @event_request.availability.user == current_user
+      @event_request.update(status: 'accepted')
+  
+      respond_to do |format|
+        format.html { redirect_to some_path, notice: 'Request accepted.' }
+        format.js
+      end
     else
-      # Error message and redirect
+      handle_error_for_non_authorized_user
     end
   end
   
   def reject
     event_request = EventRequest.find(params[:id])
     if event_request.availability.user == current_user
-      event_request.reject
-      # Success message and redirect
+      event_request.update(status: 'rejected')
+  
+      respond_to do |format|
+        format.html { redirect_to some_path, notice: 'Request rejected.' }
+        format.js
+      end
     else
-      # Error message and redirect
+      handle_error_for_non_authorized_user
     end
   end
-
+  
   private
+  
+  def handle_error_for_non_authorized_user
+    respond_to do |format|
+      format.html { redirect_to some_path, alert: 'Not authorized.' }
+      format.js { render js: "alert('Not authorized.');" }
+    end
+  end
+  
+  
 
   def event_request_params
     params.require(:event_request).permit(:availability_id)
