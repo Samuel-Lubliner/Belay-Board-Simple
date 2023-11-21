@@ -7,10 +7,10 @@ class EventRequestsController < ApplicationController
     respond_to do |format|
       if @event_request.save
         format.html { redirect_to @event_request.availability, notice: 'Request submitted.' }
-        format.js   # Add this line to respond to AJAX requests
+        format.js
       else
         format.html { render 'availabilities/show', status: :unprocessable_entity }
-        format.js   # Handle AJAX failure
+        format.js
       end
     end
   end
@@ -43,7 +43,6 @@ class EventRequestsController < ApplicationController
   
   def event_request_params
     params.require(:event_request).permit(:availability_id)
-    # Do not include :user_id, it's set automatically to current_user
-  end
-  
+    # Do not include :user_id
+  end  
 end

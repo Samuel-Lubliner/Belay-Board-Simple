@@ -8,7 +8,6 @@ class AvailabilitiesController < ApplicationController
 
   # GET /availabilities/1 or /availabilities/1.json
   def show
-    # Assuming @availability is already set by the set_availability callback
     @event_requests = @availability.event_requests.includes(:user)
   end
 
@@ -60,12 +59,10 @@ class AvailabilitiesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_availability
       @availability = Availability.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def availability_params
       params.require(:availability).permit(:event_name, :start_time, :end_time)
       # Remove :user_id
