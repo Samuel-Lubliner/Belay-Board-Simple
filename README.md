@@ -203,11 +203,14 @@ views/availabilities/show.html.erb
 
 
 <% if current_user && @availability.user != current_user %>
-  <%= form_for(current_user.event_requests.new, url: event_requests_path, remote: true) do |f| %>
-    <%= f.hidden_field :availability_id, value: @availability.id %>
-    <%= f.submit "Join this Event" %>
+  <% unless @availability.event_requests.exists?(user: current_user) %>
+    <%= form_for(current_user.event_requests.new, url: event_requests_path, remote: true) do |f| %>
+      <%= f.hidden_field :availability_id, value: @availability.id %>
+      <%= f.submit "Join this Event", id: "join-event-button" %>
+    <% end %>
   <% end %>
 <% end %>
+
 
 <h3>Guests</h3>
 <ul id="guest_requests_list" style="list-style-type: none;">
@@ -227,6 +230,7 @@ views/event_requests/create.js.erb
 ```js
 <% if @event_request.persisted? %>
   $("#guest_requests_list").append("<%= j(render partial: 'availabilities/event_request', locals: { event_request: @event_request }) %>");
+  $("#join-event-button").fadeOut();
 <% end %>
 ```
 
