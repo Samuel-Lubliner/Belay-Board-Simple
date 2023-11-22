@@ -65,5 +65,10 @@
 
 <%= form_for([@availability, @availability.comments.new]) do |f| %>
   <%= f.text_area :body %>
-  <%= f.submit "Post Comment" %>
+
+  <% if current_user == @availability.user %>
+    <%= f.submit "Post Description" %>
+  <% else %>
+    <%= f.submit "Post Comment" %>
+  <% end %>
 <% end %>

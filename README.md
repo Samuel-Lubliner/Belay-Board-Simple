@@ -406,7 +406,66 @@ class CommentsController < ApplicationController
 end
 ```
 
+```rb
+Rails.application.routes.draw do
+  root "availabilities#index"
 
+  devise_for :users
+
+  resources :availabilities do
+    resources :comments, only: [:create, :destroy]
+  end
+  
+
+  resources :event_requests, only: [:create] do
+    member do
+      post :accept
+      post :reject
+    end
+  end
+```
+
+```html
+<h3>Description</h3>
+<% @availability.comments.each do |comment| %>
+  <% if comment.user == @availability.user %>
+    <p>
+      <%= comment.body %>
+      <% if current_user == comment.user %>
+        <%= button_to 'Delete', 
+              availability_comment_path(@availability, comment),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %>
+      <% end %>
+    </p>
+  <% end %>
+<% end %>
+
+<h3>Comments</h3>
+<% @availability.comments.each do |comment| %>
+  <% unless comment.user == @availability.user %>
+    <p>
+      <%= comment.user.username %>: <%= comment.body %>
+      <% if current_user == comment.user %>
+        <%= button_to 'Delete', 
+              availability_comment_path(@availability, comment),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %>
+      <% end %>
+    </p>
+  <% end %>
+<% end %>
+
+<%= form_for([@availability, @availability.comments.new]) do |f| %>
+  <%= f.text_area :body %>
+
+  <% if current_user == @availability.user %>
+    <%= f.submit "Post Description" %>
+  <% else %>
+    <%= f.submit "Post Comment" %>
+  <% end %>
+<% end %>
+```
 
 ## Different types of calendars: 
 - Index of all users
