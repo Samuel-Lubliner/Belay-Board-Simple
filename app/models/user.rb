@@ -28,4 +28,6 @@ class User < ApplicationRecord
 
   has_many :availabilities # Events they are hosting
   has_many :event_requests # Requests they've made to join events
+  has_many :comments, dependent: :destroy
+
 end

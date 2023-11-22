@@ -290,3 +290,128 @@ end
 ## Add Calendar
 Add into Gemfile followed by a bundle install:
 `gem "simple_calendar", "~> 2.4"`
+
+
+### Calendar for availability index 
+```rb
+<h1>Climb Times</h1>
+
+<%= month_calendar do |date| %>
+  <div class="card mb-3">
+    <div class="card-header">
+      <%= date.strftime("%m / %d / %y") %>
+      <%= link_to "Create!", new_availability_path(start_date: date.to_date) %>
+    </div>
+    <div class="card-body">
+      <% day_availabilities = @availabilities.select { |a| a.start_time.to_date == date }.sort_by(&:start_time) %>
+      <% day_availabilities.each do |availability| %>
+        <p class="mb-1">
+          <%= link_to availability.event_name, availability_path(availability), class: "text-dark" %>
+          <small class="text-muted"><%= availability.start_time.strftime("%I:%M %p") %></small>
+        </p>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+```
+
+When creating new availability from the calendar, the start date of the availability should be set to the date corresponding to the date on the calendar.
+
+controllers/availabilities_controller.rb
+```rb
+  def new
+    @availability = Availability.new
+    @availability.start_time = params[:start_date] if params[:start_date].present?
+  end
+```
+
+views/availabilities/_form.html.erb
+```html
+<div>
+    <%= form.label :start_time, style: "display: block" %>
+    <%= form.datetime_field :start_time, value: availability.start_time&.strftime("%Y-%m-%dT%H:%M") %>
+  </div>
+
+  <div>
+    <%= form.label :end_time, style: "display: block" %>
+    <%= form.datetime_field :end_time, value: availability.start_time&.strftime("%Y-%m-%dT%H:%M") %>
+  </div>
+```
+
+## Now that I have a calendar with availabilities, add Description and comments
+
+I want to allow users to post and delete comments on availabilities. Comments made by the user who cerated the availability will be displayed as a description section. Comments made by guests will be displayed under the description as a comment section. 
+
+`rails g model Comment body:text user:references availability:references`
+`rails db:migrate`
+
+### Associations
+
+```rb
+class Comment < ApplicationRecord
+  belongs_to :user
+  belongs_to :availability
+
+  validates :body, presence: true
+end
+
+class Availability < ApplicationRecord
+  #...
+  has_many :comments, dependent: :destroy
+end
+
+class User < ApplicationRecord
+  #...
+  has_many :comments, dependent: :destroy
+end
+```
+
+`rails g controller Comments`
+
+```rb
+class CommentsController < ApplicationController
+  before_action :set_availability, only: [:create]
+  before_action :set_comment, only: [:destroy]
+
+  def create
+    @comment = @availability.comments.new(comment_params)
+    @comment.user = current_user
+
+    if @comment.save
+      redirect_to @availability, notice: 'Comment was successfully added.'
+    else
+      redirect_to @availability, alert: 'Unable to add comment.'
+    end
+  end
+
+  def destroy
+    @comment.destroy
+    redirect_to @comment.availability, notice: 'Comment was successfully deleted.'
+  end
+
+  private
+
+  def set_availability
+    @availability = Availability.find(params[:availability_id])
+  end
+  
+
+  def set_comment
+    @comment = current_user.comments.find(params[:id])
+  end
+
+  def comment_params
+    params.require(:comment).permit(:body, :availability_id)
+  end
+end
+```
+
+
+
+## Different types of calendars: 
+- Index of all users
+- Availabilities created by user
+- Availability where user is a guest
+
+
+## Comments page
