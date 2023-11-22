@@ -23,7 +23,7 @@
 
   <div>
     <%= form.label :end_time, style: "display: block" %>
-    <%= form.datetime_field :end_time %>
+    <%= form.datetime_field :end_time, value: availability.start_time&.strftime("%Y-%m-%dT%H:%M") %>
   </div>
 
   <div>
