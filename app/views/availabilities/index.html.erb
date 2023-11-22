@@ -2,6 +2,25 @@
 
 <h1>Availabilities</h1>
 
+<%= month_calendar do |date| %>
+  <div class="card mb-3">
+    <div class="card-header">
+      <%= date.strftime("%B %d, %Y") %>
+      <%= link_to "Create!", new_availability_path, class: "btn btn-primary btn-sm" %>
+    </div>
+    <div class="card-body">
+      <% day_availabilities = @availabilities.select { |a| a.start_time.to_date == date }.sort_by(&:start_time) %>
+      <% day_availabilities.each do |availability| %>
+        <p class="mb-1">
+          <%= link_to availability.event_name, availability_path(availability), class: "text-dark" %>
+          <small class="text-muted"><%= availability.start_time.strftime("%I:%M %p") %></small>
+        </p>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+
 <div id="availabilities">
   <% @availabilities.each do |availability| %>
     <%= render availability %>
