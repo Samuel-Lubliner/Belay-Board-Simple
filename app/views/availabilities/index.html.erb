@@ -5,8 +5,8 @@
 <%= month_calendar do |date| %>
   <div class="card mb-3">
     <div class="card-header">
-      <%= date.strftime("%B %d, %Y") %>
-      <%= link_to "Create!", new_availability_path, class: "btn btn-primary btn-sm" %>
+      <%= date.strftime("%m / %d / %y") %>
+      <%= link_to "Create!", new_availability_path(start_date: date.to_date) %>
     </div>
     <div class="card-body">
       <% day_availabilities = @availabilities.select { |a| a.start_time.to_date == date }.sort_by(&:start_time) %>
