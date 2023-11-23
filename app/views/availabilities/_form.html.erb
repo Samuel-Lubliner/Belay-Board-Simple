@@ -28,9 +28,12 @@
           <%= form.datetime_field :end_time, value: availability.start_time&.strftime("%Y-%m-%dT%H:%M"), class: 'form-control' %>
         </div>
 
-        <div class="form-group">
-          <%= form.submit class: 'btn btn-primary' %>
-        </div>
+
+         <div class="form-group">
+         <%= button_tag(type: 'submit', class: 'btn btn-primary') do %>
+         <i class="fas fa-plus"></i>
+         <% end %>
+         </div>
       </div>
     </div>
   <% end %>

@@ -15,11 +15,9 @@
   <% end %>
 <% end %>
 
-
-  <p>
-    <strong>Guests</strong>
-  </p>
-
+<p>
+  <strong>Guests</strong>
+</p>
 
 <ul id="guest_requests_list" class="list-group">
   <% @event_requests.each do |event_request| %>
@@ -32,13 +30,6 @@
     </li>
   <% end %>
 </ul>
-
-
-
-
-
-
-
 
 <h3>Description</h3>
 <div class="card mb-3">
@@ -77,7 +68,6 @@
         <div class="d-flex justify-content-between">
           <p><strong><%= comment.user.username %>:</strong> <%= comment.body %></p>
           <% if current_user == comment.user %>
-            <!-- Similar dropdown as in the description section -->
           <% end %>
         </div>
       <% end %>
@@ -99,15 +89,10 @@
     <%= f.button 'Comment<i class="fas fa-paper-plane"></i>'.html_safe, type: :submit, class: "btn btn-primary" %>
   </div>
   <% end %>
-
-
-<% end %>
-
-
-    </div>
+  <% end %>
+  </div>
     
     <div class="col-md-4">
-
       <div class="dropdown">
           <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fas fa-cog"></i>
@@ -118,7 +103,6 @@
             <li><%= button_to "Destroy this availability", @availability, method: :delete, class: 'dropdown-item', data: { confirm: 'Are you sure?' } %></li>
           </ul>
       </div>
-
     </div>
   </div>
 </div>

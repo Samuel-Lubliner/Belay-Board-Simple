@@ -4,17 +4,19 @@
 </p>
 
 
-  <p>
-  <strong>Start:</strong>
-  <%= availability.start_time.strftime("%b %d, %Y @ %I:%M %p") %>
+<p>
+  <i class="fas fa-play-circle"></i> 
+  <span class="avail-date"><%= availability.start_time.strftime("%b %d, %Y") %></span>
+  <span class="avail-time"><%= availability.start_time.strftime("%I:%M %p") %></span>
+</p>
+
+<p>
+  <i class="fas fa-stop-circle"></i>
+  <span class="avail-date"><%= availability.end_time.strftime("%b %d, %Y") %></span>
+  <span class="avail-time"><%= availability.end_time.strftime("%I:%M %p") %></span>
 </p>
 
 
-
-  <p>
-    <strong>End: &nbsp; </strong>
-    <%=availability.end_time.strftime("%b %d, %Y @ %I:%M %p") %>
-  </p>
 
   <p>
     <strong>Host:</strong>

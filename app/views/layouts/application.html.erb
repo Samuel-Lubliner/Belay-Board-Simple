@@ -18,14 +18,23 @@
   <body>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+
+
     <div class="container-fluid">
+
+    <%= link_to raw('<i class="fas fa-calendar-plus fa-2x" style="margin-right: 10px;"></i>'), new_availability_path(start_date: Date.today) %>
+
+    
       <%= link_to "Belay Board", root_path, class: "navbar-brand" %>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <%= link_to "Comments", availabilities_path, class: "nav-link" %>
+          
+
+          <%= link_to "My Events", availabilities_path, class: "nav-link" %>
           <%= link_to "Coaches", availabilities_path, class: "nav-link" %>
           <%= link_to "Climbers", availabilities_path, class: "nav-link" %>
           
