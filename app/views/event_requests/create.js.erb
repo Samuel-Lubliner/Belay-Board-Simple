@@ -1,4 +1,8 @@
 <% if @event_request.persisted? %>
-  $("#guest_requests_list").append("<%= j(render partial: 'availabilities/event_request', locals: { event_request: @event_request }) %>");
+  var newGuestHtml = "<li class='list-group-item d-flex justify-content-between align-items-center'>" +
+                     "<%= j(render partial: 'availabilities/event_request', locals: { event_request: @event_request }) %>" +
+                     "</li>";
+
+  $("#guest_requests_list").append(newGuestHtml);
   $("#join-event-button").fadeOut();
 <% end %>
