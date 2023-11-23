@@ -4,29 +4,90 @@
     <div class="col-md-8">
       <%= render @availability %>
 
-      <% if current_user && @availability.user != current_user %>
+
+
+
+Only show rejected and pending to creator of the availability.
+
+
+<div class="container">
+  <div class="row">
+    <!-- Accepted Guests -->
+    <div class="col">
+
+    <% if current_user && @availability.user != current_user %>
   <% unless @availability.event_requests.exists?(user: current_user) %>
     <%= form_for(current_user.event_requests.new, url: event_requests_path, remote: true, class: 'd-flex justify-content-end') do |f| %>
-      <%= f.hidden_field :availability_id, value: @availability.id %>
-      <%= button_tag(type: "submit", class: "btn btn-primary", id: "join-event-button") do %>
+        <%= f.hidden_field :availability_id, value: @availability.id %>
+        <%= button_tag(type: "submit", class: "btn btn-primary", id: "join-event-button") do %>
         <i class="fas fa-user-plus"></i>Me
-      <% end %>
+        <% end %>
     <% end %>
   <% end %>
 <% end %>
 
-<p>
-  <strong>Guests</strong>
-</p>
+
+
+      <h3>Guests</h3> 
+      
+      <ul class="list-group">
+        <% @event_requests.select { |er| er.status == 'accepted' }.each do |event_request| %>
+          <li class="list-group-item">
+            <%= event_request.user.username %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <!-- Pending Guests -->
+    <div class="col">
+    <% if @event_requests.any? { |er| er.status == 'pending' } %>
+      <h3>Pending</h3>
+    <% end %>
+      
+      <ul class="list-group" id="guest_requests_list">
+        <% @event_requests.select { |er| er.status == 'pending' }.each do |event_request| %>
+          <li id="event_request_<%= event_request.id %>" class="list-group-item d-flex justify-content-between align-items-center">
+            <%= event_request.user.username %>
+             <% if event_request.status == 'pending' && @availability.user == current_user %>
+            <%= button_to 'Accept', accept_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-success btn-sm', data: { turbo: false } %>
+            <%= button_to 'Reject', reject_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-danger btn-sm', data: { turbo: false } %>
+             <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <!-- Rejected Guests -->
+    <div class="col">
+    <% if @event_requests.any? { |er| er.status == 'accepted' } %>
+      <h3>Rejected</h3>
+    <% end %>
+      <ul class="list-group">
+        <% @event_requests.select { |er| er.status == 'rejected' }.each do |event_request| %>
+          <li class="list-group-item">
+            <%= event_request.user.username %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+
 
 <ul id="guest_requests_list" class="list-group">
   <% @event_requests.each do |event_request| %>
     <li id="event_request_<%= event_request.id %>" class="list-group-item d-flex justify-content-between align-items-center">
       <%= render partial: 'event_request', locals: { event_request: event_request } %>
+
+
       <% if event_request.status == 'pending' && @availability.user == current_user %>
         <%= button_to 'Accept', accept_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-success btn-sm', data: { turbo: false } %>
         <%= button_to 'Reject', reject_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-danger btn-sm', data: { turbo: false } %>
       <% end %>
+
+
+
     </li>
   <% end %>
 </ul>
