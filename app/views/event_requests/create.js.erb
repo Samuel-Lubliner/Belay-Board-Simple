@@ -4,5 +4,7 @@
                      "</li>";
 
   $("#guest_requests_list").append(newGuestHtml);
-  $("#join-event-button").fadeOut();
+
+  // Update the Join button
+  $("#join-event-button").text('Pending').removeClass('btn-primary').addClass('btn-secondary').prop('disabled', true);
 <% end %>
