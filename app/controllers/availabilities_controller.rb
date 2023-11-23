@@ -3,7 +3,13 @@ class AvailabilitiesController < ApplicationController
 
   # GET /availabilities or /availabilities.json
   def index
-    @availabilities = Availability.all
+    @selected_user_id = params[:user_id]
+
+    if @selected_user_id.present?
+      @availabilities = Availability.where(user_id: @selected_user_id)
+    else
+      @availabilities = Availability.all
+    end
   end
 
   # GET /availabilities/1 or /availabilities/1.json

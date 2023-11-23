@@ -1,26 +1,36 @@
 <div class="container">
-<p style="color: green"><%= notice %></p>
+  <p style="color: green"><%= notice %></p>
 
-<div style="text-align: center;">
-  <h1>Climb Times</h1>
-</div>
+  <div style="text-align: center;">
+    <h1>Climb Times</h1>
 
-
-<%= month_calendar(header: {class: 'calendar-heading'}) do |date| %>
-  <div class="card mb-3">
-    <div class="card-header">
-      <%= date.strftime("%d") %>
-      <%= link_to raw('<i class="fas fa-calendar-plus"></i>'), new_availability_path(start_date: date.to_date) %>
-
-    </div>
-    <div class="card-body">
-      <% day_availabilities = @availabilities.select { |a| a.start_time.to_date == date }.sort_by(&:start_time) %>
-      <% day_availabilities.each do |availability| %>
-        <p class="mb-1">
-          <%= link_to availability.event_name, availability_path(availability), class: "text-dark" %>
-          <small class="text-muted"><%= availability.start_time.strftime("%I:%M %p") %></small>
-        </p>
-      <% end %>
-    </div>
-  </div>
+<%= form_with(url: availabilities_path, method: :get, local: true) do |form| %>
+  <%= form.collection_select :user_id, User.all, :id, :username, 
+      prompt: "All", selected: @selected_user_id %>
+  <%= form.submit "Host" %>
 <% end %>
+
+
+  </div>
+
+
+
+
+  <%= month_calendar(header: {class: 'calendar-heading'}) do |date| %>
+    <div class="card mb-3">
+      <div class="card-header">
+        <%= date.strftime("%d") %>
+        <%= link_to raw('<i class="fas fa-calendar-plus"></i>'), new_availability_path(start_date: date.to_date) %>
+
+      </div>
+      <div class="card-body">
+        <% day_availabilities = @availabilities.select { |a| a.start_time.to_date == date }.sort_by(&:start_time) %>
+        <% day_availabilities.each do |availability| %>
+          <p class="mb-1">
+            <%= link_to availability.event_name, availability_path(availability), class: "text-dark" %>
+            <small class="text-muted"><%= availability.start_time.strftime("%I:%M %p") %></small>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
