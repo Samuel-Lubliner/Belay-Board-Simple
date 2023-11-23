@@ -1,17 +1,19 @@
 <div id="<%= dom_id availability %>">
   <p>
-    <strong><%= availability.event_name %></strong>
-    
-  </p>
+  <strong style="font-size: larger;"><%= availability.event_name %></strong>
+</p>
+
 
   <p>
-    <strong>Start:</strong>
-    <%= availability.start_time %>
-  </p>
+  <strong>Start:</strong>
+  <%= availability.start_time.strftime("%b %d, %Y @ %I:%M %p") %>
+</p>
+
+
 
   <p>
     <strong>End: &nbsp; </strong>
-    <%=availability.end_time %>
+    <%=availability.end_time.strftime("%b %d, %Y @ %I:%M %p") %>
   </p>
 
   <p>
