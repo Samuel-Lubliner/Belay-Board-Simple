@@ -7,7 +7,6 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :destroy]
   end
   
-
   resources :event_requests, only: [:create] do
     member do
       post :accept
@@ -16,7 +15,4 @@ Rails.application.routes.draw do
   end
 
   get '/dashboard', to: 'users#dashboard'
-
-
-
 end
