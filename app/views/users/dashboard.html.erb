@@ -13,9 +13,6 @@
     <%= date_field_tag :end_time, params[:end_time], class: 'form-control' %>
   </div>
 
-
-
-
  <div class="col-md-3">
   <%= label_tag :status, "Status", class: 'form-label' %>
   <%= select_tag :status, 
@@ -32,7 +29,6 @@
   %>
 </div>
 
-
   <div class="col-md-3">
     <%= label_tag :event_name, "Event Name", class: 'form-label' %>
     <%= text_field_tag :event_name, params[:event_name], class: 'form-control', placeholder: 'Search Event Names' %>
@@ -42,7 +38,6 @@
     <%= submit_tag "Filter", class: 'btn btn-primary' %>
   </div>
 <% end %>
-
 
 <table class="table">
   <thead>
@@ -73,7 +68,4 @@
     <% end %>
   </tbody>
 </table>
-
-
-
 </div>
