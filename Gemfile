@@ -5,6 +5,7 @@ ruby "3.2.1"
 
 gem 'bootstrap', '~> 5.1.3'
 
+gem 'simple_form'
 
 
 gem "simple_calendar", "~> 2.4"
@@ -115,3 +116,9 @@ group :test do
 end
 
 gem "pundit", "~> 2.3"
+
+gem "dockerfile-rails", ">= 1.5", :group => :development
+
+gem "sentry-ruby", "~> 5.13"
+
+gem "sentry-rails", "~> 5.13"
