@@ -5,6 +5,7 @@ class AvailabilitiesController < ApplicationController
   def index
     @selected_host_id = params[:host_id]
     @selected_guest_id = params[:guest_id]
+    @event_name_query = params[:event_name]
 
     @availabilities = Availability.all
 
@@ -15,6 +16,10 @@ class AvailabilitiesController < ApplicationController
     if @selected_guest_id.present?
       guest_availabilities = EventRequest.where(user_id: @selected_guest_id, status: 'accepted').pluck(:availability_id)
       @availabilities = @availabilities.where(id: guest_availabilities)
+    end
+
+    if @event_name_query.present?
+      @availabilities = @availabilities.where('event_name ILIKE ?', "%#{@event_name_query}%")
     end
   end
 
