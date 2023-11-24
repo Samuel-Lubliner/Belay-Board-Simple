@@ -1,0 +1,52 @@
+<div class="container">
+
+<h1>Event Requests</h1>
+
+<%= form_tag dashboard_path, method: :get do %>
+  <div>
+    <%= label_tag :status %>
+    <%= select_tag :status, options_for_select(['pending', 'accepted', 'rejected'], params[:status]), include_blank: true %>
+  </div>
+
+<div>
+    <%= label_tag :start_time %>
+    <%= date_field_tag :start_time, params[:start_time] %>
+  </div>
+
+  <div>
+    <%= label_tag :end_time %>
+    <%= date_field_tag :end_time, params[:end_time] %>
+  </div>
+
+  <div>
+
+    <%= text_field_tag :event_name, params[:event_name], class: 'form-control', placeholder: ' Search Event Names' %>
+  </div>
+
+  <%= submit_tag "Filter" %>
+<% end %>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Event Name</th>
+      <th scope="col">Start Time</th>
+      <th scope="col">End Time</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @event_requests.each do |request| %>
+      <tr>
+        <td><%= link_to request.availability.event_name, availability_path(request.availability) %></td>
+        <td><%= request.availability.start_time.strftime('%b %d, %Y %I:%M %p') %></td>
+        <td><%= request.availability.end_time.strftime('%b %d, %Y %I:%M %p') %></td>
+        <td><%= request.status.capitalize %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+</div>

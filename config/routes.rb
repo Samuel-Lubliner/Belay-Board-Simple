@@ -15,24 +15,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/dashboard', to: 'users#dashboard'
 
 
 
-
-  # resources :availabilities
-  # devise_for :users
-
-  # resources :event_requests, only: [:create]
-
-  # resources :event_requests do
-  #   member do
-  #     put :accept
-  #     put :reject
-  #   end
-  # end
-
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
 end
