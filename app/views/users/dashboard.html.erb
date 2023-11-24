@@ -51,7 +51,7 @@
   <tbody>
     <% @event_requests.each do |request| %>
       <tr>
-        <td><%= link_to request.availability.event_name, availability_path(request.availability) %></td>
+        <td><%= link_to request.availability.event_name, availability_path(request.availability) %>  <%= "- #{request.availability.user.username}" %> </td>
         <td><%= request.availability.start_time.strftime('%b %d, %Y %I:%M %p') %></td>
         <td><%= request.availability.end_time.strftime('%b %d, %Y %I:%M %p') %></td>
         <td>

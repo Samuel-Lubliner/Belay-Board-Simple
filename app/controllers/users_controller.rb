@@ -3,6 +3,8 @@ class UsersController < ApplicationController
 
   def dashboard
     @event_requests = current_user.event_requests.includes(:availability)
+    @hosts = User.joins(:availabilities).distinct.pluck(:username, :id)
+
   
     if params[:status].present?
       @event_requests = @event_requests.where(status: params[:status])
