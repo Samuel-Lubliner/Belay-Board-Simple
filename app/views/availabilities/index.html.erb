@@ -5,10 +5,21 @@
     <h1>Climb Times</h1>
 
 <%= form_with(url: availabilities_path, method: :get, local: true) do |form| %>
-  <%= form.collection_select :user_id, User.all, :id, :username, 
-      prompt: "All", selected: @selected_user_id %>
-  <%= form.submit "Host" %>
+  <div>
+    <%= form.label :host_id, "Select Host" %>
+    <%= form.collection_select :host_id, User.all, :id, :username, 
+        prompt: "All Hosts", selected: @selected_host_id %>
+  </div>
+
+  <div>
+    <%= form.label :guest_id, "Select Guest" %>
+    <%= form.collection_select :guest_id, User.all, :id, :username, 
+        prompt: "All Guests", selected: @selected_guest_id %>
+  </div>
+
+  <%= form.submit "Filter" %>
 <% end %>
+
 
 
   </div>

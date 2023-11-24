@@ -3,12 +3,18 @@ class AvailabilitiesController < ApplicationController
 
   # GET /availabilities or /availabilities.json
   def index
-    @selected_user_id = params[:user_id]
+    @selected_host_id = params[:host_id]
+    @selected_guest_id = params[:guest_id]
 
-    if @selected_user_id.present?
-      @availabilities = Availability.where(user_id: @selected_user_id)
-    else
-      @availabilities = Availability.all
+    @availabilities = Availability.all
+
+    if @selected_host_id.present?
+      @availabilities = @availabilities.where(user_id: @selected_host_id)
+    end
+
+    if @selected_guest_id.present?
+      guest_availabilities = EventRequest.where(user_id: @selected_guest_id, status: 'accepted').pluck(:availability_id)
+      @availabilities = @availabilities.where(id: guest_availabilities)
     end
   end
 
