@@ -243,6 +243,8 @@ GEM
     public_suffix (5.0.1)
     puma (5.6.5)
       nio4r (~> 2.0)
+    pundit (2.3.1)
+      activesupport (>= 3.0.0)
     racc (1.6.2)
     rack (2.2.7)
     rack-protection (3.0.6)
@@ -446,6 +448,7 @@ DEPENDENCIES
   pg (~> 1.1)
   pry-rails
   puma (~> 5.0)
+  pundit (~> 2.3)
   rails (~> 7.0.4, >= 7.0.4.3)
   rails-erd
   rails_db

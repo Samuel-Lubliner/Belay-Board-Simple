@@ -600,3 +600,82 @@ end
 </table>
 </div>
 ```
+
+## Authorization with Pundit
+
+`bundle add pundit`
+`rails g pundit:install`
+
+```rb
+class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  private
+
+  def user_not_authorized
+    flash[:alert] = "You are not authorized to perform this action."
+    redirect_back(fallback_location: root_path) 
+    # Be careful not to to get into infinite loop if root not authorized
+  end
+ #...
+end
+```
+
+# Users can only edit and delete availabilities they created
+
+`rails g pundit:policy availability`
+
+```rb
+class AvailabilityPolicy < ApplicationPolicy
+  class Scope < Scope
+    # NOTE: Be explicit about which records you allow access to!
+    # def resolve
+    #   scope.all
+    # end
+  end
+
+  # Edit inherits update
+  def update?
+    user == record.user
+  end
+
+  def destroy?
+    user == record.user
+  end
+end
+```
+
+```rb
+class AvailabilitiesController < ApplicationController
+#...
+
+  def update
+   authorize @availability
+   #...
+
+  def delete
+    authorize @availability
+    #...
+  
+end
+```
+
+## Only show the edit options the authorized user
+```rb
+  <% if policy(@availability).update? && policy(@availability).destroy? %>
+    <div class="col-md-4">
+      <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-cog"></i>
+        </a>
+
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li><%= link_to "Edit this availability", edit_availability_path(@availability), class: 'dropdown-item' %></li>
+          <li><%= button_to "Destroy this availability", @availability, method: :delete, class: 'dropdown-item', data: { confirm: 'Are you sure?' } %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <% end %>
+```

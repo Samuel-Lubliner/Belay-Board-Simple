@@ -58,6 +58,7 @@ class AvailabilitiesController < ApplicationController
 
   # PATCH/PUT /availabilities/1 or /availabilities/1.json
   def update
+    authorize @availability
     respond_to do |format|
       if @availability.update(availability_params)
         format.html { redirect_to availability_url(@availability), notice: "Availability was successfully updated." }
@@ -71,12 +72,15 @@ class AvailabilitiesController < ApplicationController
 
   # DELETE /availabilities/1 or /availabilities/1.json
   def destroy
+    authorize @availability
+
     @availability.destroy
 
     respond_to do |format|
       format.html { redirect_to availabilities_url, notice: "Availability was successfully destroyed." }
       format.json { head :no_content }
     end
+
   end
 
   private
