@@ -25,8 +25,11 @@ class AvailabilitiesController < ApplicationController
 
   # GET /availabilities/1 or /availabilities/1.json
   def show
+    @availability = Availability.find(params[:id])
     @event_requests = @availability.event_requests.includes(:user)
+    @comments = @availability.comments.order(created_at: :desc)
   end
+  
 
   # GET /availabilities/new
   def new

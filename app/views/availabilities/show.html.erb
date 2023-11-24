@@ -110,20 +110,39 @@
       </div>
     </div>
 
+    
+  
+
+
     <h3>Comments</h3>
-    <div class="card mb-3">
-      <div class="card-body">
-        <% @availability.comments.each do |comment| %>
-          <% unless comment.user == @availability.user %>
-            <div class="d-flex justify-content-between">
-              <p><strong><%= comment.user.username %>:</strong> <%= comment.body %></p>
-              <% if current_user == comment.user %>
-              <% end %>
+<div class="card mb-3">
+  <div class="card-body">
+    <% @comments.each do |comment| %>
+      <% unless comment.user == @availability.user %>
+        <div class="d-flex justify-content-between">
+          <p><strong><%= comment.user.username %>:</strong> <%= comment.body %></p>
+          <% if current_user == comment.user %>
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton<%= comment.id %>" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= comment.id %>">
+                    <li>
+                      <%= button_to 'Delete', 
+                                availability_comment_path(@availability, comment),
+                                method: :delete,
+                                data: { confirm: 'Are you sure?' },
+                                class: 'dropdown-item' %>
+                    </li>
+                  </ul>
             </div>
           <% end %>
-        <% end %>
-      </div>
-    </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
 
     <%= form_for([@availability, @availability.comments.new], html: { class: "mb-3" }) do |f| %>
       <div class="form-group">
