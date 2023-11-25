@@ -13,3 +13,17 @@
  *= require_tree .
  *= require_self
  */
+/* custom.css */
+.simple-calendar .calendar-heading {
+  text-align: center;
+}
+
+/* Styles for date and time separation */
+.avail-date {
+  margin-right: 10px; 
+  font-weight: bold; 
+}
+
+.avail-time {
+  color: #555;
+}

@@ -14,6 +14,7 @@ class AvailabilitiesController < ApplicationController
   # GET /availabilities/new
   def new
     @availability = Availability.new
+    @availability.start_time = params[:start_date] if params[:start_date].present?
   end
 
   # GET /availabilities/1/edit
