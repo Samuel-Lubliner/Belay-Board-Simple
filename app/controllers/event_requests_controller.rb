@@ -4,38 +4,45 @@ class EventRequestsController < ApplicationController
   def create
     @event_request = current_user.event_requests.new(event_request_params)
 
-    if @event_request.save
-      # Handle success (e.g., redirect with a success message)
-    else
-      # Handle failure (e.g., render form again with error messages)
+    respond_to do |format|
+      if @event_request.save
+        format.html { redirect_to @event_request.availability, notice: 'Request submitted.' }
+        format.js
+      else
+        format.html { render 'availabilities/show', status: :unprocessable_entity }
+        format.js
+      end
     end
   end
 
   def accept
-    event_request = EventRequest.find(params[:id])
-    if event_request.availability.user == current_user
-      event_request.accept
-      # Success message and redirect
-    else
-      # Error message and redirect
+    @event_request = EventRequest.find(params[:id])
+    if @event_request.availability.user == current_user
+      @event_request.update(status: 'accepted')
+  
+      respond_to do |format|
+        format.html { redirect_to availability_path(@event_request.availability), notice: 'Request accepted.' }
+        format.js
+      end
     end
   end
   
   def reject
-    event_request = EventRequest.find(params[:id])
-    if event_request.availability.user == current_user
-      event_request.reject
-      # Success message and redirect
-    else
-      # Error message and redirect
+    @event_request = EventRequest.find(params[:id])
+    if @event_request.availability.user == current_user
+      @event_request.update(status: 'rejected')
+  
+      respond_to do |format|
+        format.html { redirect_to availability_path(@event_request.availability), notice: 'Request rejected.' }
+        format.js
+      end
     end
   end
-
+  
   private
-
+  
   def event_request_params
     params.require(:event_request).permit(:availability_id)
-    # Do not include :user_id, it's set automatically to current_user
-  end
-  
+    # Do not include :user_id
+  end  
 end

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "availabilities#index" # Or another controller#action as your homepage
+  root "availabilities#index"
   
   devise_for :users
 
