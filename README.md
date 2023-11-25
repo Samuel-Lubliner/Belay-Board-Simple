@@ -286,3 +286,7 @@ class EventRequestsController < ApplicationController
   
 end
 ```
+
+## Add Calendar
+Add into Gemfile followed by a bundle install:
+`gem "simple_calendar", "~> 2.4"`
