@@ -107,10 +107,8 @@ end
 ```rb
 Rails.application.routes.draw do
   root "availabilities#index"
-  
-  devise_for :users
 
-  resources :availabilities
+  devise_for :users
 
   resources :event_requests, only: [:create] do
     member do
@@ -118,6 +116,7 @@ Rails.application.routes.draw do
       post :reject
     end
   end
+end
 ```
 
 ## Add ujs and jquery
@@ -145,18 +144,6 @@ Rails.start();
 
 views/availabilities/show.html.erb
 ```html
-<p style="color: green"><%= notice %></p>
-
-<%= render @availability %>
-
-<div>
-  <%= link_to "Edit this availability", edit_availability_path(@availability) %> |
-  <%= link_to "Back to availabilities", availabilities_path %>
-
-  <%= button_to "Destroy this availability", @availability, method: :delete %>
-</div>
-
-
 <% if current_user && @availability.user != current_user %>
   <% unless @availability.event_requests.exists?(user: current_user) %>
     <%= form_for(current_user.event_requests.new, url: event_requests_path, remote: true) do |f| %>
@@ -195,27 +182,6 @@ $("#event_request_<%= @event_request.id %>").html("<%= j(render partial: 'availa
 ```
 
 ```rb
-# == Schema Information
-#
-# Table name: event_requests
-#
-#  id              :bigint           not null, primary key
-#  status          :string           default("pending")
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  availability_id :bigint           not null
-#  user_id         :bigint           not null
-#
-# Indexes
-#
-#  index_event_requests_on_availability_id  (availability_id)
-#  index_event_requests_on_user_id          (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (availability_id => availabilities.id)
-#  fk_rails_...  (user_id => users.id)
-#
 class EventRequest < ApplicationRecord
   belongs_to :user
   belongs_to :availability
@@ -231,7 +197,6 @@ class EventRequest < ApplicationRecord
   def reject
     update(status: 'rejected')
   end
-
 end
 ```
 
@@ -294,26 +259,24 @@ Add into Gemfile followed by a bundle install:
 
 ### Calendar for availability index 
 ```html
-<h1>Climb Times</h1>
-
 <%= month_calendar(header: {class: 'calendar-heading'}) do |date| %>
-  <div class="card mb-3">
-    <div class="card-header">
-      <%= date.strftime("%d") %>
-      <%= link_to raw('<i class="fas fa-calendar-plus"></i>'), new_availability_path(start_date: date.to_date) %>
+    <div class="card mb-3">
+      <div class="card-header">
+        <%= date.strftime("%d") %>
+        <%= link_to raw('<i class="fas fa-calendar-plus"></i>'), new_availability_path(start_date: date.to_date) %>
 
+      </div>
+      <div class="card-body">
+        <% day_availabilities = @availabilities.select { |a| a.start_time.to_date == date }.sort_by(&:start_time) %>
+        <% day_availabilities.each do |availability| %>
+          <p class="mb-1">
+            <%= link_to availability.event_name, availability_path(availability), class: "text-dark" %>
+            <small class="text-muted"><%= availability.start_time.strftime("%I:%M %p") %></small>
+          </p>
+        <% end %>
+      </div>
     </div>
-    <div class="card-body">
-      <% day_availabilities = @availabilities.select { |a| a.start_time.to_date == date }.sort_by(&:start_time) %>
-      <% day_availabilities.each do |availability| %>
-        <p class="mb-1">
-          <%= link_to availability.event_name, availability_path(availability), class: "text-dark" %>
-          <small class="text-muted"><%= availability.start_time.strftime("%I:%M %p") %></small>
-        </p>
-      <% end %>
-    </div>
-  </div>
-<% end %>
+  <% end %>
 ```
 
 When creating new availability from the calendar, the start date of the availability should be set to the date corresponding to the date on the calendar.
@@ -378,7 +341,7 @@ class CommentsController < ApplicationController
     @comment.user = current_user
 
     if @comment.save
-      redirect_to @availability, notice: 'Comment was successfully added.'
+      redirect_to @availability
     else
       redirect_to @availability, alert: 'Unable to add comment.'
     end
@@ -386,7 +349,7 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment.destroy
-    redirect_to @comment.availability, notice: 'Comment was successfully deleted.'
+    redirect_to @comment.availability
   end
 
   private
@@ -406,7 +369,118 @@ class CommentsController < ApplicationController
 end
 ```
 
+```html
+<h3>Comments</h3>
+    <div class="card mb-3">
+      <div class="card-body">
+        <% @availability.comments.each do |comment| %>
+          <% unless comment.user == @availability.user %>
+            <div class="d-flex justify-content-between">
+              <p><strong><%= comment.user.username %>:</strong> <%= comment.body %></p>
+              <% if current_user == comment.user %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <%= form_for([@availability, @availability.comments.new], html: { class: "mb-3" }) do |f| %>
+      <div class="form-group">
+        <%= f.text_area :body, class: "form-control", rows: 3 %>
+      </div>
+
+      <% if current_user == @availability.user %>
+        <div class="form-group d-flex justify-content-end">
+          <%= f.button 'Description<i class="fas fa-paper-plane"></i>'.html_safe, type: :submit, class: "btn btn-primary" %>
+        </div>
+      <% else %>
+        <div class="form-group d-flex justify-content-end">
+          <%= f.button 'Comment<i class="fas fa-paper-plane"></i>'.html_safe, type: :submit, class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+```
+
+## Next Steps
+Now that I have a calendar to display the index of availabilities, I will develop a calendar with filtering for availabilities where the user is a the event creator and availabilities where the user is a guest. I will also implement a dashboard for guest status.
+
+Originally the index page showed all the availabilities. A user may want to only view availabilities that they are interested in. The calendar can be filtered by a combination of particular hosts and guests. Futhermore, the calendar can be searched by event title names.
+
+## Calendar Filtering for Hosts Users and search by event name
 ```rb
+class AvailabilitiesController < ApplicationController
+  before_action :set_availability, only: %i[ show edit update destroy ]
+
+  # GET /availabilities or /availabilities.json
+  def index
+    @selected_host_id = params[:host_id]
+    @selected_guest_id = params[:guest_id]
+    @event_name_query = params[:event_name]
+
+    @availabilities = Availability.all
+
+    if @selected_host_id.present?
+      @availabilities = @availabilities.where(user_id: @selected_host_id)
+    end
+
+    if @selected_guest_id.present?
+      guest_availabilities = EventRequest.where(user_id: @selected_guest_id, status: 'accepted').pluck(:availability_id)
+      @availabilities = @availabilities.where(id: guest_availabilities)
+    end
+
+    if @event_name_query.present?
+      @availabilities = @availabilities.where('event_name ILIKE ?', "%#{@event_name_query}%")
+    end
+  end
+```
+
+## Collapsible search form.
+
+```html
+<div style="text-align: center;">
+
+    <h1>Climb Times</h1>
+
+    <%= link_to '#', class: 'btn btn-primary', data: { bs_toggle: 'collapse', bs_target: '#filterForm' } do %>
+      <i class="fas fa-search"></i>
+    <% end %>
+
+    <div id="filterForm" class="collapse">
+      <%= form_with(url: availabilities_path, method: :get, local: true) do |form| %>
+  <div class="form-group">
+    <%= form.label :host_id, "Host" %>
+    <%= form.collection_select :host_id, [['All Hosts', nil]] + User.all.map { |u| [u.username, u.id] }, :last, :first, 
+        selected: @selected_host_id, include_blank: false, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :guest_id, "Guest" %>
+    <%= form.collection_select :guest_id, [['All Guests', nil]] + User.all.map { |u| [u.username, u.id] }, :last, :first, 
+        selected: @selected_guest_id, include_blank: false, class: 'form-control' %>
+  </div>
+
+        <div class="row justify-content-center">
+          <div class="col-md-2">
+            <div class="form-group">
+
+              <%= form.text_field :event_name, value: @event_name_query, 
+            class: 'form-control', placeholder: ' Search Event Names' %>
+            </div>
+          </div>
+        </div>
+        <%= form.submit "Filter", class: 'btn btn-success' %>
+      <% end %>
+    </div>
+  </div>
+```
+
+## Add Dashboard 
+A user needs a way to view availabilities ordered by start time. A user may want to search availabilities by status. Originally i named the status :accepted, :rejected, :pending and this is how the event creator views them. I thought it would be a nice touch if the event guests viewed more friendly statuses like Confirmed, Canceled, and Pending. Furthermore, a guest can filter requests by a range of start and end times as well as search by event names.    
+
+### Routes
+
 Rails.application.routes.draw do
   root "availabilities#index"
 
@@ -416,133 +490,113 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :destroy]
   end
   
-
   resources :event_requests, only: [:create] do
     member do
       post :accept
       post :reject
     end
   end
+
+  get '/dashboard', to: 'users#dashboard'
+end
+
+### Dashboard action in controller 
+```rb
+class UsersController < ApplicationController
+  before_action :authenticate_user!
+
+  def dashboard
+    @event_requests = current_user.event_requests.includes(:availability)
+  
+    if params[:status].present?
+      @event_requests = @event_requests.where(status: params[:status])
+    end
+  
+    if params[:event_name].present?
+      @event_requests = @event_requests.joins(:availability).where('availabilities.event_name ILIKE ?', "%#{params[:event_name]}%")
+    end
+  
+    if params[:start_time].present? && params[:end_time].present?
+      start_time = Date.parse(params[:start_time])
+      end_time = Date.parse(params[:end_time])
+      @event_requests = @event_requests.joins(:availability).where('availabilities.start_time >= ? AND availabilities.end_time <= ?', start_time, end_time)
+    end
+
+    @event_requests = @event_requests.joins(:availability).order('availabilities.start_time ASC')
+  end
+end
 ```
 
 ```html
-<div class="container mt-3">
-  
-  <div class="row">
-    <div class="col-md-8">
-      <%= render @availability %>
+<div class="container">
 
-      <% if current_user && @availability.user != current_user %>
-  <% unless @availability.event_requests.exists?(user: current_user) %>
-    <%= form_for(current_user.event_requests.new, url: event_requests_path, remote: true, class: 'd-flex justify-content-end') do |f| %>
-      <%= f.hidden_field :availability_id, value: @availability.id %>
-      <%= button_tag(type: "submit", class: "btn btn-primary", id: "join-event-button") do %>
-        <i class="fas fa-user-plus"></i>Me
-      <% end %>
-    <% end %>
-  <% end %>
+<h2>Event Requests</h2>
+
+<%= form_tag dashboard_path, method: :get, class: "row g-3" do %>
+  <div class="col-md-3">
+    <%= label_tag :start_time, "Start Time", class: 'form-label' %>
+    <%= date_field_tag :start_time, params[:start_time], class: 'form-control' %>
+  </div>
+
+  <div class="col-md-3">
+    <%= label_tag :end_time, "End Time", class: 'form-label' %>
+    <%= date_field_tag :end_time, params[:end_time], class: 'form-control' %>
+  </div>
+
+ <div class="col-md-3">
+  <%= label_tag :status, "Status", class: 'form-label' %>
+  <%= select_tag :status, 
+      options_for_select(
+        {
+          'Any' => '',
+          'Pending' => 'pending',
+          'Confirmed' => 'accepted',
+          'Canceled' => 'rejected'
+        }, 
+        params[:status]
+      ), 
+      class: 'form-select' 
+  %>
+</div>
+
+  <div class="col-md-3">
+    <%= label_tag :event_name, "Event Name", class: 'form-label' %>
+    <%= text_field_tag :event_name, params[:event_name], class: 'form-control', placeholder: 'Search Event Names' %>
+  </div>
+
+  <div class="col-12">
+    <%= submit_tag "Filter", class: 'btn btn-primary' %>
+  </div>
 <% end %>
 
-<p>
-  <strong>Guests</strong>
-</p>
-
-<ul id="guest_requests_list" class="list-group">
-  <% @event_requests.each do |event_request| %>
-    <li id="event_request_<%= event_request.id %>" class="list-group-item d-flex justify-content-between align-items-center">
-      <%= render partial: 'event_request', locals: { event_request: event_request } %>
-      <% if event_request.status == 'pending' && @availability.user == current_user %>
-        <%= button_to 'Accept', accept_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-success btn-sm', data: { turbo: false } %>
-        <%= button_to 'Reject', reject_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-danger btn-sm', data: { turbo: false } %>
-      <% end %>
-    </li>
-  <% end %>
-</ul>
-
-<h3>Description</h3>
-<div class="card mb-3">
-  <div class="card-body">
-    <% @availability.comments.each do |comment| %>
-      <% if comment.user == @availability.user %>
-        <div class="d-flex justify-content-between">
-          <p><%= comment.body %></p>
-          <% if current_user == comment.user %>
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton<%= comment.id %>" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= comment.id %>">
-                <li>
-                  <%= button_to 'Delete', 
-                                availability_comment_path(@availability, comment),
-                                method: :delete,
-                                data: { confirm: 'Are you sure?' },
-                                class: 'dropdown-item' %>
-                </li>
-              </ul>
-            </div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Event Name</th>
+      <th scope="col">Start Time</th>
+      <th scope="col">End Time</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @event_requests.each do |request| %>
+      <tr>
+        <td><%= link_to request.availability.event_name, availability_path(request.availability) %></td>
+        <td><%= request.availability.start_time.strftime('%b %d, %Y %I:%M %p') %></td>
+        <td><%= request.availability.end_time.strftime('%b %d, %Y %I:%M %p') %></td>
+        <td>
+          <% case request.status %>
+          <% when 'accepted' %>
+            Confirmed
+          <% when 'rejected' %>
+            Canceled
+          <% else %>
+            <%= request.status.capitalize %>
           <% end %>
-        </div>
-      <% end %>
+        </td>
+      </tr>
     <% end %>
-  </div>
-</div>
-
-<h3>Comments</h3>
-<div class="card mb-3">
-  <div class="card-body">
-    <% @availability.comments.each do |comment| %>
-      <% unless comment.user == @availability.user %>
-        <div class="d-flex justify-content-between">
-          <p><strong><%= comment.user.username %>:</strong> <%= comment.body %></p>
-          <% if current_user == comment.user %>
-          <% end %>
-        </div>
-      <% end %>
-    <% end %>
-  </div>
-</div>
-
-<%= form_for([@availability, @availability.comments.new], html: { class: "mb-3" }) do |f| %>
-  <div class="form-group">
-    <%= f.text_area :body, class: "form-control", rows: 3 %>
-  </div>
-
-  <% if current_user == @availability.user %>
-    <div class="form-group d-flex justify-content-end">
-    <%= f.button 'Description<i class="fas fa-paper-plane"></i>'.html_safe, type: :submit, class: "btn btn-primary" %>
-  </div>
-  <% else %>
-    <div class="form-group d-flex justify-content-end">
-    <%= f.button 'Comment<i class="fas fa-paper-plane"></i>'.html_safe, type: :submit, class: "btn btn-primary" %>
-  </div>
-  <% end %>
-  <% end %>
-  </div>
-    
-    <div class="col-md-4">
-      <div class="dropdown">
-          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-cog"></i>
-          </a>
-
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><%= link_to "Edit this availability", edit_availability_path(@availability), class: 'dropdown-item' %></li>
-            <li><%= button_to "Destroy this availability", @availability, method: :delete, class: 'dropdown-item', data: { confirm: 'Are you sure?' } %></li>
-          </ul>
-      </div>
-    </div>
-  </div>
+  </tbody>
+</table>
 </div>
 ```
-
-## Next Steps
-Now that I have a calendar to display the index of availabilities, I will develop a calendar with filtering for availabilities where the user is a the event creator and availabilities where the user is a guest. I will also implement a dashboard for guest status.
-
-## Different types of calendars: 
-- Index of all users
-- Availabilities created by user
-- Availability where user is a guest
-
-
-## Comments page

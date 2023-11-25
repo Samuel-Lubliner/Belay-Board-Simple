@@ -3,13 +3,33 @@ class AvailabilitiesController < ApplicationController
 
   # GET /availabilities or /availabilities.json
   def index
+    @selected_host_id = params[:host_id]
+    @selected_guest_id = params[:guest_id]
+    @event_name_query = params[:event_name]
+
     @availabilities = Availability.all
+
+    if @selected_host_id.present?
+      @availabilities = @availabilities.where(user_id: @selected_host_id)
+    end
+
+    if @selected_guest_id.present?
+      guest_availabilities = EventRequest.where(user_id: @selected_guest_id, status: 'accepted').pluck(:availability_id)
+      @availabilities = @availabilities.where(id: guest_availabilities)
+    end
+
+    if @event_name_query.present?
+      @availabilities = @availabilities.where('event_name ILIKE ?', "%#{@event_name_query}%")
+    end
   end
 
   # GET /availabilities/1 or /availabilities/1.json
   def show
+    @availability = Availability.find(params[:id])
     @event_requests = @availability.event_requests.includes(:user)
+    @comments = @availability.comments.order(created_at: :desc)
   end
+  
 
   # GET /availabilities/new
   def new

@@ -3,6 +3,9 @@
   <strong style="font-size: larger;"><%= availability.event_name %></strong>
 </p>
 
+  <p>
+    With <strong> <%= availability.user.username %></strong>
+  </p>
 
 <p>
   <i class="fas fa-play-circle"></i> 
@@ -15,12 +18,5 @@
   <span class="avail-date"><%= availability.end_time.strftime("%b %d, %Y") %></span>
   <span class="avail-time"><%= availability.end_time.strftime("%I:%M %p") %></span>
 </p>
-
-
-
-  <p>
-    <strong>Host:</strong>
-    <%= availability.user.username %>
-  </p>
 
 </div>

@@ -1,0 +1,71 @@
+<div class="container">
+
+<h2>Event Requests</h2>
+
+<%= form_tag dashboard_path, method: :get, class: "row g-3" do %>
+  <div class="col-md-3">
+    <%= label_tag :start_time, "Start Time", class: 'form-label' %>
+    <%= date_field_tag :start_time, params[:start_time], class: 'form-control' %>
+  </div>
+
+  <div class="col-md-3">
+    <%= label_tag :end_time, "End Time", class: 'form-label' %>
+    <%= date_field_tag :end_time, params[:end_time], class: 'form-control' %>
+  </div>
+
+ <div class="col-md-3">
+  <%= label_tag :status, "Status", class: 'form-label' %>
+  <%= select_tag :status, 
+      options_for_select(
+        {
+          'Any' => '',
+          'Pending' => 'pending',
+          'Confirmed' => 'accepted',
+          'Canceled' => 'rejected'
+        }, 
+        params[:status]
+      ), 
+      class: 'form-select' 
+  %>
+</div>
+
+  <div class="col-md-3">
+    <%= label_tag :event_name, "Event Name", class: 'form-label' %>
+    <%= text_field_tag :event_name, params[:event_name], class: 'form-control', placeholder: 'Search Event Names' %>
+  </div>
+
+  <div class="col-12">
+    <%= submit_tag "Filter", class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Event Name</th>
+      <th scope="col">Start Time</th>
+      <th scope="col">End Time</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @event_requests.each do |request| %>
+      <tr>
+        <td><%= link_to request.availability.event_name, availability_path(request.availability) %>  <%= "- #{request.availability.user.username}" %> </td>
+        <td><%= request.availability.start_time.strftime('%b %d, %Y %I:%M %p') %></td>
+        <td><%= request.availability.end_time.strftime('%b %d, %Y %I:%M %p') %></td>
+        <td>
+          <% case request.status %>
+          <% when 'accepted' %>
+            Confirmed
+          <% when 'rejected' %>
+            Canceled
+          <% else %>
+            <%= request.status.capitalize %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
