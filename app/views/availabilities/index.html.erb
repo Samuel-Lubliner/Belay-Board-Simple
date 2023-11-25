@@ -1,0 +1,59 @@
+<div class="container">
+  <p style="color: green"><%= notice %></p>
+
+  <div style="text-align: center;">
+
+    <h1>Climb Times</h1>
+
+    <%= link_to '#', class: 'btn btn-primary', data: { bs_toggle: 'collapse', bs_target: '#filterForm' } do %>
+      <i class="fas fa-search"></i>
+    <% end %>
+
+    <div id="filterForm" class="collapse">
+      <%= form_with(url: availabilities_path, method: :get, local: true) do |form| %>
+  <div class="form-group">
+    <%= form.label :host_id, "Host" %>
+    <%= form.collection_select :host_id, [['All Hosts', nil]] + User.all.map { |u| [u.username, u.id] }, :last, :first, 
+        selected: @selected_host_id, include_blank: false, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :guest_id, "Guest" %>
+    <%= form.collection_select :guest_id, [['All Guests', nil]] + User.all.map { |u| [u.username, u.id] }, :last, :first, 
+        selected: @selected_guest_id, include_blank: false, class: 'form-control' %>
+  </div>
+
+        <div class="row justify-content-center">
+          <div class="col-md-2">
+            <div class="form-group">
+
+              <%= form.text_field :event_name, value: @event_name_query, 
+            class: 'form-control', placeholder: ' Search Event Names' %>
+            </div>
+          </div>
+        </div>
+
+        <%= form.submit "Filter", class: 'btn btn-success' %>
+      <% end %>
+    </div>
+
+  </div>
+
+  <%= month_calendar(header: {class: 'calendar-heading'}) do |date| %>
+    <div class="card mb-3">
+      <div class="card-header">
+        <%= date.strftime("%d") %>
+        <%= link_to raw('<i class="fas fa-calendar-plus"></i>'), new_availability_path(start_date: date.to_date) %>
+
+      </div>
+      <div class="card-body">
+        <% day_availabilities = @availabilities.select { |a| a.start_time.to_date == date }.sort_by(&:start_time) %>
+        <% day_availabilities.each do |availability| %>
+          <p class="mb-1">
+            <%= link_to availability.event_name, availability_path(availability), class: "text-dark" %>
+            <small class="text-muted"><%= availability.start_time.strftime("%I:%M %p") %></small>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>

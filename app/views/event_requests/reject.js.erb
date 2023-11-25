@@ -1,0 +1,6 @@
+// Remove the request from the pending list
+$("#event_request_<%= @event_request.id %>").remove();
+
+
+// Add the rejected guest to the 'Rejected' list
+$("<%= j(render partial: 'availabilities/event_request', locals: { event_request: @event_request }) %>").appendTo("#rejected_guests_list");

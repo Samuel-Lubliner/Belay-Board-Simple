@@ -1,7 +1,18 @@
 Rails.application.routes.draw do
-  devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  root "availabilities#index"
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  devise_for :users
+
+  resources :availabilities do
+    resources :comments, only: [:create, :destroy]
+  end
+  
+  resources :event_requests, only: [:create] do
+    member do
+      post :accept
+      post :reject
+    end
+  end
+
+  get '/dashboard', to: 'users#dashboard'
 end

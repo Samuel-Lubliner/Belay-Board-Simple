@@ -1,0 +1,173 @@
+<div class="container mt-3">
+
+  <div class="row">
+    <div class="col-md-8">
+
+      <div class="container">
+
+        <%= render @availability %>
+
+        <div class="row">
+          <!-- Accepted Guests -->
+          <div class="col" style="padding-bottom: 10px;">
+
+            <% if current_user && @availability.user != current_user %>
+              <% unless @availability.event_requests.exists?(user: current_user) %>
+                <%= form_for(current_user.event_requests.new, url: event_requests_path, remote: true, class: 'd-flex justify-content-end') do |f| %>
+                  <%= f.hidden_field :availability_id, value: @availability.id %>
+                  <%= button_tag(type: "submit", class: "btn btn-primary", id: "join-event-button") do %>
+                    <i class="fas fa-user-plus"></i>Me
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <h3 id="accepted_header"> Participants  (<%= @event_requests.count { |er| er.status == 'accepted' } %>)</h3>
+
+            <ul class="list-group" id="accepted_guests_list">
+              <% @event_requests.select { |er| er.status == 'accepted' }.each do |event_request| %>
+                <li class="list-group-item" id="event_request_<%= event_request.id %>">
+                  <%= event_request.user.username %>
+                </li>
+              <% end %>
+            </ul>
+
+          </div>
+
+          <!-- Pending Guests -->
+          <% if current_user == @availability.user %>
+            <div class="col" style="padding-bottom: 10px;">
+              <% pending_requests = @event_requests.select { |er| er.status == 'pending' } %>
+
+              <h3>Pending</h3>
+              <ul class="list-group" id="guest_requests_list">
+                <% pending_requests.each do |event_request| %>
+                  <li id="event_request_<%= event_request.id %>" class="list-group-item d-flex justify-content-between align-items-center">
+                    <%= event_request.user.username %>
+                    <% if event_request.status == 'pending' && @availability.user == current_user %>
+                      <%= button_to 'Accept', accept_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-success btn-sm', data: { turbo: false } %>
+                      <%= button_to 'Reject', reject_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-danger btn-sm', data: { turbo: false } %>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+
+            </div>
+          <% end %>
+
+          <!-- Rejected Guests -->
+          <% if current_user == @availability.user %>
+            <div class="col" style="padding-bottom: 10px;">
+
+              <h3 id="rejected_guests_header">Rejected </h3>
+
+              <ul class="list-group" id="rejected_guests_list">
+                <% @event_requests.select { |er| er.status == 'rejected' }.each do |event_request| %>
+                  <li class="list-group-item" id="event_request_<%= event_request.id %>">
+                    <%= event_request.user.username %>
+                  </li>
+                <% end %>
+              </ul>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+    <div style="padding-top: 15px;">
+      <h3>Description</h3>
+    </div>
+
+    <div class="card mb-3" >
+      <div class="card-body">
+        <% @availability.comments.each do |comment| %>
+          <% if comment.user == @availability.user %>
+            <div class="d-flex justify-content-between">
+              <p><%= comment.body %></p>
+              <% if current_user == comment.user %>
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton<%= comment.id %>" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= comment.id %>">
+                    <li>
+                      <%= button_to 'Delete', 
+                                availability_comment_path(@availability, comment),
+                                method: :delete,
+                                data: { confirm: 'Are you sure?' },
+                                class: 'dropdown-item' %>
+                    </li>
+                  </ul>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <h3>Comments</h3>
+    <div class="card mb-3">
+      <div class="card-body">
+        <% @comments.each do |comment| %>
+          <% unless comment.user == @availability.user %>
+            <div class="d-flex justify-content-between">
+              <p><strong><%= comment.user.username %>:</strong> <%= comment.body %></p>
+              <% if current_user == comment.user %>
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton<%= comment.id %>" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= comment.id %>">
+                    <li>
+                      <%= button_to 'Delete', 
+                                availability_comment_path(@availability, comment),
+                                method: :delete,
+                                data: { confirm: 'Are you sure?' },
+                                class: 'dropdown-item' %>
+                    </li>
+                  </ul>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <%= form_for([@availability, @availability.comments.new], html: { class: "mb-3" }) do |f| %>
+      <div class="form-group">
+        <%= f.text_area :body, class: "form-control", rows: 3 %>
+      </div>
+
+      <% if current_user == @availability.user %>
+        <div class="form-group d-flex justify-content-end">
+          <%= f.button 'Description<i class="fas fa-paper-plane"></i>'.html_safe, type: :submit, class: "btn btn-primary" %>
+        </div>
+      <% else %>
+        <div class="form-group d-flex justify-content-end">
+          <%= f.button 'Comment<i class="fas fa-paper-plane"></i>'.html_safe, type: :submit, class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if policy(@availability).update? && policy(@availability).destroy? %>
+    <div class="col-md-4">
+      <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-cog"></i>
+        </a>
+
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li><%= link_to "Edit this availability", edit_availability_path(@availability), class: 'dropdown-item' %></li>
+          <li><%= button_to "Destroy this availability", @availability, method: :delete, class: 'dropdown-item', data: { confirm: 'Are you sure?' } %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+<% end %>

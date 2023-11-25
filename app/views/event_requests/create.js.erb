@@ -1,0 +1,10 @@
+<% if @event_request.persisted? %>
+  var newGuestHtml = "<li class='list-group-item d-flex justify-content-between align-items-center'>" +
+                     "<%= j(render partial: 'availabilities/event_request', locals: { event_request: @event_request }) %>" +
+                     "</li>";
+
+  $("#guest_requests_list").append(newGuestHtml);
+
+  // Update the Join button
+  $("#join-event-button").text('Pending').removeClass('btn-primary').addClass('btn-secondary').prop('disabled', true);
+<% end %>

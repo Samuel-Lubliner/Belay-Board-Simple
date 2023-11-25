@@ -1,0 +1,40 @@
+<div class="container">
+  <%= form_with(model: availability, class: 'needs-validation', novalidate: true) do |form| %>
+    <% if availability.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading"><%= pluralize(availability.errors.count, "error") %> prohibited this availability from being saved:</h4>
+        <ul>
+          <% availability.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <%= form.label :event_name %>
+          <%= form.text_field :event_name, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= form.label :start_time %>
+          <%= form.datetime_field :start_time, value: availability.start_time&.strftime("%Y-%m-%dT%H:%M"), class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= form.label :end_time %>
+          <%= form.datetime_field :end_time, value: availability.start_time&.strftime("%Y-%m-%dT%H:%M"), class: 'form-control' %>
+        </div>
+
+
+         <div class="form-group">
+         <%= button_tag(type: 'submit', class: 'btn btn-primary') do %>
+         <i class="fas fa-plus"></i>
+         <% end %>
+         </div>
+      </div>
+    </div>
+  <% end %>
+</div>

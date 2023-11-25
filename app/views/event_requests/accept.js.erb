@@ -1,0 +1,8 @@
+// Remove the pending request
+$("#event_request_<%= @event_request.id %>").remove();
+
+// Append to the accepted list and ensure the list is wrapped in a <ul> with id 'accepted_guests_list'
+$("<li class='list-group-item'> <%= j @event_request.user.username %> </li>").appendTo("#accepted_guests_list");
+
+// Update the count in the 'Accepted' header
+$("#accepted_header").text('Accepted (' + $("#accepted_guests_list .list-group-item").length + ')');
