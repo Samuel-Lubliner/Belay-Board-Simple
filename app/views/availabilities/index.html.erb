@@ -8,14 +8,22 @@
     <%= link_to '#', class: 'btn btn-primary', data: { bs_toggle: 'collapse', bs_target: '#filterForm' } do %>
       <i class="fas fa-search"></i>
     <% end %>
-    
+
     <div id="filterForm" class="collapse">
       <%= search_form_for @q do |f| %>
-        <%= f.label :user_username_cont, "Host" %>
-        <%= f.search_field :user_username_cont, placeholder: "Search Host" %>
 
-        <%= f.label :event_requests_user_username_cont, "Guest" %>
-        <%= f.search_field :event_requests_user_username_cont, placeholder: "Search Host" %>
+        <div class="col">
+          <%= f.label :user_username_cont, "Host " %>
+          <%= f.search_field :user_username_cont, placeholder: "Search Host" %>
+        </div>
+        <div class="col">
+          <%= f.label :event_requests_user_username_cont, "Guest" %>
+          <%= f.search_field :event_requests_user_username_cont, placeholder: "Search Guest" %>
+        </div>
+        <div class="col">
+          <%= f.label :event_name_cont, "Event" %>
+          <%= f.search_field :event_name_cont, placeholder: "Search Event" %>
+        </div>
 
         <%= f.submit "Filter", class: 'btn btn-success' %>
       <% end %>
