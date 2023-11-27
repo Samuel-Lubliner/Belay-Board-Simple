@@ -11,17 +11,17 @@
 
     <div id="filterForm" class="collapse">
       <%= form_with(url: availabilities_path, method: :get, local: true) do |form| %>
-  <div class="form-group">
-    <%= form.label :host_id, "Host" %>
-    <%= form.collection_select :host_id, [['All Hosts', nil]] + User.all.map { |u| [u.username, u.id] }, :last, :first, 
+        <div class="form-group">
+          <%= form.label :host_id, "Host" %>
+          <%= form.collection_select :host_id, [['All Hosts', nil]] + User.all.map { |u| [u.username, u.id] }, :last, :first, 
         selected: @selected_host_id, include_blank: false, class: 'form-control' %>
-  </div>
+        </div>
 
-  <div class="form-group">
-    <%= form.label :guest_id, "Guest" %>
-    <%= form.collection_select :guest_id, [['All Guests', nil]] + User.all.map { |u| [u.username, u.id] }, :last, :first, 
+        <div class="form-group">
+          <%= form.label :guest_id, "Guest" %>
+          <%= form.collection_select :guest_id, [['All Guests', nil]] + User.all.map { |u| [u.username, u.id] }, :last, :first, 
         selected: @selected_guest_id, include_blank: false, class: 'form-control' %>
-  </div>
+        </div>
 
         <div class="row justify-content-center">
           <div class="col-md-2">

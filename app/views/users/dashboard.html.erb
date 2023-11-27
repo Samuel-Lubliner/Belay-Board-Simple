@@ -1,64 +1,95 @@
 <div class="container">
 
-<h2>Event Requests</h2>
+  <h2>My Events</h2>
 
-<%= form_tag dashboard_path, method: :get, class: "row g-3" do %>
-  <div class="col-md-3">
-    <%= label_tag :start_time, "Start Time", class: 'form-label' %>
-    <%= date_field_tag :start_time, params[:start_time], class: 'form-control' %>
-  </div>
+  <%= form_tag dashboard_path, method: :get, class: "row g-3" do %>
+    <!-- Start Time -->
+    <div class="col-md-3">
+      <%= label_tag :start_time, "Start Time", class: 'form-label' %>
+      <%= date_field_tag :start_time, params[:start_time], class: 'form-control' %>
 
-  <div class="col-md-3">
-    <%= label_tag :end_time, "End Time", class: 'form-label' %>
-    <%= date_field_tag :end_time, params[:end_time], class: 'form-control' %>
-  </div>
+      <!-- End Time -->
+      <div style="padding-top: 10px;">
+        <%= label_tag :end_time, "End Time", class: 'form-label' %>
+        <%= date_field_tag :end_time, params[:end_time], class: 'form-control' %>
+      </div>
+    </div>
 
- <div class="col-md-3">
-  <%= label_tag :status, "Status", class: 'form-label' %>
-  <%= select_tag :status, 
-      options_for_select(
-        {
-          'Any' => '',
-          'Pending' => 'pending',
-          'Confirmed' => 'accepted',
-          'Canceled' => 'rejected'
-        }, 
-        params[:status]
-      ), 
-      class: 'form-select' 
-  %>
-</div>
+    <!-- Status -->
+    <div class="col-md-3">
+      <%= label_tag :status, "Status", class: 'form-label' %>
+      <%= select_tag :status, 
+        options_for_select(
+          {
+            'Any' => '',
+            'Pending' => 'pending',
+            'Confirmed' => 'accepted',
+            'Canceled' => 'rejected'
+          }, 
+          params[:status]
+        ), 
+        class: 'form-select' 
+    %>
 
-  <div class="col-md-3">
-    <%= label_tag :event_name, "Event Name", class: 'form-label' %>
-    <%= text_field_tag :event_name, params[:event_name], class: 'form-control', placeholder: 'Search Event Names' %>
-  </div>
+      <!-- Event Name -->
+      <div style="padding-top: 10px;">
+        <%= label_tag :event_name, "Event Name", class: 'form-label' %>
+        <%= text_field_tag :event_name, params[:event_name], class: 'form-control', placeholder: 'Search Event Names' %>
+      </div>
+    </div>
 
-  <div class="col-12">
-    <%= submit_tag "Filter", class: 'btn btn-primary' %>
-  </div>
-<% end %>
+    <!-- Host Filter -->
+    <div class="form-group col-md-3">
+      <%= label_tag :host_id, "Host", class: 'form-label' %>
+      <%= select_tag :host_id, 
+        options_for_select(
+          [['All Hosts', nil]] + User.all.map { |u| [u.username, u.id] },
+          @selected_host_id
+        ), 
+        include_blank: false, 
+        class: 'form-select' 
+    %>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Event Name</th>
-      <th scope="col">Start Time</th>
-      <th scope="col">End Time</th>
-      <th scope="col">Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @event_requests.each do |request| %>
+      <!-- Guest Filter -->
+      <div style="padding-top: 10px;">
+        <%= label_tag :guest_id, "Guest", class: 'form-label' %>
+        <%= select_tag :guest_id, 
+        options_for_select(
+          [['All Guests', nil]] + User.all.map { |u| [u.username, u.id] },
+          @selected_guest_id
+        ), 
+        include_blank: false, 
+        class: 'form-select' 
+    %>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="col-12">
+      <%= submit_tag "Filter", class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+
+  <table class="table">
+    <thead>
       <tr>
-        <td><%= link_to request.availability.event_name, availability_path(request.availability) %>  <%= "- #{request.availability.user.username}" %> </td>
-        <td><%= request.availability.start_time.strftime('%b %d, %Y %I:%M %p') %></td>
-        <td><%= request.availability.end_time.strftime('%b %d, %Y %I:%M %p') %></td>
-        <td>
-          <% case request.status %>
-          <% when 'accepted' %>
+        <th scope="col">Event Name</th>
+        <th scope="col">Start Time</th>
+        <th scope="col">End Time</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @event_requests.each do |request| %>
+        <tr>
+          <td><%= link_to request.availability.event_name, availability_path(request.availability) %>  <%= "- #{request.availability.user.username}" %> </td>
+          <td><%= request.availability.start_time.strftime('%b %d, %Y %I:%M %p') %></td>
+          <td><%= request.availability.end_time.strftime('%b %d, %Y %I:%M %p') %></td>
+          <td>
+            <% case request.status %>
+            <% when 'accepted' %>
             Confirmed
-          <% when 'rejected' %>
+            <% when 'rejected' %>
             Canceled
           <% else %>
             <%= request.status.capitalize %>
