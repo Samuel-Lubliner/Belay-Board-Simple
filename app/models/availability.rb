@@ -30,6 +30,15 @@ class Availability < ApplicationRecord
   validates :end_time, presence: true
   validate :end_time_after_start_time
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["created_at", "end_time", "event_name", "id", "start_time", "updated_at", "user_id"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["comments", "event_requests", "user"]
+  end
+
+
   private
 
   def end_time_after_start_time
@@ -39,8 +48,5 @@ class Availability < ApplicationRecord
       errors.add(:end_time, "must be after the start time")
     end
   end
-
-  # def accepted_guests
-  # end
 
 end

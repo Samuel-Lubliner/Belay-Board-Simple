@@ -8,33 +8,18 @@
     <%= link_to '#', class: 'btn btn-primary', data: { bs_toggle: 'collapse', bs_target: '#filterForm' } do %>
       <i class="fas fa-search"></i>
     <% end %>
-
+    
     <div id="filterForm" class="collapse">
-      <%= form_with(url: availabilities_path, method: :get, local: true) do |form| %>
-        <div class="form-group">
-          <%= form.label :host_id, "Host" %>
-          <%= form.collection_select :host_id, [['All Hosts', nil]] + User.all.map { |u| [u.username, u.id] }, :last, :first, 
-        selected: @selected_host_id, include_blank: false, class: 'form-control' %>
-        </div>
+      <%= search_form_for @q do |f| %>
+        <%= f.label :user_username_cont, "Host" %>
+        <%= f.search_field :user_username_cont, placeholder: "Search Host" %>
 
-        <div class="form-group">
-          <%= form.label :guest_id, "Guest" %>
-          <%= form.collection_select :guest_id, [['All Guests', nil]] + User.all.map { |u| [u.username, u.id] }, :last, :first, 
-        selected: @selected_guest_id, include_blank: false, class: 'form-control' %>
-        </div>
+        <%= f.label :event_requests_user_username_cont, "Guest" %>
+        <%= f.search_field :event_requests_user_username_cont, placeholder: "Search Host" %>
 
-        <div class="row justify-content-center">
-          <div class="col-md-2">
-            <div class="form-group">
-
-              <%= form.text_field :event_name, value: @event_name_query, 
-            class: 'form-control', placeholder: ' Search Event Names' %>
-            </div>
-          </div>
-        </div>
-
-        <%= form.submit "Filter", class: 'btn btn-success' %>
+        <%= f.submit "Filter", class: 'btn btn-success' %>
       <% end %>
+
     </div>
 
   </div>

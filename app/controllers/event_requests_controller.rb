@@ -42,7 +42,6 @@ class EventRequestsController < ApplicationController
   private
   
   def event_request_params
-    params.require(:event_request).permit(:availability_id)
-    # Do not include :user_id
+    params.require(:event_request).permit(:availability_id, :user_id)
   end  
 end

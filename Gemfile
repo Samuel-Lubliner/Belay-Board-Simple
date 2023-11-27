@@ -5,7 +5,7 @@ ruby "3.2.1"
 
 gem 'bootstrap', '~> 5.1.3'
 
-
+gem 'ransack'
 
 gem "simple_calendar", "~> 2.4"
 
