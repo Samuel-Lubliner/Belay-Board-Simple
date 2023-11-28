@@ -3,12 +3,27 @@
 # Table name: users
 #
 #  id                     :bigint           not null, primary key
+#  advanced               :boolean          default(FALSE)
+#  beginner               :boolean          default(FALSE)
+#  bio                    :string           default("add bio ...")
+#  boulder                :boolean          default(FALSE)
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  indoor                 :boolean          default(FALSE)
+#  intermediate           :boolean          default(FALSE)
+#  is_staff               :boolean          default(FALSE)
+#  lead                   :boolean          default(FALSE)
+#  outdoor                :boolean          default(FALSE)
+#  overhang               :boolean          default(FALSE)
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  slab                   :boolean          default(FALSE)
+#  sport                  :boolean          default(FALSE)
+#  top_rope               :boolean          default(FALSE)
+#  trad                   :boolean          default(FALSE)
 #  username               :citext           not null
+#  vertical               :boolean          default(FALSE)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #

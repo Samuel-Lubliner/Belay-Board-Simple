@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_22_170516) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_28_224756) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
@@ -54,6 +54,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_22_170516) do
     t.citext "username", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "bio", default: "add bio ..."
+    t.boolean "is_staff", default: false
+    t.boolean "boulder", default: false
+    t.boolean "top_rope", default: false
+    t.boolean "lead", default: false
+    t.boolean "vertical", default: false
+    t.boolean "slab", default: false
+    t.boolean "overhang", default: false
+    t.boolean "beginner", default: false
+    t.boolean "intermediate", default: false
+    t.boolean "advanced", default: false
+    t.boolean "sport", default: false
+    t.boolean "trad", default: false
+    t.boolean "indoor", default: false
+    t.boolean "outdoor", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
