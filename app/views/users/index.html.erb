@@ -1,0 +1,65 @@
+<%= search_form_for @q do |f| %>
+  <%= f.label :bio_cont, "Bio contains" %>
+  <%= f.search_field :bio_cont %>
+
+  <%= f.label :is_staff_eq, "Is Staff?" %>
+  <%= f.check_box :is_staff_eq, {}, 'true', 'false' %>
+
+  <%= f.label :boulder_eq, "Boulder?" %>
+  <%= f.check_box :boulder_eq, {}, 'true', 'false' %>
+
+  <%= f.label :top_rope_eq, "Top Rope?" %>
+  <%= f.check_box :top_rope_eq, {}, 'true', 'false' %>
+
+  <%= f.label :lead_eq, "Lead?" %>
+  <%= f.check_box :lead_eq, {}, 'true', 'false' %>
+
+  <%= f.label :vertical_eq, "Vertical?" %>
+  <%= f.check_box :vertical_eq, {}, 'true', 'false' %>
+
+  <%= f.label :slab_eq, "Slab?" %>
+  <%= f.check_box :slab_eq, {}, 'true', 'false' %>
+
+  <%= f.label :overhang_eq, "Overhang?" %>
+  <%= f.check_box :overhang_eq, {}, 'true', 'false' %>
+
+  <%= f.label :beginner_eq, "Beginner?" %>
+  <%= f.check_box :beginner_eq, {}, 'true', 'false' %>
+
+  <%= f.label :intermediate_eq, "Intermediate?" %>
+  <%= f.check_box :intermediate_eq, {}, 'true', 'false' %>
+
+  <%= f.label :advanced_eq, "Advanced?" %>
+  <%= f.check_box :advanced_eq, {}, 'true', 'false' %>
+
+  <%= f.label :sport_eq, "Sport?" %>
+  <%= f.check_box :sport_eq, {}, 'true', 'false' %>
+
+  <%= f.label :trad_eq, "Trad?" %>
+  <%= f.check_box :trad_eq, {}, 'true', 'false' %>
+
+  <%= f.label :indoor_eq, "Indoor?" %>
+  <%= f.check_box :indoor_eq, {}, 'true', 'false' %>
+
+  <%= f.label :outdoor_eq, "Outdoor?" %>
+  <%= f.check_box :outdoor_eq, {}, 'true', 'false' %>
+
+  <%= f.submit "Search" %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Bio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.username %></td>
+        <td><%= user.bio %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
