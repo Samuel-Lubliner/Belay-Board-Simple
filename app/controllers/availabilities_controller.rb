@@ -3,10 +3,12 @@ class AvailabilitiesController < ApplicationController
 
   # GET /availabilities or /availabilities.json
 
-    def index
-      @q = Availability.ransack(params[:q])
-      @availabilities = @q.result.includes(:user, event_requests: :user).distinct
-    end
+  def index
+    @q = Availability.ransack(params[:q])
+    @availabilities = @q.result.includes(:user, event_requests: :user)
+                        .where(event_requests: { status: 'accepted' })
+                        .distinct
+  end
 
   # GET /availabilities/1 or /availabilities/1.json
   def show
