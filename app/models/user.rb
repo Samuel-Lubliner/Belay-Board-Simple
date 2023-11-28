@@ -34,4 +34,8 @@ class User < ApplicationRecord
     ["id", "username"]
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    ["comments", "event_requests", "availability"]
+  end
+
 end

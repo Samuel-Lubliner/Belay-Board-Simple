@@ -60,7 +60,7 @@
     "erb": "html"
   },
   "[ruby]": {
-    "editor.defaultFormatter": "mbessey.vscode-rufo",
+    "editor.defaultFormatter": "Shopify.ruby-lsp",
     "editor.formatOnSave": false
   },
   "[erb]": {
