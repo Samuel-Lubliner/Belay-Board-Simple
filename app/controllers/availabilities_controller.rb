@@ -2,25 +2,12 @@ class AvailabilitiesController < ApplicationController
   before_action :set_availability, only: %i[ show edit update destroy ]
 
   # GET /availabilities or /availabilities.json
+
   def index
-    @selected_host_id = params[:host_id]
-    @selected_guest_id = params[:guest_id]
-    @event_name_query = params[:event_name]
-
-    @availabilities = Availability.all
-
-    if @selected_host_id.present?
-      @availabilities = @availabilities.where(user_id: @selected_host_id)
-    end
-
-    if @selected_guest_id.present?
-      guest_availabilities = EventRequest.where(user_id: @selected_guest_id, status: 'accepted').pluck(:availability_id)
-      @availabilities = @availabilities.where(id: guest_availabilities)
-    end
-
-    if @event_name_query.present?
-      @availabilities = @availabilities.where('event_name ILIKE ?', "%#{@event_name_query}%")
-    end
+    @q = Availability.ransack(params[:q])
+    @availabilities = @q.result.includes(:user, event_requests: :user)
+                        .where(event_requests: { status: 'accepted' })
+                        .distinct
   end
 
   # GET /availabilities/1 or /availabilities/1.json
@@ -89,7 +76,6 @@ class AvailabilitiesController < ApplicationController
     end
 
     def availability_params
-      params.require(:availability).permit(:event_name, :start_time, :end_time)
-      # Remove :user_id
+      params.require(:availability).permit(:event_name, :start_time, :end_time, :user_id)
     end
 end

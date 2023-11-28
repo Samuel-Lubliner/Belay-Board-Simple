@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  get 'dashboard', to: 'users#dashboard', as: :dashboard
+  
   resources :availabilities do
     resources :comments, only: [:create, :destroy]
   end
@@ -13,6 +15,4 @@ Rails.application.routes.draw do
       post :reject
     end
   end
-
-  get '/dashboard', to: 'users#dashboard'
 end

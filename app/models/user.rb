@@ -30,4 +30,12 @@ class User < ApplicationRecord
   has_many :event_requests # Requests they've made to join events
   has_many :comments, dependent: :destroy
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["id", "username"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["comments", "event_requests", "availability"]
+  end
+
 end

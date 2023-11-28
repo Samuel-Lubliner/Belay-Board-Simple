@@ -35,4 +35,12 @@ class EventRequest < ApplicationRecord
     update(status: 'rejected')
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["availability_id", "created_at", "id", "status", "updated_at", "user_id"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["availability", "user"]
+  end
+
 end

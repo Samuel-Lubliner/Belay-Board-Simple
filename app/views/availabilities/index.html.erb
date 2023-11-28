@@ -10,31 +10,24 @@
     <% end %>
 
     <div id="filterForm" class="collapse">
-      <%= form_with(url: availabilities_path, method: :get, local: true) do |form| %>
-        <div class="form-group">
-          <%= form.label :host_id, "Host" %>
-          <%= form.collection_select :host_id, [['All Hosts', nil]] + User.all.map { |u| [u.username, u.id] }, :last, :first, 
-        selected: @selected_host_id, include_blank: false, class: 'form-control' %>
+      <%= search_form_for @q do |f| %>
+
+        <div class="col">
+          <%= f.label :user_username_cont, "Host " %>
+          <%= f.search_field :user_username_cont, placeholder: "Search Host" %>
+        </div>
+        <div class="col">
+          <%= f.label :event_requests_user_username_cont, "Guest" %>
+          <%= f.search_field :event_requests_user_username_cont, placeholder: "Search Guest" %>
+        </div>
+        <div class="col">
+          <%= f.label :event_name_cont, "Event" %>
+          <%= f.search_field :event_name_cont, placeholder: "Search Event" %>
         </div>
 
-        <div class="form-group">
-          <%= form.label :guest_id, "Guest" %>
-          <%= form.collection_select :guest_id, [['All Guests', nil]] + User.all.map { |u| [u.username, u.id] }, :last, :first, 
-        selected: @selected_guest_id, include_blank: false, class: 'form-control' %>
-        </div>
-
-        <div class="row justify-content-center">
-          <div class="col-md-2">
-            <div class="form-group">
-
-              <%= form.text_field :event_name, value: @event_name_query, 
-            class: 'form-control', placeholder: ' Search Event Names' %>
-            </div>
-          </div>
-        </div>
-
-        <%= form.submit "Filter", class: 'btn btn-success' %>
+        <%= f.submit "Filter", class: 'btn btn-success' %>
       <% end %>
+
     </div>
 
   </div>
