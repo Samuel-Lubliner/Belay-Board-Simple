@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @climber %>
+
+<div>
+  <%= link_to "Edit this climber", edit_climber_path(@climber) %> |
+  <%= link_to "Back to climbers", climbers_path %>
+
+  <%= button_to "Destroy this climber", @climber, method: :delete %>
+</div>

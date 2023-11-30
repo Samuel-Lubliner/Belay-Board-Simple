@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_22_170516) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_30_165721) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
@@ -23,6 +23,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_22_170516) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_availabilities_on_user_id"
+  end
+
+  create_table "climbers", force: :cascade do |t|
+    t.string "bio", default: "add bio ..."
+    t.boolean "is_staff", default: false
+    t.boolean "boulder", default: false
+    t.boolean "top_rope", default: false
+    t.boolean "lead", default: false
+    t.boolean "vertical", default: false
+    t.boolean "slab", default: false
+    t.boolean "overhang", default: false
+    t.boolean "beginner", default: false
+    t.boolean "intermediate", default: false
+    t.boolean "advanced", default: false
+    t.boolean "sport", default: false
+    t.boolean "trad", default: false
+    t.boolean "indoor", default: false
+    t.boolean "outdoor", default: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_climbers_on_user_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -60,6 +82,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_22_170516) do
   end
 
   add_foreign_key "availabilities", "users"
+  add_foreign_key "climbers", "users"
   add_foreign_key "comments", "availabilities"
   add_foreign_key "comments", "users"
   add_foreign_key "event_requests", "availabilities"

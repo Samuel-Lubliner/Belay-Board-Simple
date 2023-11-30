@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :climbers
   root "availabilities#index"
 
   devise_for :users
