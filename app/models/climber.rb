@@ -39,7 +39,7 @@ class Climber < ApplicationRecord
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["comments", "event_requests", "availability"]
+    ["availability", "user"]
   end
 
 end
