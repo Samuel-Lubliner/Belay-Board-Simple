@@ -26,6 +26,9 @@ class User < ApplicationRecord
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
+  has_one :climber, dependent: :destroy
+  after_create :create_climber_profile
+
   has_many :availabilities # Events they are hosting
   has_many :event_requests # Requests they've made to join events
   has_many :comments, dependent: :destroy
@@ -36,6 +39,12 @@ class User < ApplicationRecord
 
   def self.ransackable_associations(auth_object = nil)
     ["comments", "event_requests", "availability"]
+  end
+
+  private
+
+  def create_climber_profile
+    build_climber.save
   end
 
 end

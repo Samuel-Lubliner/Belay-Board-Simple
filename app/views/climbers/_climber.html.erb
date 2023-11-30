@@ -1,77 +1,33 @@
-<div id="<%= dom_id climber %>">
-  <p>
-    <strong>Bio:</strong>
-    <%= climber.bio %>
-  </p>
+<div id="<%= dom_id climber %>" class="card-outline-0">
+  <div class="card-body">
+    <h5 class="card-title"><%= climber.user.username %></h5>
+    <p class="card-text">
+      <%= climber.bio %>
+    </p>
 
-  <p>
-    <strong>Is staff:</strong>
-    <%= climber.is_staff %>
-  </p>
+    <div class="climber-attributes">
+      <% attributes = [] %>
+      <% attributes << 'Staff' if climber.is_staff %>
+      <% attributes << 'Boulder' if climber.boulder %>
+      <% attributes << 'Top rope' if climber.top_rope %>
+      <% attributes << 'Lead' if climber.lead %>
+      <% attributes << 'Vertical' if climber.vertical %>
+      <% attributes << 'Slab' if climber.slab %>
+      <% attributes << 'Overhang' if climber.overhang %>
+      <% attributes << 'Beginner' if climber.beginner %>
+      <% attributes << 'Intermediate' if climber.intermediate %>
+      <% attributes << 'Advanced' if climber.advanced %>
+      <% attributes << 'Sport' if climber.sport %>
+      <% attributes << 'Trad' if climber.trad %>
+      <% attributes << 'Indoor' if climber.indoor %>
+      <% attributes << 'Outdoor' if climber.outdoor %>
 
-  <p>
-    <strong>Boulder:</strong>
-    <%= climber.boulder %>
-  </p>
-
-  <p>
-    <strong>Top rope:</strong>
-    <%= climber.top_rope %>
-  </p>
-
-  <p>
-    <strong>Lead:</strong>
-    <%= climber.lead %>
-  </p>
-
-  <p>
-    <strong>Vertical:</strong>
-    <%= climber.vertical %>
-  </p>
-
-  <p>
-    <strong>Slab:</strong>
-    <%= climber.slab %>
-  </p>
-
-  <p>
-    <strong>Overhang:</strong>
-    <%= climber.overhang %>
-  </p>
-
-  <p>
-    <strong>Beginner:</strong>
-    <%= climber.beginner %>
-  </p>
-
-  <p>
-    <strong>Intermediate:</strong>
-    <%= climber.intermediate %>
-  </p>
-
-  <p>
-    <strong>Advanced:</strong>
-    <%= climber.advanced %>
-  </p>
-
-  <p>
-    <strong>Sport:</strong>
-    <%= climber.sport %>
-  </p>
-
-  <p>
-    <strong>Trad:</strong>
-    <%= climber.trad %>
-  </p>
-
-  <p>
-    <strong>Indoor:</strong>
-    <%= climber.indoor %>
-  </p>
-
-  <p>
-    <strong>Outdoor:</strong>
-    <%= climber.outdoor %>
-  </p>
-
+      <% unless attributes.empty? %>
+        <h6 class="card-subtitle mb-2 text-muted">Preferences:</h6>
+        <p class="card-text">
+          <%= attributes.join(', ') %>
+        </p>
+      <% end %>
+    </div>
+  </div>
 </div>

@@ -31,4 +31,15 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Climber < ApplicationRecord
+
+  belongs_to :user
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["id", "username", "bio", "is_staff", "boulder", "top_rope", "lead", "vertical", "slab", "overhang", "beginner", "intermediate", "advanced", "sport", "trad", "indoor", "outdoor"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["comments", "event_requests", "availability"]
+  end
+
 end

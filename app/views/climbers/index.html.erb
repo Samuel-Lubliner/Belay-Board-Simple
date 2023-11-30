@@ -2,13 +2,17 @@
 
 <h1>Climbers</h1>
 
-<div id="climbers">
-  <% @climbers.each do |climber| %>
-    <%= render climber %>
-    <p>
-      <%= link_to "Show this climber", climber %>
-    </p>
-  <% end %>
+<div id="climbers" class="container">
+  <div class="row">
+    <% @climbers.each do |climber| %>
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <%= render climber %>
+            <p class="card-text"><%= link_to "Show this climber", climber %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
-
-<%= link_to "New climber", new_climber_path %>
