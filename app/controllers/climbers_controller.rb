@@ -3,7 +3,8 @@ class ClimbersController < ApplicationController
 
   # GET /climbers or /climbers.json
   def index
-    @climbers = Climber.all
+    @q = Climber.ransack(params[:q])
+    @climbers = @q.result(distinct: true)
   end
 
   # GET /climbers/1 or /climbers/1.json

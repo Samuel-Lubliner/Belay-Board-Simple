@@ -2,6 +2,94 @@
 
 <h1>Climbers</h1>
 
+<%= search_form_for @q do |f| %>
+
+  <div class="row">
+
+    <!-- Skill Levels -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Skill Level</div>
+        <div class="card-body">
+          <% ["beginner", "intermediate", "advanced"].each do |level| %>
+            <div class="form-group form-check">
+              <%= f.label "#{level}_eq".to_sym, level.capitalize, class: "form-check-label" %>
+              <%= f.check_box "#{level}_eq".to_sym, { class: "form-check-input" }, true, false %>
+            </div>
+          <% end %>
+          <div class="form-group">
+            <%= f.check_box :is_staff_eq, { class: "form-check-input" }, true, false %>
+            <%= f.label :is_staff_eq, "Is Staff?" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Climbing Styles -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Climbing Style</div>
+        <div class="card-body">
+          <% ["sport", "trad", "indoor", "outdoor"].each do |style| %>
+            <div class="form-group form-check">
+              <%= f.label "#{style}_eq".to_sym, style.capitalize, class: "form-check-label" %>
+              <%= f.check_box "#{style}_eq".to_sym, { class: "form-check-input" }, true, false %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Climbing type -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Climbing Type</div>
+        <div class="card-body">
+          <% ["boulder", "top_rope", "lead"].each do |type| %>
+            <div class="form-group form-check">
+              <%= f.label "#{type}_eq".to_sym, type.capitalize, class: "form-check-label" %>
+              <%= f.check_box "#{type}_eq".to_sym, { class: "form-check-input" }, true, false %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Angle -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Angle</div>
+        <div class="card-body">
+          <% ["vertical", "slab", "overhang"].each do |angle| %>
+            <div class="form-group form-check">
+              <%= f.label "#{angle}_eq".to_sym, angle.capitalize, class: "form-check-label" %>
+              <%= f.check_box "#{angle}_eq".to_sym, { class: "form-check-input" }, true, false %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Basic Search Fields -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Bio</div>
+        <div class="card-body">
+          <div class="form-group">
+            <%= f.search_field :bio_cont, class: "form-control", placeholder: "search bio ..." %>
+          </div>
+           <!-- Search Button -->
+        <div class="form-group text-center">
+          <%= f.submit "Search", class: "btn btn-primary" %>
+        </div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+
+<% end %>
+
 <div id="climbers" class="container">
   <div class="row">
     <% @climbers.each do |climber| %>
