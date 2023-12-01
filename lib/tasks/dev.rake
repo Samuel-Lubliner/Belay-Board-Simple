@@ -13,11 +13,42 @@ if Rails.env.development?
     task add_users: :environment do
       puts "Adding users..."
       ["Sam", "Ben", "Olivia", "Rashid", "Robbie", "Julia"].each do |name|
-        user_attrs = {username: name.downcase, email: "#{name.downcase}@example.com", password: "password"}
+        user_attrs = {
+          username: name.downcase,
+          email: "#{name.downcase}@example.com",
+          password: "password"
+        }
         puts "Creating user with attributes: #{user_attrs.inspect}"
-        User.create!(user_attrs)
+        
+        user = User.create!(user_attrs)
+  
+        # Update the climber profile created by the User model's callback
+        user.climber.update!(
+          bio: Faker::Quote.famous_last_words,
+          instructor: [true, false].sample,
+          boulder: [true, false].sample,
+          top_rope: [true, false].sample,
+          lead: [true, false].sample,
+          vertical: [true, false].sample,
+          slab: [true, false].sample,
+          overhang: [true, false].sample,
+          beginner: [true, false].sample,
+          intermediate: [true, false].sample,
+          advanced: [true, false].sample,
+          sport: [true, false].sample,
+          trad: [true, false].sample,
+          indoor: [true, false].sample,
+          outdoor: [true, false].sample,
+          user_id: user.id
+        )
+  
+        puts "User and climber profile created for #{name}"
       end
+  
+      puts "All users added"
     end
+
+
 
     task add_availabilities: :environment do
       puts "Adding availabilities..."
