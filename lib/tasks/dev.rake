@@ -12,14 +12,24 @@ if Rails.env.development?
 
     task add_users: :environment do
       puts "Adding users..."
-      ["Sam", "Ben", "Olivia", "Rashid", "Robbie", "Julia"].each do |name|
+  
+      # Predefined users
+      user_names = ["Sam", "Ben", "Olivia", "Rashid", "Robbie", "Julia"]
+  
+      # Adding 15 more users using Faker
+      15.times do
+        fake_name = Faker::Name.unique.first_name
+        user_names << fake_name
+      end
+  
+      user_names.each do |name|
         user_attrs = {
           username: name.downcase,
           email: "#{name.downcase}@example.com",
           password: "password"
         }
         puts "Creating user with attributes: #{user_attrs.inspect}"
-        
+  
         user = User.create!(user_attrs)
   
         # Update the climber profile created by the User model's callback
@@ -38,8 +48,8 @@ if Rails.env.development?
           sport: [true, false].sample,
           trad: [true, false].sample,
           indoor: [true, false].sample,
-          outdoor: [true, false].sample,
-          user_id: user.id
+          outdoor: [true, false].sample
+          # Note: Removed user_id: user.id as it's redundant
         )
   
         puts "User and climber profile created for #{name}"
@@ -48,8 +58,7 @@ if Rails.env.development?
       puts "All users added"
     end
 
-
-
+    
     task add_availabilities: :environment do
       puts "Adding availabilities..."
       event_names = ["Boulder", "Top Rope", "Lead Climb", "Train"]
@@ -100,7 +109,7 @@ if Rails.env.development?
       User.find_each do |user|
         Availability.find_each do |availability|
           2.times do
-            comment_body = Faker::TvShows::Simpsons.quote
+            comment_body = Faker::GreekPhilosophers.quote
             Comment.create!(user: user, availability: availability, body: comment_body)
           end
         end

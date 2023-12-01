@@ -41,16 +41,21 @@
               <h3>Pending</h3>
               <ul class="list-group" id="guest_requests_list">
                 <% pending_requests.each do |event_request| %>
-                  <li id="event_request_<%= event_request.id %>" class="list-group-item d-flex justify-content-between align-items-center">
-                    <%= event_request.user.username %>
+                  <li id="event_request_<%= event_request.id %>" class="list-group-item d-flex justify-content-start align-items-center">
+                    <div class="col-md-4">
+                      <%= event_request.user.username %>
+                    </div>
                     <% if event_request.status == 'pending' && @availability.user == current_user %>
-                      <%= button_to 'Accept', accept_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-success btn-sm', data: { turbo: false } %>
-                      <%= button_to 'Reject', reject_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-danger btn-sm', data: { turbo: false } %>
+                      <div class="col-md-4 d-flex justify-content-center">
+                        <%= button_to 'Reject', reject_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-danger btn-sm', data: { turbo: false } %>
+                      </div>
+                      <div class="col-md-4 d-flex justify-content-end">
+                        <%= button_to 'Accept', accept_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-success btn-sm', data: { turbo: false } %>
+                      </div>
                     <% end %>
                   </li>
                 <% end %>
               </ul>
-
             </div>
           <% end %>
 
