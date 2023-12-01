@@ -23,6 +23,11 @@
 
               <div class="form-group">
 
+                <div class="form-group">
+                  <%= f.label :location_cont, "Location " %>
+                  <%= f.search_field :location_cont, class: 'form-control', placeholder: 'Enter location...' %>
+                </div>
+
                 <div class="col">
                   <%= f.label :user_username_cont, "Host " %>
                   <%= f.search_field :user_username_cont, class: "form-control", placeholder: "Search Host" %>
