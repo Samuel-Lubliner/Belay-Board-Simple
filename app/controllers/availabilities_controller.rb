@@ -6,7 +6,6 @@ class AvailabilitiesController < ApplicationController
   def index
     @q = Availability.ransack(params[:q])
     @availabilities = @q.result.includes(:user, event_requests: :user)
-                        .where(event_requests: { status: 'accepted' })
                         .distinct
   end
 
