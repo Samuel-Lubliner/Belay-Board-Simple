@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_30_165721) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_01_001024) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
@@ -27,7 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_30_165721) do
 
   create_table "climbers", force: :cascade do |t|
     t.string "bio", default: "add bio ..."
-    t.boolean "is_staff", default: false
+    t.boolean "instructor", default: false
     t.boolean "boulder", default: false
     t.boolean "top_rope", default: false
     t.boolean "lead", default: false

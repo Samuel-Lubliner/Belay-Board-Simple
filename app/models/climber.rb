@@ -8,8 +8,8 @@
 #  bio          :string           default("add bio ...")
 #  boulder      :boolean          default(FALSE)
 #  indoor       :boolean          default(FALSE)
+#  instructor   :boolean          default(FALSE)
 #  intermediate :boolean          default(FALSE)
-#  is_staff     :boolean          default(FALSE)
 #  lead         :boolean          default(FALSE)
 #  outdoor      :boolean          default(FALSE)
 #  overhang     :boolean          default(FALSE)
@@ -35,7 +35,7 @@ class Climber < ApplicationRecord
   belongs_to :user
 
   def self.ransackable_attributes(auth_object = nil)
-    ["id", "username", "bio", "is_staff", "boulder", "top_rope", "lead", "vertical", "slab", "overhang", "beginner", "intermediate", "advanced", "sport", "trad", "indoor", "outdoor"]
+    ["id", "username", "bio", "instructor", "boulder", "top_rope", "lead", "vertical", "slab", "overhang", "beginner", "intermediate", "advanced", "sport", "trad", "indoor", "outdoor"]
   end
 
   def self.ransackable_associations(auth_object = nil)

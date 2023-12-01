@@ -66,6 +66,6 @@ class ClimbersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def climber_params
-      params.require(:climber).permit(:bio, :is_staff, :boulder, :top_rope, :lead, :vertical, :slab, :overhang, :beginner, :intermediate, :advanced, :sport, :trad, :indoor, :outdoor)
+      params.require(:climber).permit(:bio, :instructor, :boulder, :top_rope, :lead, :vertical, :slab, :overhang, :beginner, :intermediate, :advanced, :sport, :trad, :indoor, :outdoor)
     end
 end

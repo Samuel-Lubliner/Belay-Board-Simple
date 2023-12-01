@@ -7,7 +7,7 @@
 
     <div class="climber-attributes">
       <% attributes = [] %>
-      <% attributes << 'Staff' if climber.is_staff %>
+      <% attributes << 'Instructor' if climber.instructor %>
       <% attributes << 'Boulder' if climber.boulder %>
       <% attributes << 'Top rope' if climber.top_rope %>
       <% attributes << 'Lead' if climber.lead %>
