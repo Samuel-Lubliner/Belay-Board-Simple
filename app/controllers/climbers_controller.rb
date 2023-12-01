@@ -9,6 +9,7 @@ class ClimbersController < ApplicationController
 
   # GET /climbers/1 or /climbers/1.json
   def show
+    @climber = Climber.includes(user: :availabilities).find(params[:id])
   end
 
   # GET /climbers/new

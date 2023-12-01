@@ -2,6 +2,30 @@
 
 <%= render @climber %>
 
+<div class="text-center mb-3">
+<h5><%= @climber.user.username %>'s Availabilities</h5>
+</div>
+
+
+<%= month_calendar(header: {class: 'calendar-heading'}) do |date| %>
+  <div class="card mb-3">
+    <div class="card-header">
+      <%= date.strftime("%d") %>
+      <%= link_to raw('<i class="fas fa-calendar-plus"></i>'), new_availability_path(start_date: date.to_date) %>
+
+    </div>
+    <div class="card-body">
+      <% day_availabilities = @climber.user.availabilities.select { |a| a.start_time.to_date == date }.sort_by(&:start_time) %>
+      <% day_availabilities.each do |availability| %>
+        <p class="mb-1">
+          <%= link_to availability.event_name, availability_path(availability), class: "text-dark" %>
+          <small class="text-muted"><%= availability.start_time.strftime("%I:%M %p") %></small>
+        </p>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <div>
   <%= link_to "Edit this climber", edit_climber_path(@climber) %> |
   <%= link_to "Back to climbers", climbers_path %>
