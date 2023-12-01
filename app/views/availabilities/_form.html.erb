@@ -12,7 +12,7 @@
     <% end %>
 
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-12">
         <div class="form-group">
           <%= form.label :event_name %>
           <%= form.text_field :event_name, class: 'form-control' %>
@@ -27,6 +27,100 @@
           <%= form.label :end_time %>
           <%= form.datetime_field :end_time, value: availability.start_time&.strftime("%Y-%m-%dT%H:%M"), class: 'form-control' %>
         </div>
+
+
+        <div class="row">
+    <!-- Skill Levels -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Skill Level</div>
+        <div class="card-body">
+          <%= form.check_box :beginner, class: 'form-check-input' %>
+          <%= form.label :beginner, class: 'form-check-label' %>
+
+          <%= form.check_box :intermediate, class: 'form-check-input' %>
+          <%= form.label :intermediate, class: 'form-check-label' %>
+
+          <%= form.check_box :advanced, class: 'form-check-input' %>
+          <%= form.label :advanced, class: 'form-check-label' %>
+
+          <%= form.check_box :learn, class: 'form-check-input' %>
+          <%= form.label :learn, 'Learning', class: 'form-check-label' %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Climbing Styles -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Climbing Style</div>
+        <div class="card-body">
+          <%= form.check_box :indoor, class: 'form-check-input' %>
+          <%= form.label :indoor, class: 'form-check-label' %>
+
+          <%= form.check_box :outdoor, class: 'form-check-input' %>
+          <%= form.label :outdoor, class: 'form-check-label' %>
+
+          <%= form.check_box :sport, class: 'form-check-input' %>
+          <%= form.label :sport, class: 'form-check-label' %>
+
+          <%= form.check_box :trad, class: 'form-check-input' %>
+          <%= form.label :trad, class: 'form-check-label' %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Climbing Type -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Climbing Type</div>
+        <div class="card-body">
+          <%= form.check_box :boulder, class: 'form-check-input' %>
+          <%= form.label :boulder, class: 'form-check-label' %>
+
+          <%= form.check_box :top_rope, class: 'form-check-input' %>
+          <%= form.label :top_rope, 'Top Rope', class: 'form-check-label' %>
+
+          <%= form.check_box :lead, class: 'form-check-input' %>
+          <%= form.label :lead, class: 'form-check-label' %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Angle -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Angle</div>
+        <div class="card-body">
+          <%= form.check_box :vertical, class: 'form-check-input' %>
+          <%= form.label :vertical, class: 'form-check-label' %>
+
+          <%= form.check_box :slab, class: 'form-check-input' %>
+          <%= form.label :slab, class: 'form-check-label' %>
+
+          <%= form.check_box :overhang, class: 'form-check-input' %>
+          <%= form.label :overhang, class: 'form-check-label' %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location Field -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Location</div>
+        <div class="card-body">
+          <div class="form-group">
+            <%= form.text_field :location, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+        
+
+
+        
 
 
          <div class="form-group">

@@ -63,8 +63,7 @@ if Rails.env.development?
       puts "Adding availabilities..."
       event_names = ["Boulder", "Top Rope", "Lead Climb", "Train"]
       User.find_each do |user|
-        # Loop through the next 4 months
-        (0...4).each do |month|
+        (0...2).each do |month|
           # Calculate the start and end date of each month
           start_date = Date.today.beginning_of_month + month.months
           end_date = start_date.end_of_month
@@ -73,7 +72,7 @@ if Rails.env.development?
           (start_date..end_date).each do |day|
             # Generate start and end times for the event
             start_time = Faker::Time.between_dates(from: day, to: day, period: :day)
-            end_time = start_time + [2, 3, 4, 5].sample.hours
+            end_time = start_time + [2, 3, 4].sample.hours
     
             # Select a random event name
             event_name = event_names.sample
