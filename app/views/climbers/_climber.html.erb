@@ -1,0 +1,33 @@
+<div id="<%= dom_id climber %>" class="card-outline-0">
+  <div class="card-body">
+    <h5 class="card-title"><%= climber.user.username %></h5>
+    <p class="card-text">
+      <%= climber.bio %>
+    </p>
+
+    <div class="climber-attributes">
+      <% attributes = [] %>
+      <% attributes << 'Instructor' if climber.instructor %>
+      <% attributes << 'Boulder' if climber.boulder %>
+      <% attributes << 'Top rope' if climber.top_rope %>
+      <% attributes << 'Lead' if climber.lead %>
+      <% attributes << 'Vertical' if climber.vertical %>
+      <% attributes << 'Slab' if climber.slab %>
+      <% attributes << 'Overhang' if climber.overhang %>
+      <% attributes << 'Beginner' if climber.beginner %>
+      <% attributes << 'Intermediate' if climber.intermediate %>
+      <% attributes << 'Advanced' if climber.advanced %>
+      <% attributes << 'Sport' if climber.sport %>
+      <% attributes << 'Trad' if climber.trad %>
+      <% attributes << 'Indoor' if climber.indoor %>
+      <% attributes << 'Outdoor' if climber.outdoor %>
+
+      <% unless attributes.empty? %>
+        <h6 class="card-subtitle mb-2 text-muted">Preferences:</h6>
+        <p class="card-text">
+          <%= attributes.join(', ') %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+</div>

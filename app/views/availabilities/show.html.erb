@@ -21,7 +21,7 @@
                 <% end %>
               <% end %>
             <% end %>
-            <h3 id="accepted_header"> Participants  (<%= @event_requests.count { |er| er.status == 'accepted' } %>)</h3>
+            <h4 id="accepted_header"> Participants  (<%= @event_requests.count { |er| er.status == 'accepted' } %>)</h4>
 
             <ul class="list-group" id="accepted_guests_list">
               <% @event_requests.select { |er| er.status == 'accepted' }.each do |event_request| %>
@@ -38,19 +38,24 @@
             <div class="col" style="padding-bottom: 10px;">
               <% pending_requests = @event_requests.select { |er| er.status == 'pending' } %>
 
-              <h3>Pending</h3>
+              <h4>Pending</h4>
               <ul class="list-group" id="guest_requests_list">
                 <% pending_requests.each do |event_request| %>
-                  <li id="event_request_<%= event_request.id %>" class="list-group-item d-flex justify-content-between align-items-center">
-                    <%= event_request.user.username %>
+                  <li id="event_request_<%= event_request.id %>" class="list-group-item d-flex justify-content-start align-items-center">
+                    <div class="col-md-4">
+                      <%= event_request.user.username %>
+                    </div>
                     <% if event_request.status == 'pending' && @availability.user == current_user %>
-                      <%= button_to 'Accept', accept_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-success btn-sm', data: { turbo: false } %>
-                      <%= button_to 'Reject', reject_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-danger btn-sm', data: { turbo: false } %>
+                      <div class="col-md-4 d-flex justify-content-center">
+                        <%= button_to 'Reject', reject_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-danger btn-sm', data: { turbo: false } %>
+                      </div>
+                      <div class="col-md-4 d-flex justify-content-end">
+                        <%= button_to 'Accept', accept_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-success btn-sm', data: { turbo: false } %>
+                      </div>
                     <% end %>
                   </li>
                 <% end %>
               </ul>
-
             </div>
           <% end %>
 
@@ -58,7 +63,7 @@
           <% if current_user == @availability.user %>
             <div class="col" style="padding-bottom: 10px;">
 
-              <h3 id="rejected_guests_header">Rejected </h3>
+              <h4 id="rejected_guests_header">Rejected </h4>
 
               <ul class="list-group" id="rejected_guests_list">
                 <% @event_requests.select { |er| er.status == 'rejected' }.each do |event_request| %>
@@ -79,7 +84,7 @@
     </div>
 
     <div style="padding-top: 15px;">
-      <h3>Description</h3>
+      <h4>Description</h4>
     </div>
 
     <div class="card mb-3" >
@@ -110,7 +115,7 @@
       </div>
     </div>
 
-    <h3>Comments</h3>
+    <h4>Comments</h4>
     <div class="card mb-3">
       <div class="card-body">
         <% @comments.each do |comment| %>

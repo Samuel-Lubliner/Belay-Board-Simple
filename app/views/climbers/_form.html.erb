@@ -1,0 +1,92 @@
+<%= form_with(model: climber) do |form| %>
+  <% if climber.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(climber.errors.count, "error") %> prohibited this climber from being saved:</h2>
+
+      <ul>
+        <% climber.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :bio, style: "display: block" %>
+    <%= form.text_field :bio %>
+  </div>
+
+  <div>
+    <%= form.label :instructor, style: "display: block" %>
+    <%= form.check_box :instructor %>
+  </div>
+
+  <div>
+    <%= form.label :boulder, style: "display: block" %>
+    <%= form.check_box :boulder %>
+  </div>
+
+  <div>
+    <%= form.label :top_rope, style: "display: block" %>
+    <%= form.check_box :top_rope %>
+  </div>
+
+  <div>
+    <%= form.label :lead, style: "display: block" %>
+    <%= form.check_box :lead %>
+  </div>
+
+  <div>
+    <%= form.label :vertical, style: "display: block" %>
+    <%= form.check_box :vertical %>
+  </div>
+
+  <div>
+    <%= form.label :slab, style: "display: block" %>
+    <%= form.check_box :slab %>
+  </div>
+
+  <div>
+    <%= form.label :overhang, style: "display: block" %>
+    <%= form.check_box :overhang %>
+  </div>
+
+  <div>
+    <%= form.label :beginner, style: "display: block" %>
+    <%= form.check_box :beginner %>
+  </div>
+
+  <div>
+    <%= form.label :intermediate, style: "display: block" %>
+    <%= form.check_box :intermediate %>
+  </div>
+
+  <div>
+    <%= form.label :advanced, style: "display: block" %>
+    <%= form.check_box :advanced %>
+  </div>
+
+  <div>
+    <%= form.label :sport, style: "display: block" %>
+    <%= form.check_box :sport %>
+  </div>
+
+  <div>
+    <%= form.label :trad, style: "display: block" %>
+    <%= form.check_box :trad %>
+  </div>
+
+  <div>
+    <%= form.label :indoor, style: "display: block" %>
+    <%= form.check_box :indoor %>
+  </div>
+
+  <div>
+    <%= form.label :outdoor, style: "display: block" %>
+    <%= form.check_box :outdoor %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -2,13 +2,28 @@
 #
 # Table name: availabilities
 #
-#  id         :bigint           not null, primary key
-#  end_time   :datetime
-#  event_name :string
-#  start_time :datetime
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  user_id    :bigint           not null
+#  id           :bigint           not null, primary key
+#  advanced     :boolean          default(FALSE)
+#  beginner     :boolean          default(FALSE)
+#  boulder      :boolean          default(FALSE)
+#  end_time     :datetime
+#  event_name   :string
+#  indoor       :boolean          default(FALSE)
+#  intermediate :boolean          default(FALSE)
+#  lead         :boolean          default(FALSE)
+#  learn        :boolean          default(FALSE)
+#  location     :string
+#  outdoor      :boolean          default(FALSE)
+#  overhang     :boolean          default(FALSE)
+#  slab         :boolean          default(FALSE)
+#  sport        :boolean          default(FALSE)
+#  start_time   :datetime
+#  top_rope     :boolean          default(FALSE)
+#  trad         :boolean          default(FALSE)
+#  vertical     :boolean          default(FALSE)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  user_id      :bigint           not null
 #
 # Indexes
 #
@@ -31,7 +46,7 @@ class Availability < ApplicationRecord
   validate :end_time_after_start_time
 
   def self.ransackable_attributes(auth_object = nil)
-    ["created_at", "end_time", "event_name", "id", "start_time", "updated_at", "user_id"]
+    ["created_at", "end_time", "event_name", "id", "start_time", "updated_at", "user_id", "advanced", "beginner", "boulder", "indoor", "instructor", "intermediate", "lead", "outdoor", "overhang", "slab", "sport", "top_rope", "trad", "vertical", "learn", "location"]
   end
 
   def self.ransackable_associations(auth_object = nil)

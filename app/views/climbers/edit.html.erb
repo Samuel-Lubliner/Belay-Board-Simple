@@ -1,0 +1,10 @@
+<h1>Edit <%= @climber.user.username %></h1>
+
+<%= render "form", climber: @climber %>
+
+<br>
+
+<div>
+  <%= link_to "Show this climber", @climber %> |
+  <%= link_to "Back to climbers", climbers_path %>
+</div>

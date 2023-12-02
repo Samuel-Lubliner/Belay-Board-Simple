@@ -6,7 +6,6 @@ class AvailabilitiesController < ApplicationController
   def index
     @q = Availability.ransack(params[:q])
     @availabilities = @q.result.includes(:user, event_requests: :user)
-                        .where(event_requests: { status: 'accepted' })
                         .distinct
   end
 
@@ -76,6 +75,7 @@ class AvailabilitiesController < ApplicationController
     end
 
     def availability_params
-      params.require(:availability).permit(:event_name, :start_time, :end_time, :user_id)
+      params.require(:availability).permit(:event_name, :start_time, :end_time, :user_id, :advanced, :beginner, :boulder, :indoor, :instructor, :intermediate, :lead, :outdoor, :overhang, :slab, :sport, :top_rope, :trad, :vertical, :learn, :location)
     end
+    
 end
