@@ -2,13 +2,13 @@
 
 <div class="form-group text-center mb-3">
 
-<h1>Climbers</h1>
+  <h1>Climbers</h1>
 
-<%= link_to '#', class: 'btn btn-primary', data: { bs_toggle: 'collapse', bs_target: '#filterForm' } do %>
-  <i class="fas fa-search"></i>
-<% end %>
+  <%= link_to '#', class: 'btn btn-primary', data: { bs_toggle: 'collapse', bs_target: '#filterForm' } do %>
+    <i class="fas fa-search"></i>
+  <% end %>
 
-   </div>
+</div>
 
 <div id="filterForm" class="collapse">
 
@@ -83,8 +83,14 @@
       <!-- Basic Search Fields -->
       <div class="col">
         <div class="card mb-3">
-          <div class="card-header">Bio</div>
+          <div class="card-header">Search</div>
           <div class="card-body">
+
+            <div class="form-group"> 
+              <%= f.search_field :user_username_cont, class: "form-control", placeholder: "search username ..." %>
+            </div>
+
+      
             <div class="form-group">
               <%= f.search_field :bio_cont, class: "form-control", placeholder: "search bio ..." %>
             </div>
@@ -107,7 +113,12 @@
         <div class="card">
           <div class="card-body">
             <%= render climber %>
-            <p class="card-text"><%= link_to "Show this climber", climber %></p>
+            <p class="card-text">
+              <div class="form-group text-center mb-3">
+                <%= link_to "Availability", climber, class: "btn btn-primary" %>
+              </div>
+            </p>
+
           </div>
         </div>
       </div>
