@@ -4,9 +4,13 @@
   <div style="text-align: center;">
 
     <h1>Climb Times</h1>
+    <%= link_to new_availability_path(start_date: Date.today), class: "btn btn-primary your-custom-class" do %>
+  <i class="fas fa-calendar-plus fa-2x" style="vertical-align: middle;"></i> 
+  <span style="vertical-align: middle;">New Availability</span>
+<% end %>
   </div>
 
-  <div>
+  <div style="margin-top: 10px;">
     <%= search_form_for @q, html: { id: 'search-form' } do |f| %>
 
       <div class="row">
