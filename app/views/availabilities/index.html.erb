@@ -122,12 +122,17 @@
       </div>
       <div class="card-body">
         <% day_availabilities = @availabilities.select { |a| a.start_time.to_date == date }.sort_by(&:start_time) %>
-        <% day_availabilities.each do |availability| %>
+        <% day_availabilities.take(3).each do |availability| %>
           <p class="mb-1">
             <%= link_to availability.event_name, availability_path(availability), class: "text-dark" %>
             <small class="text-muted"><%= availability.start_time.strftime("%I:%M %p") %></small>
           </p>
         <% end %>
+        <% if day_availabilities.count > 3 %>
+            <p class="text-success"><%= day_availabilities.count %> availabilities on this day</p>
+            <%# TODO: %>
+            <% link_to "See more", root_path %>
+          <% end %>
       </div>
     </div>
   <% end %>
