@@ -11,82 +11,115 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :bio, style: "display: block" %>
-    <%= form.text_field :bio %>
-  </div>
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Bio</div>
+        <div class="card-body">
 
-  <div>
-    <%= form.label :instructor, style: "display: block" %>
-    <%= form.check_box :instructor %>
-  </div>
+          <div class="form-group">
+            <%= form.text_field :bio, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div>
-    <%= form.label :boulder, style: "display: block" %>
-    <%= form.check_box :boulder %>
-  </div>
+  <div class="row">
 
-  <div>
-    <%= form.label :top_rope, style: "display: block" %>
-    <%= form.check_box :top_rope %>
-  </div>
+  
 
-  <div>
-    <%= form.label :lead, style: "display: block" %>
-    <%= form.check_box :lead %>
-  </div>
+    <!-- Skill Levels -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Skill Level</div>
+        <div class="card-body">
+          <div class="form-group form-check">
+            <%= form.label :beginner, style: "display: block" %>
+            <%= form.check_box :beginner %>
+          </div>
+          <div class="form-group form-check">
+            <%= form.label :intermediate, style: "display: block" %>
+            <%= form.check_box :intermediate %>
+          </div>
+          <div class="form-group form-check">
+            <%= form.label :advanced, style: "display: block" %>
+            <%= form.check_box :advanced %>
+          </div>
+          <div class="form-group form-check">
+            <%= form.label :instructor, style: "display: block" %>
+            <%= form.check_box :instructor %>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div>
-    <%= form.label :vertical, style: "display: block" %>
-    <%= form.check_box :vertical %>
-  </div>
+    <!-- Climbing Styles -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Climbing Style</div>
+        <div class="card-body">
+          <div class="form-group form-check">
+            <%= form.label :sport, style: "display: block" %>
+            <%= form.check_box :sport %>
+          </div>
+          <div class="form-group form-check">
+            <%= form.label :trad, style: "display: block" %>
+            <%= form.check_box :trad %>
+          </div>
+          <div class="form-group form-check">
+            <%= form.label :indoor, style: "display: block" %>
+            <%= form.check_box :indoor %>
+          </div>
+          <div class="form-group form-check">
+            <%= form.label :outdoor, style: "display: block" %>
+            <%= form.check_box :outdoor %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Climbing type -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Climbing Type</div>
+        <div class="card-body">
+          <div class="form-group form-check">
+            <%= form.label :boulder, style: "display: block" %>
+            <%= form.check_box :boulder %>
+          </div>
+          <div class="form-group form-check">
+            <%= form.label :top_rope, style: "display: block" %>
+            <%= form.check_box :top_rope %>
+          </div>
+          <div class="form-group form-check">
+            <%= form.label :lead, style: "display: block" %>
+            <%= form.check_box :lead %>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div>
-    <%= form.label :slab, style: "display: block" %>
-    <%= form.check_box :slab %>
+    <!-- Angle -->
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-header">Angle</div>
+        <div class="card-body">
+          <div class="form-group form-check">
+            <%= form.label :vertical, style: "display: block" %>
+            <%= form.check_box :vertical %>
+          </div>
+          <div class="form-group form-check">
+            <%= form.label :slab, style: "display: block" %>
+            <%= form.check_box :slab %>
+          </div>
+          <div class="form-group form-check">
+            <%= form.label :overhang, style: "display: block" %>
+            <%= form.check_box :overhang %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div>
-    <%= form.label :overhang, style: "display: block" %>
-    <%= form.check_box :overhang %>
-  </div>
-
-  <div>
-    <%= form.label :beginner, style: "display: block" %>
-    <%= form.check_box :beginner %>
-  </div>
-
-  <div>
-    <%= form.label :intermediate, style: "display: block" %>
-    <%= form.check_box :intermediate %>
-  </div>
-
-  <div>
-    <%= form.label :advanced, style: "display: block" %>
-    <%= form.check_box :advanced %>
-  </div>
-
-  <div>
-    <%= form.label :sport, style: "display: block" %>
-    <%= form.check_box :sport %>
-  </div>
-
-  <div>
-    <%= form.label :trad, style: "display: block" %>
-    <%= form.check_box :trad %>
-  </div>
-
-  <div>
-    <%= form.label :indoor, style: "display: block" %>
-    <%= form.check_box :indoor %>
-  </div>
-
-  <div>
-    <%= form.label :outdoor, style: "display: block" %>
-    <%= form.check_box :outdoor %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
+  
+<div>
+    <%= form.submit "Update Climber Info", class: "btn btn-primary" %>
+</div>
 <% end %>
