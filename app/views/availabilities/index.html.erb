@@ -103,19 +103,16 @@
 
       </div>
 
- <div style="text-align: center;">
-  <%= button_tag(type: 'submit', class: 'btn btn-success') do %>
-    <i class="fas fa-search"></i> Search
-  <% end %>
+      <div style="text-align: center;">
+        <%= button_tag(type: 'submit', class: 'btn btn-success') do %>
+          <i class="fas fa-search"></i> Search
+        <% end %>
 
-  <%= button_tag(type: 'button', class: 'btn btn-secondary', onclick: 'clearForm()') do %>
-    Clear
-  <% end %>
+        <%= button_tag(type: 'button', class: 'btn btn-secondary', onclick: 'clearForm()') do %>
+          Clear
+        <% end %>
 
-
-
-
-</div>
+      </div>
 
     <% end %>
 
@@ -137,27 +134,27 @@
           </p>
         <% end %>
         <% if day_availabilities.count > 3 %>
-            <p class="text-success"><%= day_availabilities.count %> availabilities on this day</p>
-            <%# TODO: %>
-            <% link_to "See more", root_path %>
-          <% end %>
+          <p class="text-success"><%= day_availabilities.count %> availabilities on this day</p>
+          <%# TODO: %>
+          <% link_to "See more", root_path %>
+        <% end %>
       </div>
     </div>
   <% end %>
 
-<script>
-  function clearForm() {
-    // Select the form using its ID
-    var form = document.getElementById('search-form');
+  <script>
+    function clearForm() {
+      // Select the form using its ID
+      var form = document.getElementById('search-form');
 
-    // Reset the form
-    form.reset();
+      // Reset the form
+      form.reset();
 
-    // Manually clear each input field
-    form.querySelectorAll('input[type="search"]').forEach(input => input.value = '');
-    form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+      // Manually clear each input field
+      form.querySelectorAll('input[type="search"]').forEach(input => input.value = '');
+      form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
 
-    // Redirect to the root path (Availabilities Index)
-    window.location.href = '<%= availabilities_path %>';
-  }
-</script>
+      // Redirect to the root path (Availabilities Index)
+      window.location.href = '<%= availabilities_path %>';
+    }
+  </script>

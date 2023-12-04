@@ -4,15 +4,11 @@
 
   <h1>Climbers</h1>
 
-  <%= link_to '#', class: 'btn btn-primary', data: { bs_toggle: 'collapse', bs_target: '#filterForm' } do %>
-    <i class="fas fa-search"></i>
-  <% end %>
 
 </div>
 
-<div id="filterForm" class="collapse">
-
-  <%= search_form_for @q do |f| %>
+<div id="filterForm">
+  <%= search_form_for @q, html: { id: 'search-form' } do |f| %>
 
     <div class="row">
 
@@ -94,14 +90,24 @@
             <div class="form-group">
               <%= f.search_field :bio_cont, class: "form-control", placeholder: "search bio ..." %>
             </div>
-            <!-- Search Button -->
-            <div class="form-group text-center">
-              <%= f.submit "Search", class: "btn btn-primary" %>
-            </div>
+           
           </div>
 
         </div>
       </div>
+
+       <div style="text-align: center;">
+        <%= button_tag(type: 'submit', class: 'btn btn-success') do %>
+          <i class="fas fa-search"></i> Search
+        <% end %>
+
+        <%= button_tag(type: 'button', class: 'btn btn-secondary', onclick: 'clearForm()') do %>
+          Clear
+        <% end %>
+
+      </div>
+
+
     </div>
   <% end %>
 </div>
@@ -125,3 +131,20 @@
     <% end %>
   </div>
 </div>
+
+<script>
+  function clearForm() {
+    // Select the form using its ID
+    var form = document.getElementById('search-form');
+
+    // Reset the form
+    form.reset();
+
+    // Manually clear each input field
+    form.querySelectorAll('input[type="search"]').forEach(input => input.value = '');
+    form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+
+    // Redirect to the root path (Availabilities Index)
+    window.location.href = '<%= climbers_path %>';
+  }
+</script>
