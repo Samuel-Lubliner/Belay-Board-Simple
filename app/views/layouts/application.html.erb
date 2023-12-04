@@ -46,7 +46,8 @@
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <%= current_user.username %>
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">                
+                <%= link_to 'Edit My Climber Info', edit_climber_path(current_user.id), class: "dropdown-item" %>
                 <%= link_to "Profile", edit_user_registration_path, class: "dropdown-item" %>
                 <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
               </ul>
