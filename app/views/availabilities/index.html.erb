@@ -6,8 +6,8 @@
     <h1>Climb Times</h1>
   </div>
 
-  <div id="filterForm">
-    <%= search_form_for @q do |f| %>
+  <div>
+    <%= search_form_for @q, html: { id: 'search-form' } do |f| %>
 
       <div class="row">
 
@@ -49,8 +49,8 @@
                 </div>
               <% end %>
               <div class="form-group">
-                <%= f.check_box :instructor_eq, { class: "form-check-input" }, true, false %>
-                <%= f.label :instructor_eq, "Instructor" %>
+                <%= f.check_box :learn_eq, { class: "form-check-input" }, true, false %>
+                <%= f.label :learn_eq, "Learn" %>
               </div>
             </div>
           </div>
@@ -107,6 +107,14 @@
   <%= button_tag(type: 'submit', class: 'btn btn-success') do %>
     <i class="fas fa-search"></i> Search
   <% end %>
+
+  <%= button_tag(type: 'button', class: 'btn btn-secondary', onclick: 'clearForm()') do %>
+    Clear
+  <% end %>
+
+
+
+
 </div>
 
     <% end %>
@@ -136,3 +144,20 @@
       </div>
     </div>
   <% end %>
+
+<script>
+  function clearForm() {
+    // Select the form using its ID
+    var form = document.getElementById('search-form');
+
+    // Reset the form
+    form.reset();
+
+    // Manually clear each input field
+    form.querySelectorAll('input[type="search"]').forEach(input => input.value = '');
+    form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+
+    // Redirect to the root path (Availabilities Index)
+    window.location.href = '<%= availabilities_path %>';
+  }
+</script>
