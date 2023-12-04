@@ -1,13 +1,13 @@
-<div class="container">
+
   <p style="color: green"><%= notice %></p>
 
   <div style="text-align: center;">
 
     <h1>Climb Times</h1>
     <%= link_to new_availability_path(start_date: Date.today), class: "btn btn-primary your-custom-class" do %>
-  <i class="fas fa-calendar-plus fa-2x" style="vertical-align: middle;"></i> 
-  <span style="vertical-align: middle;">New Availability</span>
-<% end %>
+      <i class="fas fa-calendar-plus fa-2x" style="vertical-align: middle;"></i>
+      <span style="vertical-align: middle;">New Availability</span>
+    <% end %>
   </div>
 
   <div style="margin-top: 10px;">
@@ -123,7 +123,7 @@
   </div>
 
   <%= month_calendar(header: {class: 'calendar-heading'}) do |date| %>
-    <div class="card mb-3">
+    <div class="card mb-3 calendar-cell">
       <div class="card-header">
         <%= date.strftime("%d") %>
         <%= link_to raw('<i class="fas fa-calendar-plus"></i>'), new_availability_path(start_date: date.to_date) %>
@@ -138,7 +138,7 @@
           </p>
         <% end %>
         <% if day_availabilities.count > 3 %>
-          <p class="text-success"><%= day_availabilities.count %> availabilities on this day</p>
+          <p class="text-success"> View <%= day_availabilities.count-3 %>  more availabilities</p>
           <%# TODO: %>
           <% link_to "See more", root_path %>
         <% end %>

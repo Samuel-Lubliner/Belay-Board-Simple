@@ -8,7 +8,7 @@
 
 
 <%= month_calendar(header: {class: 'calendar-heading'}) do |date| %>
-  <div class="card mb-3">
+  <div class="card mb-3 calendar-cell">
     <div class="card-header">
       <%= date.strftime("%d") %>
       <%= link_to raw('<i class="fas fa-calendar-plus"></i>'), new_availability_path(start_date: date.to_date) %>
