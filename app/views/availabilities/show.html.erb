@@ -17,11 +17,20 @@
                 <%= form_for(current_user.event_requests.new, url: event_requests_path, remote: true, class: 'd-flex justify-content-end') do |f| %>
                   <%= f.hidden_field :availability_id, value: @availability.id %>
                   <%= button_tag(type: "submit", class: "btn btn-primary", id: "join-event-button") do %>
-                    <i class="fas fa-user-plus"></i>Me
+                    <i class="fas fa-user-plus"></i>Request to Join
                   <% end %>
                 <% end %>
               <% end %>
             <% end %>
+
+            <% if current_user %>
+              <% current_user_event_request = @event_requests.find { |er| er.user_id == current_user.id } %>
+              <% if current_user_event_request && current_user_event_request.status == 'pending' %>
+                  <button type="button" class="btn btn-secondary" disabled>Pending</button>
+
+              <% end %>
+            <% end %>
+
             <h4 id="accepted_header"> Participants  (<%= @event_requests.count { |er| er.status == 'accepted' } %>)</h4>
 
             <ul class="list-group" id="accepted_guests_list">
@@ -85,56 +94,56 @@
       <% end %>
 
     </div>
- <div class="col-md-8">
-    <div style="padding-top: 15px;">
-      <h4>Description</h4>
-      <div class="card mb-3">
-         <div class="card-body">
-        <%= @availability.description %>
-         </div>
+    <div class="col-md-8">
+      <div style="padding-top: 15px;">
+        <h4>Description</h4>
+        <div class="card mb-3">
+          <div class="card-body">
+            <%= @availability.description %>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <h4>Comments</h4>
-    <div class="card mb-3">
-      <div class="card-body">
-        <% @comments.each do |comment| %>
+      <h4>Comments</h4>
+      <div class="card mb-3">
+        <div class="card-body">
+          <% @comments.each do |comment| %>
 
-          <div class="d-flex justify-content-between">
-            <p><strong><%= comment.user.username %>:</strong> <%= comment.body %></p>
-            <% if current_user == comment.user %>
-              <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton<%= comment.id %>" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fas fa-ellipsis-v"></i>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= comment.id %>">
-                  <li>
-                    <%= button_to 'Delete', 
+            <div class="d-flex justify-content-between">
+              <p><strong><%= comment.user.username %>:</strong> <%= comment.body %></p>
+              <% if current_user == comment.user %>
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton<%= comment.id %>" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= comment.id %>">
+                    <li>
+                      <%= button_to 'Delete', 
                                 availability_comment_path(@availability, comment),
                                 method: :delete,
                                 data: { confirm: 'Are you sure?' },
                                 class: 'dropdown-item' %>
-                  </li>
-                </ul>
-              </div>
-            <% end %>
-          </div>
+                    </li>
+                  </ul>
+                </div>
+              <% end %>
+            </div>
 
-        <% end %>
+          <% end %>
+        </div>
       </div>
+
+      <%= form_for([@availability, @availability.comments.new], html: { class: "mb-3" }) do |f| %>
+        <div class="form-group">
+          <%= f.text_area :body, class: "form-control", rows: 3 %>
+        </div>
+
+        <div class="form-group d-flex justify-content-end">
+          <%= f.button 'Comment<i class="fas fa-paper-plane"></i>'.html_safe, type: :submit, class: "btn btn-primary" %>
+        </div>
+
+      <% end %>
     </div>
-
-    <%= form_for([@availability, @availability.comments.new], html: { class: "mb-3" }) do |f| %>
-      <div class="form-group">
-        <%= f.text_area :body, class: "form-control", rows: 3 %>
-      </div>
-
-      <div class="form-group d-flex justify-content-end">
-        <%= f.button 'Comment<i class="fas fa-paper-plane"></i>'.html_safe, type: :submit, class: "btn btn-primary" %>
-      </div>
-
-    <% end %>
-  </div>
   </div>
 
   <% if policy(@availability).update? && policy(@availability).destroy? %>
