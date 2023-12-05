@@ -27,3 +27,16 @@
 .avail-time {
   color: #555;
 }
+
+.calendar-cell {
+  height: 240px; 
+  width: 173px; 
+  overflow: auto; /* adds scrollbar if content is too long */
+}
+
+@media (max-width: 768px) {
+  .calendar-cell {
+      height: 100px;
+      width: 100px;
+  }
+}

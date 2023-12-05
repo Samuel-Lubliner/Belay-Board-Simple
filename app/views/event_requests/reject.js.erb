@@ -1,6 +1,9 @@
 // Remove the request from the pending list
 $("#event_request_<%= @event_request.id %>").remove();
 
+// Create the link to the climber's profile as a JavaScript string
+var climberProfileLinkHtml = "<%= j(link_to(@event_request.user.username, climber_path(@event_request.user.climber))) if @event_request.user.climber %>";
 
-// Add the rejected guest to the 'Rejected' list
-$("<%= j(render partial: 'availabilities/event_request', locals: { event_request: @event_request }) %>").appendTo("#rejected_guests_list");
+
+// Append to the accepted list and ensure the list is wrapped in a <ul> with id 'rejected_guests_list'
+$("<li class='list-group-item'>" + climberProfileLinkHtml + "</li>").appendTo("#rejected_guests_list");

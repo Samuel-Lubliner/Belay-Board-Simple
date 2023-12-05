@@ -1,164 +1,163 @@
-<div class="container">
-  <p style="color: green"><%= notice %></p>
+<p style="color: green"><%= notice %></p>
 
-  <div style="text-align: center;">
+<div style="text-align: center;">
 
-    <h1>Climb Times</h1>
-    <%= link_to new_availability_path(start_date: Date.today), class: "btn btn-primary your-custom-class" do %>
-  <i class="fas fa-calendar-plus fa-2x" style="vertical-align: middle;"></i> 
-  <span style="vertical-align: middle;">New Availability</span>
-<% end %>
-  </div>
+  <h1>Climb Times</h1>
+  <%= link_to new_availability_path(start_date: Date.today), class: "btn btn-primary your-custom-class" do %>
+    <i class="fas fa-calendar-plus fa-2x" style="vertical-align: middle;"></i>
+    <span style="vertical-align: middle;">New Availability</span>
+  <% end %>
+</div>
 
-  <div style="margin-top: 10px;">
-    <%= search_form_for @q, html: { id: 'search-form' } do |f| %>
+<div style="margin-top: 10px;">
+  <%= search_form_for @q, html: { id: 'search-form' } do |f| %>
 
-      <div class="row">
+    <div class="row">
 
-        <!-- Basic Search Fields -->
-        <div class="col">
-          <div class="card mb-3">
-            <div class="card-header">Search</div>
-            <div class="card-body">
+      <!-- Basic Search Fields -->
+      <div class="col">
+        <div class="card mb-3">
+          <div class="card-header">Search</div>
+          <div class="card-body">
+
+            <div class="form-group">
 
               <div class="form-group">
+                <%= f.label :location_cont, "Location " %>
+                <%= f.search_field :location_cont, class: 'form-control', placeholder: 'Enter location...' %>
+              </div>
 
-                <div class="form-group">
-                  <%= f.label :location_cont, "Location " %>
-                  <%= f.search_field :location_cont, class: 'form-control', placeholder: 'Enter location...' %>
-                </div>
-
-                <div class="col">
-                  <%= f.label :user_username_cont, "Host " %>
-                  <%= f.search_field :user_username_cont, class: "form-control", placeholder: "Search Host" %>
-                </div>
-                <div class="col">
-                  <%= f.label :event_name_cont, "Event" %>
-                  <%= f.search_field :event_name_cont, class: "form-control", placeholder: "Search Event" %>
-                </div>
+              <div class="col">
+                <%= f.label :user_username_cont, "Host " %>
+                <%= f.search_field :user_username_cont, class: "form-control", placeholder: "Search Host" %>
+              </div>
+              <div class="col">
+                <%= f.label :event_name_cont, "Event" %>
+                <%= f.search_field :event_name_cont, class: "form-control", placeholder: "Search Event" %>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Skill Levels -->
-        <div class="col">
-          <div class="card mb-3">
-            <div class="card-header">Skill Level</div>
-            <div class="card-body">
-              <% ["beginner", "intermediate", "advanced"].each do |level| %>
-                <div class="form-group form-check">
-                  <%= f.label "#{level}_eq".to_sym, level.capitalize, class: "form-check-label" %>
-                  <%= f.check_box "#{level}_eq".to_sym, { class: "form-check-input" }, true, false %>
-                </div>
-              <% end %>
-              <div class="form-group">
-                <%= f.check_box :learn_eq, { class: "form-check-input" }, true, false %>
-                <%= f.label :learn_eq, "Learn" %>
+      <!-- Skill Levels -->
+      <div class="col">
+        <div class="card mb-3">
+          <div class="card-header">Skill Level</div>
+          <div class="card-body">
+            <% ["beginner", "intermediate", "advanced"].each do |level| %>
+              <div class="form-group form-check">
+                <%= f.label "#{level}_eq".to_sym, level.capitalize, class: "form-check-label" %>
+                <%= f.check_box "#{level}_eq".to_sym, { class: "form-check-input" }, true, false %>
               </div>
+            <% end %>
+            <div class="form-group">
+              <%= f.check_box :learn_eq, { class: "form-check-input" }, true, false %>
+              <%= f.label :learn_eq, "Learn" %>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Climbing Styles -->
-        <div class="col">
-          <div class="card mb-3">
-            <div class="card-header">Climbing Style</div>
-            <div class="card-body">
-              <% ["sport", "trad", "indoor", "outdoor"].each do |style| %>
-                <div class="form-group form-check">
-                  <%= f.label "#{style}_eq".to_sym, style.capitalize, class: "form-check-label" %>
-                  <%= f.check_box "#{style}_eq".to_sym, { class: "form-check-input" }, true, false %>
-                </div>
-              <% end %>
-            </div>
+      <!-- Climbing Styles -->
+      <div class="col">
+        <div class="card mb-3">
+          <div class="card-header">Climbing Style</div>
+          <div class="card-body">
+            <% ["sport", "trad", "indoor", "outdoor"].each do |style| %>
+              <div class="form-group form-check">
+                <%= f.label "#{style}_eq".to_sym, style.capitalize, class: "form-check-label" %>
+                <%= f.check_box "#{style}_eq".to_sym, { class: "form-check-input" }, true, false %>
+              </div>
+            <% end %>
           </div>
         </div>
+      </div>
 
-        <!-- Climbing type -->
-        <div class="col">
-          <div class="card mb-3">
-            <div class="card-header">Climbing Type</div>
-            <div class="card-body">
-              <% ["boulder", "top_rope", "lead"].each do |type| %>
-                <div class="form-group form-check">
-                  <%= f.label "#{type}_eq".to_sym, type.capitalize, class: "form-check-label" %>
-                  <%= f.check_box "#{type}_eq".to_sym, { class: "form-check-input" }, true, false %>
-                </div>
-              <% end %>
-            </div>
+      <!-- Climbing type -->
+      <div class="col">
+        <div class="card mb-3">
+          <div class="card-header">Climbing Type</div>
+          <div class="card-body">
+            <% ["boulder", "top_rope", "lead"].each do |type| %>
+              <div class="form-group form-check">
+                <%= f.label "#{type}_eq".to_sym, type.capitalize, class: "form-check-label" %>
+                <%= f.check_box "#{type}_eq".to_sym, { class: "form-check-input" }, true, false %>
+              </div>
+            <% end %>
           </div>
         </div>
+      </div>
 
-        <!-- Angle -->
-        <div class="col">
-          <div class="card mb-3">
-            <div class="card-header">Angle</div>
-            <div class="card-body">
-              <% ["vertical", "slab", "overhang"].each do |angle| %>
-                <div class="form-group form-check">
-                  <%= f.label "#{angle}_eq".to_sym, angle.capitalize, class: "form-check-label" %>
-                  <%= f.check_box "#{angle}_eq".to_sym, { class: "form-check-input" }, true, false %>
-                </div>
-              <% end %>
-            </div>
+      <!-- Angle -->
+      <div class="col">
+        <div class="card mb-3">
+          <div class="card-header">Angle</div>
+          <div class="card-body">
+            <% ["vertical", "slab", "overhang"].each do |angle| %>
+              <div class="form-group form-check">
+                <%= f.label "#{angle}_eq".to_sym, angle.capitalize, class: "form-check-label" %>
+                <%= f.check_box "#{angle}_eq".to_sym, { class: "form-check-input" }, true, false %>
+              </div>
+            <% end %>
           </div>
         </div>
-
       </div>
 
-      <div style="text-align: center;">
-        <%= button_tag(type: 'submit', class: 'btn btn-success') do %>
-          <i class="fas fa-search"></i> Search
-        <% end %>
-
-        <%= button_tag(type: 'button', class: 'btn btn-secondary', onclick: 'clearForm()') do %>
-          Clear
-        <% end %>
-
-      </div>
-
-    <% end %>
-
-  </div>
-
-  <%= month_calendar(header: {class: 'calendar-heading'}) do |date| %>
-    <div class="card mb-3">
-      <div class="card-header">
-        <%= date.strftime("%d") %>
-        <%= link_to raw('<i class="fas fa-calendar-plus"></i>'), new_availability_path(start_date: date.to_date) %>
-
-      </div>
-      <div class="card-body">
-        <% day_availabilities = @availabilities.select { |a| a.start_time.to_date == date }.sort_by(&:start_time) %>
-        <% day_availabilities.take(3).each do |availability| %>
-          <p class="mb-1">
-            <%= link_to availability.event_name, availability_path(availability), class: "text-dark" %>
-            <small class="text-muted"><%= availability.start_time.strftime("%I:%M %p") %></small>
-          </p>
-        <% end %>
-        <% if day_availabilities.count > 3 %>
-          <p class="text-success"><%= day_availabilities.count %> availabilities on this day</p>
-          <%# TODO: %>
-          <% link_to "See more", root_path %>
-        <% end %>
-      </div>
     </div>
+
+    <div style="text-align: center;">
+      <%= button_tag(type: 'submit', class: 'btn btn-success') do %>
+        <i class="fas fa-search"></i> Search
+      <% end %>
+
+      <%= button_tag(type: 'button', class: 'btn btn-secondary', onclick: 'clearForm()') do %>
+        Clear
+      <% end %>
+
+    </div>
+
   <% end %>
 
-  <script>
-    function clearForm() {
-      // Select the form using its ID
-      var form = document.getElementById('search-form');
+</div>
 
-      // Reset the form
-      form.reset();
+<%= month_calendar(header: {class: 'calendar-heading'}) do |date| %>
+  <div class="card mb-3 calendar-cell">
+    <div class="card-header">
+      <%= date.strftime("%d") %>
+      <%= link_to raw('<i class="fas fa-calendar-plus"></i>'), new_availability_path(start_date: date.to_date) %>
 
-      // Manually clear each input field
-      form.querySelectorAll('input[type="search"]').forEach(input => input.value = '');
-      form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+    </div>
+    <div class="card-body">
+      <% day_availabilities = @availabilities.select { |a| a.start_time.to_date == date }.sort_by(&:start_time) %>
+      <% day_availabilities.take(3).each do |availability| %>
+        <p class="mb-1">
+          <%= link_to availability.event_name, availability_path(availability), class: "text-dark" %>
+          <small class="text-muted"><%= availability.start_time.strftime("%I:%M %p") %></small>
+        </p>
+      <% end %>
+      <% if day_availabilities.count > 3 %>
 
-      // Redirect to the root path (Availabilities Index)
-      window.location.href = '<%= availabilities_path %>';
-    }
-  </script>
+        <%= link_to "View all #{day_availabilities.count} availabilities", on_date_availabilities_path(date.to_date) %>
+
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  function clearForm() {
+    // Select the form using its ID
+    var form = document.getElementById('search-form');
+
+    // Reset the form
+    form.reset();
+
+    // Manually clear each input field
+    form.querySelectorAll('input[type="search"]').forEach(input => input.value = '');
+    form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+
+    // Redirect to the root path (Availabilities Index)
+    window.location.href = '<%= availabilities_path %>';
+  }
+</script>
