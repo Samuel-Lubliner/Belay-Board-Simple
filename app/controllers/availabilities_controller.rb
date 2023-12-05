@@ -86,7 +86,7 @@ class AvailabilitiesController < ApplicationController
     end
 
     def availability_params
-      params.require(:availability).permit(:event_name, :start_time, :end_time, :user_id, :advanced, :beginner, :boulder, :indoor, :instructor, :intermediate, :lead, :outdoor, :overhang, :slab, :sport, :top_rope, :trad, :vertical, :learn, :location)
+      params.require(:availability).permit(:event_name, :start_time, :end_time, :user_id, :advanced, :beginner, :boulder, :indoor, :instructor, :intermediate, :lead, :outdoor, :overhang, :slab, :sport, :top_rope, :trad, :vertical, :learn, :location, :description)
     end
     
 end

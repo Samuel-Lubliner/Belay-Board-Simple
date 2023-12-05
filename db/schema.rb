@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_01_205753) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_05_212856) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
@@ -37,6 +37,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_205753) do
     t.boolean "vertical", default: false
     t.boolean "learn", default: false
     t.string "location"
+    t.string "description"
     t.index ["user_id"], name: "index_availabilities_on_user_id"
   end
 

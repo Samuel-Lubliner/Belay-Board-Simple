@@ -1,3 +1,4 @@
+<p style="color: green"><%= notice %></p>
 <div class="container mt-3">
 
   <div class="row">
@@ -16,11 +17,20 @@
                 <%= form_for(current_user.event_requests.new, url: event_requests_path, remote: true, class: 'd-flex justify-content-end') do |f| %>
                   <%= f.hidden_field :availability_id, value: @availability.id %>
                   <%= button_tag(type: "submit", class: "btn btn-primary", id: "join-event-button") do %>
-                    <i class="fas fa-user-plus"></i>Me
+                    <i class="fas fa-user-plus"></i>Request to Join
                   <% end %>
                 <% end %>
               <% end %>
             <% end %>
+
+            <% if current_user %>
+              <% current_user_event_request = @event_requests.find { |er| er.user_id == current_user.id } %>
+              <% if current_user_event_request && current_user_event_request.status == 'pending' %>
+                  <button type="button" class="btn btn-secondary" disabled>Pending</button>
+
+              <% end %>
+            <% end %>
+
             <h4 id="accepted_header"> Participants  (<%= @event_requests.count { |er| er.status == 'accepted' } %>)</h4>
 
             <ul class="list-group" id="accepted_guests_list">
@@ -42,16 +52,16 @@
               <ul class="list-group" id="guest_requests_list">
                 <% pending_requests.each do |event_request| %>
                   <li id="event_request_<%= event_request.id %>" class="list-group-item d-flex justify-content-start align-items-center">
-                    <div class="col-md-6 col-lg-6">
+                    <div class="col-md-4 " style="word-wrap: break-word;">
                       <%= link_to event_request.user.username, climber_path(event_request.user.climber) if event_request.user.climber %>
 
                     </div>
                     <% if event_request.status == 'pending' && @availability.user == current_user %>
-                      <div class="col-md-3 col-lg-3">
+                      <div class="col-md-4 ">
                         <%= button_to 'Reject', reject_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-danger btn-sm', data: { turbo: false } %>
                       </div>
-                    
-                      <div class="col-md-3 col-lg-3">
+
+                      <div class="col-md-4 ">
                         <%= button_to 'Accept', accept_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-success btn-sm', data: { turbo: false } %>
                       </div>
                     <% end %>
@@ -84,44 +94,21 @@
       <% end %>
 
     </div>
-
-    <div style="padding-top: 15px;">
-      <h4>Description</h4>
-    </div>
-
-    <div class="card mb-3" >
-      <div class="card-body">
-        <% @availability.comments.each do |comment| %>
-          <% if comment.user == @availability.user %>
-            <div class="d-flex justify-content-between">
-              <p><%= comment.body %></p>
-              <% if current_user == comment.user %>
-                <div class="dropdown">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton<%= comment.id %>" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-ellipsis-v"></i>
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= comment.id %>">
-                    <li>
-                      <%= button_to 'Delete', 
-                                availability_comment_path(@availability, comment),
-                                method: :delete,
-                                data: { confirm: 'Are you sure?' },
-                                class: 'dropdown-item' %>
-                    </li>
-                  </ul>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
-        <% end %>
+    <div class="col-md-8">
+      <div style="padding-top: 15px;">
+        <h4>Description</h4>
+        <div class="card mb-3">
+          <div class="card-body">
+            <%= @availability.description %>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <h4>Comments</h4>
-    <div class="card mb-3">
-      <div class="card-body">
-        <% @comments.each do |comment| %>
-          <% unless comment.user == @availability.user %>
+      <h4>Comments</h4>
+      <div class="card mb-3">
+        <div class="card-body">
+          <% @comments.each do |comment| %>
+
             <div class="d-flex justify-content-between">
               <p><strong><%= comment.user.username %>:</strong> <%= comment.body %></p>
               <% if current_user == comment.user %>
@@ -141,26 +128,22 @@
                 </div>
               <% end %>
             </div>
+
           <% end %>
-        <% end %>
-      </div>
-    </div>
-
-    <%= form_for([@availability, @availability.comments.new], html: { class: "mb-3" }) do |f| %>
-      <div class="form-group">
-        <%= f.text_area :body, class: "form-control", rows: 3 %>
-      </div>
-
-      <% if current_user == @availability.user %>
-        <div class="form-group d-flex justify-content-end">
-          <%= f.button 'Description<i class="fas fa-paper-plane"></i>'.html_safe, type: :submit, class: "btn btn-primary" %>
         </div>
-      <% else %>
+      </div>
+
+      <%= form_for([@availability, @availability.comments.new], html: { class: "mb-3" }) do |f| %>
+        <div class="form-group">
+          <%= f.text_area :body, class: "form-control", rows: 3 %>
+        </div>
+
         <div class="form-group d-flex justify-content-end">
           <%= f.button 'Comment<i class="fas fa-paper-plane"></i>'.html_safe, type: :submit, class: "btn btn-primary" %>
         </div>
+
       <% end %>
-    <% end %>
+    </div>
   </div>
 
   <% if policy(@availability).update? && policy(@availability).destroy? %>
