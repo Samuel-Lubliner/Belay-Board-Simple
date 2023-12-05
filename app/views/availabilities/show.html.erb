@@ -26,7 +26,7 @@
             <ul class="list-group" id="accepted_guests_list">
               <% @event_requests.select { |er| er.status == 'accepted' }.each do |event_request| %>
                 <li class="list-group-item" id="event_request_<%= event_request.id %>">
-                  <%= event_request.user.username %>
+                  <%= link_to event_request.user.username, climber_path(event_request.user.climber) if event_request.user.climber %>
                 </li>
               <% end %>
             </ul>
@@ -43,7 +43,8 @@
                 <% pending_requests.each do |event_request| %>
                   <li id="event_request_<%= event_request.id %>" class="list-group-item d-flex justify-content-start align-items-center">
                     <div class="col-md-4">
-                      <%= event_request.user.username %>
+                      <%= link_to event_request.user.username, climber_path(event_request.user.climber) if event_request.user.climber %>
+
                     </div>
                     <% if event_request.status == 'pending' && @availability.user == current_user %>
                       <div class="col-md-4 d-flex justify-content-center">
@@ -68,7 +69,7 @@
               <ul class="list-group" id="rejected_guests_list">
                 <% @event_requests.select { |er| er.status == 'rejected' }.each do |event_request| %>
                   <li class="list-group-item" id="event_request_<%= event_request.id %>">
-                    <%= event_request.user.username %>
+                    <%= link_to event_request.user.username, climber_path(event_request.user.climber) if event_request.user.climber %>
                   </li>
                 <% end %>
               </ul>

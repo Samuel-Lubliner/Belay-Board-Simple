@@ -4,7 +4,10 @@
   </p>
 
   <p>
-    With <strong> <%= availability.user.username %></strong>
+    With 
+    <strong>
+      <%= link_to availability.user.username, climber_path(availability.user.climber) if availability.user.climber %>
+    </strong>
   </p>
 
   <p>
