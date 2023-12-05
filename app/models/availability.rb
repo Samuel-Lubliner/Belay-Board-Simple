@@ -6,6 +6,7 @@
 #  advanced     :boolean          default(FALSE)
 #  beginner     :boolean          default(FALSE)
 #  boulder      :boolean          default(FALSE)
+#  description  :string
 #  end_time     :datetime
 #  event_name   :string
 #  indoor       :boolean          default(FALSE)
