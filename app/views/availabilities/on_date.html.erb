@@ -1,0 +1,35 @@
+<div style="text-align: center;">
+<h1><%= @date.strftime("%B %d, %Y") %></h1>
+</div>
+<table class="table table-striped table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Event Name</th>
+      <th>Host</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @availabilities_on_date.each do |availability| %>
+      <tr>
+        <td><%= availability.start_time.strftime("%H:%M") %></td>
+        <td><%= availability.end_time.strftime("%H:%M") %></td>
+        <td><%= link_to availability.event_name, availability_path(availability) %></td>
+        <td>
+          <% if availability.user.present? %>
+            <%= link_to availability.user.username, climber_path(availability.user.climber) if availability.user.climber %>
+            <% else %>
+              No User Profile
+            <% end %>
+        </td>
+
+      </tr>
+    <% end %>
+    <% if @availabilities_on_date.empty? %>
+      <tr>
+        <td colspan="4">No availabilities for this date.</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,6 +1,17 @@
 class AvailabilitiesController < ApplicationController
   before_action :set_availability, only: %i[ show edit update destroy ]
 
+  # app/controllers/availabilities_controller.rb
+
+
+  # app/controllers/availabilities_controller.rb
+  def on_date
+    @date = Date.parse(params[:date])
+    @availabilities_on_date = Availability.includes(user: :climber)
+                                          .where('DATE(start_time) = ?', @date)
+                                          .order(start_time: :asc)
+  end
+
   # GET /availabilities or /availabilities.json
 
   def index
