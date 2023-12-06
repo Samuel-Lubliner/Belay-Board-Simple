@@ -1,15 +1,16 @@
-class AvailabilityPolicy < ApplicationPolicy
+class ClimberPolicy < ApplicationPolicy
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
     # def resolve
     #   scope.all
     # end
   end
-
-  def edit?
-    user == record.user
+  def show?
+    true
   end
 
-  alias_method :update?, :edit?
-  alias_method :destroy?, :edit?
+  def update?
+    user == record.user
+  end
+  
 end
