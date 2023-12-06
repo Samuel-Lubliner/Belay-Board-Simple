@@ -34,6 +34,9 @@ class User < ApplicationRecord
   has_many :event_requests # Requests they've made to join events
   has_many :comments, dependent: :destroy
 
+  has_many :sent_friend_requests, class_name: 'FriendRequest', foreign_key: :sender_id
+  has_many :received_friend_requests, class_name: 'FriendRequest', foreign_key: :receiver_id
+
   def self.ransackable_attributes(auth_object = nil)
     ["id", "username"]
   end

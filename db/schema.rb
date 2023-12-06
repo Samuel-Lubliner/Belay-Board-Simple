@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_06_190317) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_06_193155) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
@@ -81,6 +81,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_190317) do
     t.datetime "updated_at", null: false
     t.index ["availability_id"], name: "index_event_requests_on_availability_id"
     t.index ["user_id"], name: "index_event_requests_on_user_id"
+  end
+
+  create_table "friend_requests", force: :cascade do |t|
+    t.bigint "sender_id"
+    t.bigint "receiver_id"
+    t.string "status", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
