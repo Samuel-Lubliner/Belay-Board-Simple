@@ -45,6 +45,15 @@ class User < ApplicationRecord
     ["comments", "event_requests", "availability", "climbers"]
   end
 
+  def private_profile?
+    !is_public
+  end
+
+  def friends_with?(other_user)
+    FriendRequest.exists?(sender: self, receiver: other_user, status: 'accepted') ||
+    FriendRequest.exists?(sender: other_user, receiver: self, status: 'accepted')
+  end
+
   private
 
   def create_climber_profile
