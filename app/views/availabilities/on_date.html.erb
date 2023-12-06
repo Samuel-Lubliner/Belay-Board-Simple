@@ -18,7 +18,7 @@
         <td><%= link_to availability.event_name, availability_path(availability) %></td>
         <td>
           <% if availability.user.present? %>
-            <%= link_to availability.user.username, climber_path(availability.user.climber) if availability.user.climber %>
+            <%= link_to display_username(availability.user), climber_path(availability.user.climber) if availability.user.climber %>
             <% else %>
               No User Profile
             <% end %>

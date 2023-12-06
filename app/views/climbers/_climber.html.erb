@@ -1,6 +1,9 @@
 <div id="<%= dom_id climber %>" class="card-outline-0">
   <div class="card-body">
-    <h5 class="card-title"><%= climber.user.username %></h5>
+    <h5 class="card-title">
+      <%= display_username(climber.user) %>
+
+      </h5>
     <p class="card-text">
       <%= climber.bio %>
     </p>

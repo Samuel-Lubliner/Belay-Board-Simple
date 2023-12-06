@@ -3,7 +3,7 @@
 <%= render @climber %>
 
 <div class="text-center mb-3">
-  <h5><%= @climber.user.username %>'s Availabilities</h5>
+  <h5><%= display_username(@climber.user) %>'s Availabilities</h5>
 </div>
 
 <%= month_calendar(header: {class: 'calendar-heading'}) do |date| %>

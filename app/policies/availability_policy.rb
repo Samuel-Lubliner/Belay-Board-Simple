@@ -6,6 +6,10 @@ class AvailabilityPolicy < ApplicationPolicy
     # end
   end
 
+  def create?
+    true
+  end
+
   def edit?
     user == record.user
   end
