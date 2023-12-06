@@ -36,11 +36,17 @@ class AvailabilitiesController < ApplicationController
 
   # GET /availabilities/1/edit
   def edit
+    @availability = Availability.find(params[:id])
+    authorize @availability
+  rescue Pundit::NotAuthorizedError
+    redirect_to root_path
   end
+  
 
   # POST /availabilities or /availabilities.json
   def create
     @availability = current_user.availabilities.new(availability_params)
+    authorize @availability
 
     respond_to do |format|
       if @availability.save
@@ -81,12 +87,14 @@ class AvailabilitiesController < ApplicationController
   end
 
   private
-    def set_availability
-      @availability = Availability.find(params[:id])
-    end
+  def set_availability
+    @availability = Availability.find(params[:id])
+    authorize @availability unless action_name == 'show'
+  end
+  
 
-    def availability_params
-      params.require(:availability).permit(:event_name, :start_time, :end_time, :user_id, :advanced, :beginner, :boulder, :indoor, :instructor, :intermediate, :lead, :outdoor, :overhang, :slab, :sport, :top_rope, :trad, :vertical, :learn, :location, :description)
-    end
+  def availability_params
+    params.require(:availability).permit(:event_name, :start_time, :end_time, :user_id, :advanced, :beginner, :boulder, :indoor, :instructor, :intermediate, :lead, :outdoor, :overhang, :slab, :sport, :top_rope, :trad, :vertical, :learn, :location, :description)
+  end
     
 end

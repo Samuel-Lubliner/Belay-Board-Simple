@@ -3,9 +3,8 @@
 <%= render @climber %>
 
 <div class="text-center mb-3">
-<h5><%= @climber.user.username %>'s Availabilities</h5>
+  <h5><%= @climber.user.username %>'s Availabilities</h5>
 </div>
-
 
 <%= month_calendar(header: {class: 'calendar-heading'}) do |date| %>
   <div class="card mb-3 calendar-cell">
@@ -27,8 +26,10 @@
 <% end %>
 
 <div>
-  <%= link_to "Edit this climber", edit_climber_path(@climber) %> |
+  <% if policy(@climber).edit? %>
+    <%= link_to 'Edit', edit_climber_path(@climber) %> |
+  <% end %>
+  
   <%= link_to "Back to climbers", climbers_path %>
 
-  <%= button_to "Destroy this climber", @climber, method: :delete %>
 </div>

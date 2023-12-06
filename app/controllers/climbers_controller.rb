@@ -14,11 +14,16 @@ class ClimbersController < ApplicationController
 
   # GET /climbers/new
   def new
+    redirect_to root_path
     @climber = Climber.new
   end
 
   # GET /climbers/1/edit
   def edit
+    @availability = Availability.find(params[:id])
+    authorize @availability
+  rescue Pundit::NotAuthorizedError
+    redirect_to root_path
   end
 
   # POST /climbers or /climbers.json
@@ -51,6 +56,7 @@ class ClimbersController < ApplicationController
 
   # DELETE /climbers/1 or /climbers/1.json
   def destroy
+    redirect_to root_path
     @climber.destroy
 
     respond_to do |format|
@@ -63,6 +69,7 @@ class ClimbersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_climber
       @climber = Climber.find(params[:id])
+      authorize @climber
     end
 
     # Only allow a list of trusted parameters through.
