@@ -3,6 +3,7 @@ class FriendRequestsController < ApplicationController
   before_action :set_friend_request, only: [:update, :destroy]
 
   def index
+    @accepted_requests = current_user.sent_friend_requests.where(status: 'accepted') + current_user.received_friend_requests.where(status: 'accepted')
     @received_requests = current_user.received_friend_requests.where(status: 'pending')
     @sent_requests = current_user.sent_friend_requests.where(status: 'pending')
   end
