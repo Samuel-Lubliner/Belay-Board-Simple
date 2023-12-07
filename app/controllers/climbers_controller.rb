@@ -2,9 +2,16 @@ class ClimbersController < ApplicationController
   before_action :set_climber, only: %i[ show edit update destroy ]
 
   # GET /climbers or /climbers.json
+
   def index
-    @q = Climber.ransack(params[:q])
-    @climbers = @q.result(distinct: true)
+    @q = Climber.includes(:user).ransack(params[:q])
+    if params[:q]&.dig(:user_username_cont).present?
+      # If a username search is performed, exclude anonymous users
+      @climbers = @q.result.where(users: { is_public: true }).distinct
+    else
+      # In all other cases, include all climbers
+      @climbers = @q.result.distinct
+    end
   end
 
   # GET /climbers/1 or /climbers/1.json
