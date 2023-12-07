@@ -1,92 +1,10 @@
-<div class="container">
 
-  <h2>Events Dashboard</h2>
-
-  <%= search_form_for @q, url: dashboard_path, method: :get, html: { class: 'form-horizontal' } do |f| %>
-
-  <div class="form-group row">
-    <%= f.label :event_name_cont, "Event", class: 'col-sm-2 col-form-label' %>
-    <div class="col-sm-10">
-      <%= f.search_field :event_name_cont, class: 'form-control' %>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <%= f.label :user_username_cont, "Host", class: 'col-sm-2 col-form-label' %>
-    <div class="col-sm-10">
-      <%= f.search_field :user_username_cont, class: 'form-control' %>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <%= f.label :event_requests_user_username_cont, "Guest", class: 'col-sm-2 col-form-label' %>
-    <div class="col-sm-10">
-      <%= f.search_field :event_requests_user_username_cont, class: 'form-control' %>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <%= f.label :event_requests_status_eq, "Status", class: 'col-sm-2 col-form-label' %>
-    <div class="col-sm-10">
-      <%= f.select :event_requests_status_eq, options_for_select(['pending', 'accepted', 'rejected'], selected: params.dig(:q, :event_requests_status_eq)), { include_blank: true }, { class: 'form-control' } %>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <%= f.label :start_time_gteq, 'Start', class: 'col-sm-2 col-form-label' %>
-    <div class="col-sm-10">
-      <%= f.date_field :start_time_gteq, class: 'form-control' %>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <%= f.label :end_time_lteq, 'End', class: 'col-sm-2 col-form-label' %>
-    <div class="col-sm-10">
-      <%= f.date_field :end_time_lteq, class: 'form-control' %>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <div class="col-sm-10">
-      <%= f.submit "Search", class: 'btn btn-primary' %>
-    </div>
-  </div>
-
-<% end %>
+<%= pie_chart @climbers_data, id: 'climbers_chart', title: 'Climber Skill Levels' %>
 
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Event Name</th>
-        <th>Host</th>
-        <th>Start Time</th>
-        <th>End Time</th>
-        <th>Request Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @availabilities.each do |availability| %>
-        <tr>
-          <td><%= link_to availability.event_name, availability_path(availability) %></td>
-          <td><%= availability.user.username %></td>
-          <td>
 
-            <%= availability.start_time.strftime("%b %d, %y") %> @
-            <%= availability.start_time.strftime("%I:%M %p") %>
-          </td>
-          <td>
-            <%= availability.end_time.strftime("%b %d, %y") %> @
-            <%= availability.end_time.strftime("%I:%M %p") %>
-          </td>
-          <td>
-            <% availability.event_requests.each do |request| %>
-              <div>
-                <%= request.user.username %>: <%= request.status %>
-              </div>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+<%= pie_chart @availability_data, id: 'availability_chart', title: 'Availability Climbing Styles' %>
+
+
+
+<%= pie_chart @climbing_styles_data, id: 'climbing_styles_chart', title: 'User Climbing Styles' %>
