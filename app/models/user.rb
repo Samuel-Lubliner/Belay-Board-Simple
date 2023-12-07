@@ -54,6 +54,10 @@ class User < ApplicationRecord
     FriendRequest.exists?(sender: other_user, receiver: self, status: 'accepted')
   end
 
+  def already_sent_request?(other_user)
+    sent_friend_requests.exists?(receiver: other_user, status: 'pending')
+  end
+
   private
 
   def create_climber_profile

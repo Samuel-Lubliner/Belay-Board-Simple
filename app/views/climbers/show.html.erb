@@ -6,6 +6,13 @@
   <h5><%= display_username(@climber.user) %>'s Availabilities</h5>
 </div>
 
+<% if current_user != @climber.user && !current_user.friends_with?(@climber.user) && !current_user.already_sent_request?(@climber.user) %>
+  <%= form_with url: friend_requests_path, method: :post do |form| %>
+    <%= form.hidden_field :receiver_id, value: @climber.user.id %>
+    <%= form.submit "Send Friend Request", class: "btn btn-primary" %>
+  <% end %>
+<% end %>
+
 <%= month_calendar(header: {class: 'calendar-heading'}) do |date| %>
   <div class="card mb-3 calendar-cell">
     <div class="card-header">
