@@ -2,16 +2,20 @@
 
 <%= render @climber %>
 
-<div class="text-center mb-3">
-  <h5><%= display_username(@climber.user) %>'s Availabilities</h5>
-</div>
-
 <% if current_user != @climber.user && !current_user.friends_with?(@climber.user) && !current_user.already_sent_request?(@climber.user) %>
   <%= form_with url: friend_requests_path, method: :post do |form| %>
     <%= form.hidden_field :receiver_id, value: @climber.user.id %>
     <%= form.submit "Send Friend Request", class: "btn btn-primary" %>
   <% end %>
 <% end %>
+
+<% if @climber.user.is_public || current_user == @climber.user || current_user.friends_with?(@climber.user) %>
+
+
+<div class="text-center mb-3">
+  <h5><%= display_username(@climber.user) %>'s Availabilities</h5>
+</div>
+
 
 <%= month_calendar(header: {class: 'calendar-heading'}) do |date| %>
   <div class="card mb-3 calendar-cell">
@@ -30,6 +34,8 @@
       <% end %>
     </div>
   </div>
+<% end %>
+
 <% end %>
 
 <div>
