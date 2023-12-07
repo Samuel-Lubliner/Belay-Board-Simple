@@ -5,6 +5,7 @@
 #  id                     :bigint           not null, primary key
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  is_public              :boolean          default(TRUE)
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
@@ -33,12 +34,28 @@ class User < ApplicationRecord
   has_many :event_requests # Requests they've made to join events
   has_many :comments, dependent: :destroy
 
+  has_many :sent_friend_requests, class_name: 'FriendRequest', foreign_key: :sender_id
+  has_many :received_friend_requests, class_name: 'FriendRequest', foreign_key: :receiver_id
+
   def self.ransackable_attributes(auth_object = nil)
     ["id", "username"]
   end
 
   def self.ransackable_associations(auth_object = nil)
     ["comments", "event_requests", "availability", "climbers"]
+  end
+
+  def private_profile?
+    !is_public
+  end
+
+  def friends_with?(other_user)
+    FriendRequest.exists?(sender: self, receiver: other_user, status: 'accepted') ||
+    FriendRequest.exists?(sender: other_user, receiver: self, status: 'accepted')
+  end
+
+  def already_sent_request?(other_user)
+    sent_friend_requests.exists?(receiver: other_user, status: 'pending')
   end
 
   private

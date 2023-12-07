@@ -1,0 +1,34 @@
+<h2>Accepted Friend Requests</h2>
+<div class="list-group">
+  <% @accepted_requests.each do |request| %>
+    <div class="list-group-item">
+      <% friend = request.sender == current_user ? request.receiver : request.sender %>
+      <%= friend.username %>
+    </div>
+  <% end %>
+</div>
+
+<div style="margin-top: 40px;">
+<h2>Received Friend Requests</h2>
+<div class="list-group">
+  <% @received_requests.each do |request| %>
+    <div class="list-group-item">
+      <%= request.sender.username %>
+      <%= link_to 'Accept', friend_request_path(request), method: :patch, class: "btn btn-success" %>
+      <%= link_to 'Decline', friend_request_path(request), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+    </div>
+  <% end %>
+</div>
+</div>
+
+<div style="margin-top: 40px;">
+<h2>Sent Friend Requests</h2>
+<div class="list-group">
+  <% @sent_requests.each do |request| %>
+    <div class="list-group-item">
+      <%= request.receiver.username %>
+      <%= link_to 'Cancel Request', friend_request_path(request), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-warning" %>
+    </div>
+  <% end %>
+</div>
+</div>

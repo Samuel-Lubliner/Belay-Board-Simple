@@ -1,25 +1,41 @@
 <h2>Sign up</h2>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'form-horizontal' }) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :username, required: true, autofocus: true %>
+  <div class="form-group">
+    <%= f.input :username, required: true, autofocus: true, label_html: { class: 'control-label' }, input_html: { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
     <%= f.input :email,
                 required: true,
                 autofocus: true,
-                input_html: { autocomplete: "email" }%>
+                label_html: { class: 'control-label' },
+                input_html: { class: 'form-control', autocomplete: "email" } %>
+  </div>
+
+  <div class="form-group">
     <%= f.input :password,
                 required: true,
                 hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
-                input_html: { autocomplete: "new-password" } %>
+                label_html: { class: 'control-label' },
+                input_html: { class: 'form-control', autocomplete: "new-password" } %>
+  </div>
+
+  <div class="form-group">
     <%= f.input :password_confirmation,
                 required: true,
-                input_html: { autocomplete: "new-password" } %>
+                label_html: { class: 'control-label' },
+                input_html: { class: 'form-control', autocomplete: "new-password" } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.input :is_public, as: :boolean, checked: true, label_html: { class: 'control-label' }, inline_label: 'Public Profile?', wrapper_html: { class: 'form-check' } %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, "Sign up" %>
+    <%= f.button :submit, "Sign up", class: "btn btn-primary" %>
   </div>
 <% end %>
 
