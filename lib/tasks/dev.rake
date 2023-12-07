@@ -6,33 +6,31 @@ if Rails.env.development?
     task reset: [:environment, "db:drop", "db:create", "db:migrate", "dev:sample_data"]
 
     desc "Adds sample data for development environment"
-    task sample_data: [:environment, "dev:add_users", "dev:add_availabilities", "dev:add_event_requests", "dev:add_comments"] do
+    task sample_data: [:environment, "dev:add_users", "dev:add_availabilities", "dev:add_event_requests", "dev:add_comments", "dev:add_friend_requests"] do
       puts "Done adding sample data"
     end
 
     task add_users: :environment do
       puts "Adding users..."
-  
-      # Predefined users
+    
       user_names = ["Sam", "Ben", "Olivia", "Rashid", "Robbie", "Julia"]
-  
-      # Adding 15 more users using Faker
+    
       15.times do
         fake_name = Faker::Name.unique.first_name
         user_names << fake_name
       end
-  
+    
       user_names.each do |name|
         user_attrs = {
           username: name.downcase,
           email: "#{name.downcase}@example.com",
-          password: "password"
+          password: "password",
+          is_public: [true, false].sample # Randomly assign is_public
         }
         puts "Creating user with attributes: #{user_attrs.inspect}"
-  
+    
         user = User.create!(user_attrs)
-  
-        # Update the climber profile created by the User model's callback
+    
         user.climber.update!(
           bio: Faker::Quote.famous_last_words,
           instructor: [true, false].sample,
@@ -49,35 +47,28 @@ if Rails.env.development?
           trad: [true, false].sample,
           indoor: [true, false].sample,
           outdoor: [true, false].sample
-          # Note: Removed user_id: user.id as it's redundant
         )
-  
+    
         puts "User and climber profile created for #{name}"
       end
-  
+    
       puts "All users added"
     end
-
     
     task add_availabilities: :environment do
       puts "Adding availabilities..."
       event_names = ["Boulder", "Top Rope", "Lead Climb", "Train"]
       User.find_each do |user|
         (0...2).each do |month|
-          # Calculate the start and end date of each month
           start_date = Date.today.beginning_of_month + month.months
           end_date = start_date.end_of_month
     
-          # Loop through each day of the month
           (start_date..end_date).each do |day|
-            # Generate start and end times for the event
             start_time = Faker::Time.between_dates(from: day, to: day, period: :day)
             end_time = start_time + [2, 3, 4].sample.hours
     
-            # Select a random event name
             event_name = event_names.sample
     
-            # Create the availability
             Availability.create!(event_name: event_name, start_time: start_time, end_time: end_time, user_id: user.id)
           end
         end
@@ -87,7 +78,6 @@ if Rails.env.development?
     task add_event_requests: :environment do
       puts "Adding event requests..."
     
-      # Find users Sam and Ben
       sam = User.find_by(username: 'sam')
       ben = User.find_by(username: 'ben')
     
@@ -113,9 +103,32 @@ if Rails.env.development?
           end
         end
       end
-  end
+
 
     puts "Comments added"
   end
 
+  task add_friend_requests: :environment do
+    puts "Adding friend requests..."
+  
+    User.where(is_public: false).find_each do |private_user|
+      # Select random users to send friend requests to the private user
+      senders = User.where.not(id: private_user.id).order("RANDOM()").limit(5)
+  
+      senders.each do |sender|
+        FriendRequest.create!(
+          sender: sender,
+          receiver: private_user,
+          status: 'pending' # Default status is 'pending'
+        )
+        puts "Friend request sent from #{sender.username} to #{private_user.username}"
+      end
+    end
+  
+    puts "Friend requests added"
+  end
+
+  
+  
+end
 end
