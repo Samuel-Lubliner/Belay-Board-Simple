@@ -27,10 +27,6 @@ class ClimbersController < ApplicationController
 
   # GET /climbers/1/edit
   def edit
-    @availability = Availability.find(params[:id])
-    authorize @availability
-  rescue Pundit::NotAuthorizedError
-    redirect_to root_path
   end
 
   # POST /climbers or /climbers.json
