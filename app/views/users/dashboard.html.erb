@@ -1,10 +1,18 @@
+<div class="container">
+  <div class="row" style="padding-top: 20px;">
 
-<%= pie_chart @climbers_data, id: 'climbers_chart', title: 'Climber Skill Levels' %>
+    <div class="col-md-6" style="text-align: center;">
+      <%= pie_chart @climbing_partners_data, id: 'climbing_partners_chart', title: 'My Climbing Session Hours with Partners', xtitle: 'Partner', ytitle: 'Number of Sessions' %>
+    </div>
 
+    <div class="col-md-6" style="text-align: center;">
+      <%= pie_chart @availability_category_data, id: 'availability_category_chart', title: 'My Climbing Type Distribution' %>
+    </div>
 
+  </div>
 
-<%= pie_chart @availability_data, id: 'availability_chart', title: 'Availability Climbing Styles' %>
-
-
-
-<%= pie_chart @climbing_styles_data, id: 'climbing_styles_chart', title: 'User Climbing Styles' %>
+  <!-- Chart: Availability Start Times -->
+  <div style="padding-top: 50px;">
+    <%= column_chart @climbing_time_data, id: 'climbing_time_chart', title: 'My Climbing Hours Per Day', xtitle: 'Date', ytitle: 'Hours' %>
+  </div>
+</div>
