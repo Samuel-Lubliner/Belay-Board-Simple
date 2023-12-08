@@ -1,9 +1,15 @@
 <div class="container">
   <div class="row" style="padding-top: 20px;">
 
-    <div class="col-md-6" style="text-align: center;">
-      <%= pie_chart @climbing_partners_data, id: 'climbing_partners_chart', title: 'My Climbing Session Hours with Partners', xtitle: 'Partner', ytitle: 'Number of Sessions' %>
-    </div>
+<div class="col-md-6" style="text-align: center;">
+  <% if @climbing_partners_data.blank? %>
+    <h5>My Climbing Session Hours with Partners</h5>
+    <p>No data available.</p>
+  <% else %>
+    <%= pie_chart @climbing_partners_data, id: 'climbing_partners_chart', title: 'My Climbing Session Hours with Partners', xtitle: 'Partner', ytitle: 'Number of Sessions' %>
+  <% end %>
+</div>
+
 
     <div class="col-md-6" style="text-align: center;">
       <%= pie_chart @availability_category_data, id: 'availability_category_chart', title: 'My Climbing Type Distribution' %>

@@ -16,23 +16,18 @@ class UsersController < ApplicationController
   def calculate_availability_categories
     user_availabilities = Availability.where(user_id: current_user.id)
   
-    friend_ids = FriendRequest.where(receiver_id: current_user.id, status: 'accepted').pluck(:sender_id) +
-                 FriendRequest.where(sender_id: current_user.id, status: 'accepted').pluck(:receiver_id)
-    friend_availabilities = Availability.where(user_id: friend_ids)
-  
-    # Fetch availabilities where the current user is accepted in event requests
     accepted_event_availabilities = EventRequest.where(user_id: current_user.id, status: 'accepted')
                                                 .includes(:availability)
                                                 .map(&:availability)
   
-    # Combine all relevant availabilities
-    all_relevant_availabilities = (user_availabilities + friend_availabilities + accepted_event_availabilities).uniq
+    all_relevant_availabilities = (user_availabilities + accepted_event_availabilities).uniq
   
     categories = %w[boulder lead top_rope]
     categories.each_with_object({}) do |category, data|
       data[category.capitalize] = all_relevant_availabilities.count { |availability| availability[category] }
     end
   end
+  
   
   
 
@@ -44,15 +39,12 @@ class UsersController < ApplicationController
   
     all_relevant_availabilities = (user_availabilities + accepted_event_requests).uniq
   
-    # Determine the date range from availabilities
     earliest_date = Availability.minimum(:start_time).to_date
     latest_date = Availability.maximum(:end_time).to_date
     date_range = (earliest_date..latest_date).to_a
   
-    # Initialize climbing time data for each date in the range
     climbing_time_data = date_range.each_with_object({}) { |date, data| data[date] = 0 }
   
-    # Aggregate climbing time
     all_relevant_availabilities.each do |availability|
       date = availability.start_time.to_date
       if climbing_time_data.key?(date)
@@ -66,13 +58,11 @@ class UsersController < ApplicationController
   
 
   def calculate_climbing_partners
-    # Total time for availabilities created by the current user
     user_availabilities_with_others = EventRequest.where(availability_id: Availability.where(user_id: current_user.id).select(:id), status: 'accepted')
                                                    .joins(:availability)
                                                    .group(:user_id)
                                                    .sum('EXTRACT(EPOCH FROM (availabilities.end_time - availabilities.start_time))')
   
-    # Total time for availabilities where the current user is accepted
     availabilities_with_current_user = EventRequest.joins(:availability)
                                                    .where(user_id: current_user.id, status: 'accepted')
                                                    .group('availabilities.user_id')
