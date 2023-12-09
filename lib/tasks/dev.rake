@@ -25,15 +25,18 @@ if Rails.env.development?
           username: name,
           email: "#{name.downcase}@example.com",
           password: "password",
-          is_public: [true, false].sample
+          is_public: name == "Sam" || name == "Julia" # Sam and Julia are public
         }
         puts "Creating user with attributes: #{user_attrs.inspect}"
     
         user = User.create!(user_attrs)
     
+        # Only Sam and Julia are instructors
+        is_instructor = name == "Sam" || name == "Julia"
+    
         user.climber.update!(
-          bio: Faker::Quote.famous_last_words,
-          instructor: [true, false].sample,
+          bio: Faker::Lorem.sentence,
+          instructor: is_instructor,
           boulder: [true, false].sample,
           top_rope: [true, false].sample,
           lead: [true, false].sample,
@@ -54,7 +57,7 @@ if Rails.env.development?
     
       puts "All users added"
     end
-    
+
     task add_availabilities: :environment do
       puts "Adding availabilities..."
       event_names = ["Boulder", "Top Rope", "Lead Climb", "Train", "Social Climb", "Climbing Team", "Meet up", "Birthday Party", "Fun Climb", "Climb With Me"]
@@ -80,6 +83,8 @@ if Rails.env.development?
             location = locations.sample
             description = Faker::Lorem.sentence
     
+            learn_flag = ["Sam", "Julia"].include?(user.username) # learn is true for Sam and Julia
+    
             Availability.create!(
               event_name: event_name, 
               start_time: start_time, 
@@ -98,17 +103,18 @@ if Rails.env.development?
               top_rope: [true, false].sample,
               trad: [true, false].sample,
               vertical: [true, false].sample,
-              learn: [true, false].sample,
+              learn: learn_flag, # Set to true for Sam and Julia
               location: location,
               description: description
             )
           end
         end
       end
+    
+      puts "Availabilities added"
     end
     
-    
-
+  
     task add_event_requests: :environment do
       puts "Adding event requests..."
     
@@ -128,17 +134,21 @@ if Rails.env.development?
 
     task add_comments: :environment do
       puts "Adding comments..."
-  
-      User.find_each do |user|
+    
+      selected_users = User.order("RANDOM()").limit(3)
+    
+      selected_users.each do |user|
         Availability.find_each do |availability|
           2.times do
-            comment_body = Faker::GreekPhilosophers.quote
+            comment_body = Faker::Lorem.sentence
             Comment.create!(user: user, availability: availability, body: comment_body)
           end
         end
       end
-     puts "Comments added"
+    
+      puts "Comments added"
     end
+    
 
     task add_friend_requests: :environment do
     puts "Adding friend requests..."
