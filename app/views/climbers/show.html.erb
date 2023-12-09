@@ -38,11 +38,14 @@
 
 <% end %>
 
-<div>
-  <% if policy(@climber).edit? %>
-    <%= link_to 'Edit', edit_climber_path(@climber) %> |
-  <% end %>
-  
-  <%= link_to "Back to climbers", climbers_path %>
 
-</div>
+
+
+
+    <div style="padding-top: 5px;">
+      <% if policy(@climber).edit? %>
+        <%= link_to 'Edit', edit_climber_path(@climber), class: 'btn btn-primary' %> 
+      <% end %>
+   
+      <%= link_to "Back to climbers", climbers_path, class: 'btn btn-secondary' %>
+    </div>

@@ -5,14 +5,22 @@ class ClimbersController < ApplicationController
 
   def index
     @q = Climber.includes(:user).ransack(params[:q])
+    
     if params[:q]&.dig(:user_username_cont).present?
-      # If a username search is performed, exclude anonymous users
-      @climbers = @q.result.where(users: { is_public: true }).distinct
+      # Fetch IDs of all users who are friends with the current user
+      friend_ids = current_user.friends_ids
+
+      # Adjust query to include the current user's profile and friends' profiles
+      @climbers = @q.result
+                    .where('users.id = :current_user_id OR users.is_public = :is_public OR users.id IN (:friend_ids)', 
+                           { current_user_id: current_user.id, is_public: true, friend_ids: friend_ids })
+                    .distinct
     else
       # In all other cases, include all climbers
       @climbers = @q.result.distinct
     end
   end
+
 
   # GET /climbers/1 or /climbers/1.json
   def show
@@ -27,10 +35,6 @@ class ClimbersController < ApplicationController
 
   # GET /climbers/1/edit
   def edit
-    @availability = Availability.find(params[:id])
-    authorize @availability
-  rescue Pundit::NotAuthorizedError
-    redirect_to root_path
   end
 
   # POST /climbers or /climbers.json
@@ -83,4 +87,5 @@ class ClimbersController < ApplicationController
     def climber_params
       params.require(:climber).permit(:bio, :instructor, :boulder, :top_rope, :lead, :vertical, :slab, :overhang, :beginner, :intermediate, :advanced, :sport, :trad, :indoor, :outdoor)
     end
+
 end

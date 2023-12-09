@@ -15,8 +15,9 @@ class AvailabilitiesController < ApplicationController
   # GET /availabilities or /availabilities.json
 
   def index
-    @q = Availability.joins(:user).where(users: { is_public: true }).ransack(params[:q])
-    @availabilities = @q.result.includes(:user, event_requests: :user).distinct
+    @q = Availability.ransack(params[:q])
+    @availabilities = @q.result.includes(:user, event_requests: :user)
+                        .distinct
   end
 
   # GET /availabilities/1 or /availabilities/1.json

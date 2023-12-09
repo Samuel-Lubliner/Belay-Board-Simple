@@ -58,10 +58,24 @@ class User < ApplicationRecord
     sent_friend_requests.exists?(receiver: other_user, status: 'pending')
   end
 
+  def friends_ids
+    # IDs of users who received an accepted friend request from this user
+    sent_friend_ids = sent_friend_requests.where(status: 'accepted').pluck(:receiver_id)
+    
+    # IDs of users who sent an accepted friend request to this user
+    received_friend_ids = received_friend_requests.where(status: 'accepted').pluck(:sender_id)
+
+    # Combine and return the unique IDs
+    (sent_friend_ids + received_friend_ids).uniq
+  end
+
+
   private
 
   def create_climber_profile
     build_climber.save
   end
+
+
 
 end

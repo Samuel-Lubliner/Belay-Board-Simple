@@ -3,8 +3,10 @@
     <h5 class="card-title">
       <%= display_username(climber.user) %>
 
-      </h5>
+    </h5>
+
     <p class="card-text">
+      <h6 class="card-subtitle text-muted">Bio:</h6>
       <%= climber.bio %>
     </p>
 
@@ -26,7 +28,7 @@
       <% attributes << 'Outdoor' if climber.outdoor %>
 
       <% unless attributes.empty? %>
-        <h6 class="card-subtitle mb-2 text-muted">Preferences:</h6>
+        <h6 class="card-subtitle text-muted">Preferences:</h6>
         <p class="card-text">
           <%= attributes.join(', ') %>
         </p>

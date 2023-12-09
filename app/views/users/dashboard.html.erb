@@ -1,92 +1,24 @@
 <div class="container">
+  <div class="row" style="padding-top: 20px;">
 
-  <h2>Events Dashboard</h2>
+<div class="col-md-6" style="text-align: center;">
+  <% if @climbing_partners_data.blank? %>
+    <h5>My Climbing Session Hours with Partners</h5>
+    <p>No data available.</p>
+  <% else %>
+    <%= pie_chart @climbing_partners_data, id: 'climbing_partners_chart', title: 'My Climbing Session Hours with Partners', xtitle: 'Partner', ytitle: 'Number of Sessions' %>
+  <% end %>
+</div>
 
-  <%= search_form_for @q, url: dashboard_path, method: :get, html: { class: 'form-horizontal' } do |f| %>
 
-  <div class="form-group row">
-    <%= f.label :event_name_cont, "Event", class: 'col-sm-2 col-form-label' %>
-    <div class="col-sm-10">
-      <%= f.search_field :event_name_cont, class: 'form-control' %>
+    <div class="col-md-6" style="text-align: center;">
+      <%= pie_chart @availability_category_data, id: 'availability_category_chart', title: 'My Climbing Type Distribution' %>
     </div>
+
   </div>
 
-  <div class="form-group row">
-    <%= f.label :user_username_cont, "Host", class: 'col-sm-2 col-form-label' %>
-    <div class="col-sm-10">
-      <%= f.search_field :user_username_cont, class: 'form-control' %>
-    </div>
+  <!-- Chart: Availability Start Times -->
+  <div style="padding-top: 50px;">
+    <%= column_chart @climbing_time_data, id: 'climbing_time_chart', title: 'My Climbing Hours Per Day', xtitle: 'Date', ytitle: 'Hours' %>
   </div>
-
-  <div class="form-group row">
-    <%= f.label :event_requests_user_username_cont, "Guest", class: 'col-sm-2 col-form-label' %>
-    <div class="col-sm-10">
-      <%= f.search_field :event_requests_user_username_cont, class: 'form-control' %>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <%= f.label :event_requests_status_eq, "Status", class: 'col-sm-2 col-form-label' %>
-    <div class="col-sm-10">
-      <%= f.select :event_requests_status_eq, options_for_select(['pending', 'accepted', 'rejected'], selected: params.dig(:q, :event_requests_status_eq)), { include_blank: true }, { class: 'form-control' } %>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <%= f.label :start_time_gteq, 'Start', class: 'col-sm-2 col-form-label' %>
-    <div class="col-sm-10">
-      <%= f.date_field :start_time_gteq, class: 'form-control' %>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <%= f.label :end_time_lteq, 'End', class: 'col-sm-2 col-form-label' %>
-    <div class="col-sm-10">
-      <%= f.date_field :end_time_lteq, class: 'form-control' %>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <div class="col-sm-10">
-      <%= f.submit "Search", class: 'btn btn-primary' %>
-    </div>
-  </div>
-
-<% end %>
-
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Event Name</th>
-        <th>Host</th>
-        <th>Start Time</th>
-        <th>End Time</th>
-        <th>Request Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @availabilities.each do |availability| %>
-        <tr>
-          <td><%= link_to availability.event_name, availability_path(availability) %></td>
-          <td><%= availability.user.username %></td>
-          <td>
-
-            <%= availability.start_time.strftime("%b %d, %y") %> @
-            <%= availability.start_time.strftime("%I:%M %p") %>
-          </td>
-          <td>
-            <%= availability.end_time.strftime("%b %d, %y") %> @
-            <%= availability.end_time.strftime("%I:%M %p") %>
-          </td>
-          <td>
-            <% availability.event_requests.each do |request| %>
-              <div>
-                <%= request.user.username %>: <%= request.status %>
-              </div>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+</div>
