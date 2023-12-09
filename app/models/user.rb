@@ -3,12 +3,16 @@
 # Table name: users
 #
 #  id                     :bigint           not null, primary key
+#  confirmation_sent_at   :datetime
+#  confirmation_token     :string
+#  confirmed_at           :datetime
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  is_public              :boolean          default(TRUE)
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  unconfirmed_email      :string
 #  username               :citext           not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -21,9 +25,9 @@
 #
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  # :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :confirmable
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
@@ -69,13 +73,10 @@ class User < ApplicationRecord
     (sent_friend_ids + received_friend_ids).uniq
   end
 
-
   private
 
   def create_climber_profile
     build_climber.save
   end
-
-
 
 end
