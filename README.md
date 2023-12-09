@@ -50,3 +50,89 @@ Find climbing partners and schedule climbing sessions with Belay Board!
   - Pie charts:
     - Distribution of climbing session hours among partners
     - Distribution of climbs by boulder, lead, or top rope
+
+
+## Email
+https://guides.rubyonrails.org/action_mailer_basics.html
+
+### set up development
+  ```rb
+  # config/environments/development.rb
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
+```
+
+
+### Add Confirmable
+```rb
+class AddConfirmableToUsers < ActiveRecord::Migration[7.0]
+  def change
+    change_table(:users) do |t|
+      t.string   :confirmation_token
+      t.datetime :confirmed_at
+      t.datetime :confirmation_sent_at
+      t.string   :unconfirmed_email # Only if using reconfirmable
+    end
+  end
+end
+```
+
+### Install Gem for development emails
+https://github.com/ryanb/letter_opener
+```rb
+group :development do
+  gem "letter_opener", "~> 1.8"
+```
+
+### Customize Devise
+`Rails generate devise:views`
+
+### Customize my own emails 
+`Rails g mailer`
+
+```bash
+Usage:
+  rails generate mailer NAME [method method] [options]
+
+Options:
+      [--skip-namespace], [--no-skip-namespace]              # Skip namespace (affects only isolated engines)
+      [--skip-collision-check], [--no-skip-collision-check]  # Skip collision check
+  -e, [--template-engine=NAME]                               # Template engine to be invoked
+                                                             # Default: erb
+  -t, [--test-framework=NAME]                                # Test framework to be invoked
+
+Runtime options:
+  -f, [--force]                    # Overwrite files that already exist
+  -p, [--pretend], [--no-pretend]  # Run but do not make any changes
+  -q, [--quiet], [--no-quiet]      # Suppress status output
+  -s, [--skip], [--no-skip]        # Skip files that already exist
+
+Description:
+============
+    Generates a new mailer and its views. Passes the mailer name, either
+    CamelCased or under_scored, and an optional list of emails as arguments.
+
+    This generates a mailer class in app/mailers and invokes your template
+    engine and test framework generators.
+
+Example:
+========
+    bin/rails generate mailer Notifications signup forgot_password invoice
+
+    creates a Notifications mailer class, views, and test:
+        Mailer:     app/mailers/notifications_mailer.rb
+        Views:      app/views/notifications_mailer/signup.text.erb [...]
+        Test:       test/mailers/notifications_mailer_test.rb 
+```
+
+Run 
+`rails g mailer User summary`
+
+```bash
+      create  app/mailers/user_mailer.rb
+      invoke  erb
+      create    app/views/user_mailer
+      create    app/views/user_mailer/summary.text.erb
+      create    app/views/user_mailer/summary.html.erb
+```
