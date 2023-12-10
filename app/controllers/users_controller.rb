@@ -39,8 +39,11 @@ class UsersController < ApplicationController
   
     all_relevant_availabilities = (user_availabilities + accepted_event_requests).uniq
   
-    earliest_date = Availability.minimum(:start_time).to_date
-    latest_date = Availability.maximum(:end_time).to_date
+    earliest_date = all_relevant_availabilities.min_by(&:start_time)&.start_time&.to_date
+    latest_date = all_relevant_availabilities.max_by(&:end_time)&.end_time&.to_date
+  
+    return {} unless earliest_date && latest_date
+  
     date_range = (earliest_date..latest_date).to_a
   
     climbing_time_data = date_range.each_with_object({}) { |date, data| data[date] = 0 }
@@ -54,7 +57,7 @@ class UsersController < ApplicationController
     end
   
     climbing_time_data.transform_values { |seconds| seconds / 3600.0 } # Convert seconds to hours
-  end
+  end  
   
 
   def calculate_climbing_partners
