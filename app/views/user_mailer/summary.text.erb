@@ -1,22 +1,31 @@
 <%= @greeting %>
 
-Here's your summary for availabilities on <%= Date.tomorrow.strftime("%b %d, %Y") %>:
+Here's your summary for the next day's availabilities:
 
 Your Availabilities:
+
 <% @user_availabilities.each do |availability| %>
-  Event: <%= availability.event_name %>
-  Start Time: <%= availability.start_time.strftime("%b %d, %Y") %>
-  End Time: <%= availability.end_time.strftime("%b %d, %Y") %>
+  <%= availability.event_name %>
+  Start Time: <%= availability.start_time.strftime("%I:%M%p") %>
+  End Time:   <%= availability.end_time.strftime("%I:%M%p") %>
   Location: <%= availability.location %>
   Description: <%= availability.description %>
+
+  <% ["pending", "accepted", "rejected"].each do |status| %>
+    <%= status.capitalize %> Requests:
+    <% usernames = availability.event_requests.where(status: status).map { |er| User.find(er.user_id).username }.join(', ') %>
+    <%= usernames.present? ? usernames : 'None' %>
+
+  <% end %>
+
   --------------------
 <% end %>
 
 Availabilities You're Attending:
 <% @accepted_availabilities.each do |availability| %>
   Event: <%= availability.event_name %>
-  Start Time: <%= availability.start_time.strftime("%b %d, %Y") %>
-  End Time: <%= availability.end_time.strftime("%b %d, %Y") %>
+  Start Time: <%= availability.start_time.strftime("%I:%M%p") %>
+  End Time: <%= availability.end_time.strftime("%I:%M%p") %>
   Location: <%= availability.location %>
   Description: <%= availability.description %>
   Hosted by: <%= User.find(availability.user_id).username %>
