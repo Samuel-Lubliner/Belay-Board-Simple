@@ -1,3 +1,24 @@
-User#summary
+<%= @greeting %>
 
-<%= @greeting %>, find me in app/views/user_mailer/summary.text.erb
+Here's your summary for availabilities on <%= Date.tomorrow.strftime("%b %d, %Y") %>:
+
+Your Availabilities:
+<% @user_availabilities.each do |availability| %>
+  Event: <%= availability.event_name %>
+  Start Time: <%= availability.start_time.strftime("%b %d, %Y") %>
+  End Time: <%= availability.end_time.strftime("%b %d, %Y") %>
+  Location: <%= availability.location %>
+  Description: <%= availability.description %>
+  --------------------
+<% end %>
+
+Availabilities You're Attending:
+<% @accepted_availabilities.each do |availability| %>
+  Event: <%= availability.event_name %>
+  Start Time: <%= availability.start_time.strftime("%b %d, %Y") %>
+  End Time: <%= availability.end_time.strftime("%b %d, %Y") %>
+  Location: <%= availability.location %>
+  Description: <%= availability.description %>
+  Hosted by: <%= User.find(availability.user_id).username %>
+  --------------------
+<% end %>

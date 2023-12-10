@@ -51,6 +51,13 @@ Find climbing partners and schedule climbing sessions with Belay Board!
     - Distribution of climbing session hours among partners
     - Distribution of climbs by boulder, lead, or top rope
 
+In progress:
+
+- Opt in to emails
+  - Summary of events for the next day
+  - When someone accepts event request
+
+
 
 ## Email
 https://guides.rubyonrails.org/action_mailer_basics.html
@@ -136,3 +143,22 @@ Run
       create    app/views/user_mailer/summary.text.erb
       create    app/views/user_mailer/summary.html.erb
 ```
+
+### Previews 
+```rb
+#test/mailers/previews/user_mailer_preview.rb
+
+class UserMailerPreview < ActionMailer::Preview
+  def summary
+    UserMailer.with(user: User.first).summary
+  end
+end
+```
+
+```rb
+# config/environments/development.rb
+
+config.action_mailer.preview_path = "#{Rails.root}/test/mailers/previews"
+```
+
+In the browser navigate to `http://127.0.0.1:3000/rails/mailers`
