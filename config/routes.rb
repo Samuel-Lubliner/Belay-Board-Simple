@@ -2,7 +2,10 @@ Rails.application.routes.draw do
   resources :climbers
   root "availabilities#index"
 
-  devise_for :users, controllers: { sessions: 'users/sessions' }
+  devise_for :users, controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
 
   get 'dashboard', to: 'users#dashboard', as: :dashboard
   
