@@ -3,6 +3,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.1"
 
+gem 'simple_form'
+
+
 gem 'bootstrap', '~> 5.1.3'
 
 gem "chartkick"
@@ -117,3 +120,5 @@ group :test do
 end
 
 gem "pundit", "~> 2.3"
+
+gem "dockerfile-rails", ">= 1.5", :group => :development
