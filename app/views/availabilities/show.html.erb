@@ -9,6 +9,7 @@
         <%= render @availability %>
 
         <div class="row">
+
           <!-- Accepted Guests -->
           <div class="col" style="padding-bottom: 10px;">
 
@@ -26,12 +27,13 @@
             <% if current_user %>
               <% current_user_event_request = @event_requests.find { |er| er.user_id == current_user.id } %>
               <% if current_user_event_request && current_user_event_request.status == 'pending' %>
-                  <button type="button" class="btn btn-secondary" disabled>Pending</button>
+                <button type="button" class="btn btn-secondary" disabled>Pending</button>
 
               <% end %>
             <% end %>
-
-            <h4 id="accepted_header"> Participants  (<%= @event_requests.count { |er| er.status == 'accepted' } %>)</h4>
+            <div class="row">
+              <h4 id="accepted_header"> Participants(<%= @event_requests.count { |er| er.status == 'accepted' } %>)</h4>
+            </div>
 
             <ul class="list-group" id="accepted_guests_list">
               <% @event_requests.select { |er| er.status == 'accepted' }.each do |event_request| %>
@@ -49,25 +51,28 @@
               <% pending_requests = @event_requests.select { |er| er.status == 'pending' } %>
 
               <h4>Pending</h4>
-              <ul class="list-group" id="guest_requests_list">
-                <% pending_requests.each do |event_request| %>
-                  <li id="event_request_<%= event_request.id %>" class="list-group-item d-flex justify-content-start align-items-center">
-                    <div class="col-md-4 " style="word-wrap: break-word;">
-                      <%= link_to event_request.user.username, climber_path(event_request.user.climber) if event_request.user.climber %>
+              <div class="card">
+                <div class="card-body">
+                  <table class="table">
 
-                    </div>
-                    <% if event_request.status == 'pending' && @availability.user == current_user %>
-                      <div class="col-md-4 ">
-                        <%= button_to 'Reject', reject_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-danger btn-sm', data: { turbo: false } %>
-                      </div>
-
-                      <div class="col-md-4 ">
-                        <%= button_to 'Accept', accept_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-success btn-sm', data: { turbo: false } %>
-                      </div>
-                    <% end %>
-                  </li>
-                <% end %>
-              </ul>
+                    <tbody>
+                      <% pending_requests.each do |event_request| %>
+                        <tr id="event_request_<%= event_request.id %>">
+                          <td>
+                            <%= link_to event_request.user.username, climber_path(event_request.user.climber) if event_request.user.climber %>
+                          </td>
+                          <td>
+                            <div class="d-flex">
+                              <%= button_to 'Reject', reject_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-danger btn-sm me-2', data: { turbo: false } %>
+                              <%= button_to 'Accept', accept_event_request_path(event_request), method: :post, remote: true, class: 'btn btn-success btn-sm', data: { turbo: false } %>
+                            </div>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           <% end %>
 
