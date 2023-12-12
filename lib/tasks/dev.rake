@@ -12,51 +12,59 @@ if Rails.env.development?
 
     task add_users: :environment do
       puts "Adding users..."
-    
+      
       user_names = ["Sam", "Ben", "Olivia", "Rashid", "Robbie", "Julia"]
-    
+      
       10.times do
         fake_name = Faker::Name.unique.first_name
         user_names << fake_name
       end
-    
+      
       user_names.each do |name|
         user_attrs = {
           username: name,
           email: "#{name.downcase}@example.com",
           password: "password",
-          is_public: name == "Sam" || name == "Julia" # Sam and Julia are public
+          is_public: name != "Robbie" # All users are public except Robbie
         }
         puts "Creating user with attributes: #{user_attrs.inspect}"
-    
+        
         user = User.create!(user_attrs)
+
+    # Only Sam and Julia are instructors
+    is_instructor = name == "Sam" || name == "Julia"
+
+    # Randomly selecting one option from each group
+    climbing_level = [:beginner, :intermediate, :advanced].sample
+    climbing_style = [:sport, :trad].sample
+    climbing_location = [:indoor, :outdoor].sample
+    climbing_type = [:boulder, :top_rope, :lead].sample
+    climbing_terrain = [:vertical, :slab, :overhang].sample
+
+    user.climber.update!(
+      bio: Faker::Lorem.sentence,
+      instructor: is_instructor,
+      boulder: climbing_type == :boulder,
+      top_rope: climbing_type == :top_rope,
+      lead: climbing_type == :lead,
+      vertical: climbing_terrain == :vertical,
+      slab: climbing_terrain == :slab,
+      overhang: climbing_terrain == :overhang,
+      beginner: climbing_level == :beginner,
+      intermediate: climbing_level == :intermediate,
+      advanced: climbing_level == :advanced,
+      sport: climbing_style == :sport,
+      trad: climbing_style == :trad,
+      indoor: climbing_location == :indoor,
+      outdoor: climbing_location == :outdoor
+    )
+
+    puts "User and climber profile created for #{name}"
+  end
+
+  puts "All users added"
+end
     
-        # Only Sam and Julia are instructors
-        is_instructor = name == "Sam" || name == "Julia"
-    
-        user.climber.update!(
-          bio: Faker::Lorem.sentence,
-          instructor: is_instructor,
-          boulder: [true, false].sample,
-          top_rope: [true, false].sample,
-          lead: [true, false].sample,
-          vertical: [true, false].sample,
-          slab: [true, false].sample,
-          overhang: [true, false].sample,
-          beginner: [true, false].sample,
-          intermediate: [true, false].sample,
-          advanced: [true, false].sample,
-          sport: [true, false].sample,
-          trad: [true, false].sample,
-          indoor: [true, false].sample,
-          outdoor: [true, false].sample
-        )
-    
-        puts "User and climber profile created for #{name}"
-      end
-    
-      puts "All users added"
-    end
 
     task add_availabilities: :environment do
       puts "Adding availabilities..."
@@ -72,7 +80,7 @@ if Rails.env.development?
             morning = day.to_time.change(hour: 6)
             evening = day.to_time.change(hour: 21)
             start_time = Faker::Time.between(from: morning, to: evening)
-            end_time = start_time + [2, 3, 4].sample.hours
+            end_time = start_time + [1, 2].sample.hours
     
             # Ensure end_time does not exceed 9 PM
             if end_time.hour > 21 || (end_time.hour == 21 && end_time.min > 0)
