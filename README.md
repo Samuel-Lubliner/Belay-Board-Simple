@@ -1,6 +1,35 @@
 # Belay Board
 Hello, my name is Sam Lubliner. I am a full stack software developer apprentice. I drew on my experience as a coach in the climbing industry to create a web application for scheduling climbing sessions and finding climbing partners.
 
+## Run locally  
+Run `rake dev:reset` to reset the database and generate sample data with users, availabilities, event_requests, comments, and friend_requests.
+
+Run `Bin/dev` to start up the development environment and server. 
+
+Stop the server before rerunning `rake dev:reset`
+
+Users: Sam, Ben, Olivia, Rashid, Robbie, Julia, plus 10 FAKER users
+
+login with: 
+Email: {lowercase username}@example.com
+Password: password 
+
+Log in as Sam or Ben to respond to event requests or make requests.
+
+Users other than sam and ben have already made event requests.
+
+Feel free to sign up and create new users. 
+
+
+
+
+
+
+
+
+
+
+
 ## Pain points 
 I want to climb, however I need to find a partner and coordinate availabilities.
 

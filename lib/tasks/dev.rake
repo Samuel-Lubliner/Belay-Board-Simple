@@ -74,7 +74,6 @@ if Rails.env.development?
             start_time = Faker::Time.between(from: morning, to: evening)
             end_time = start_time + [2, 3, 4].sample.hours
     
-            # Ensure end_time does not exceed 9 PM
             if end_time.hour > 21 || (end_time.hour == 21 && end_time.min > 0)
               end_time = day.to_time.change(hour: 21)
             end
@@ -103,7 +102,7 @@ if Rails.env.development?
               top_rope: [true, false].sample,
               trad: [true, false].sample,
               vertical: [true, false].sample,
-              learn: learn_flag, # Set to true for Sam and Julia
+              learn: learn_flag,
               location: location,
               description: description
             )
