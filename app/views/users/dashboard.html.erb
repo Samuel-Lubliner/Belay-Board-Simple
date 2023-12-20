@@ -1,14 +1,14 @@
 <div class="container">
   <div class="row" style="padding-top: 20px;">
 
-<div class="col-md-6" style="text-align: center;">
-  <% if @climbing_partners_data.blank? %>
-    <h5>My Climbing Session Hours with Partners</h5>
-    <p>No data available.</p>
-  <% else %>
-    <%= pie_chart @climbing_partners_data, id: 'climbing_partners_chart', title: 'My Climbing Session Hours with Partners', xtitle: 'Partner', ytitle: 'Number of Sessions' %>
-  <% end %>
-</div>
+  <div class="col-md-6" style="text-align: center;">
+    <% if @climbing_partners_data.blank? %>
+      <h5>My Climbing Session Hours with Partners</h5>
+      <p>No data available.</p>
+    <% else %>
+      <%= pie_chart @climbing_partners_data, id: 'climbing_partners_chart', title: 'My Climbing Session Hours with Partners', xtitle: 'Partner', ytitle: 'Number of Sessions' %>
+    <% end %>
+  </div>
 
 
     <div class="col-md-6" style="text-align: center;">
@@ -18,6 +18,7 @@
   </div>
 
   <!-- Chart: Availability Start Times -->
+  <!-- this can look alot better on mobile with css grid with a flex-box conatiner. -->
   <div style="padding-top: 50px;">
     <%= column_chart @climbing_time_data, id: 'climbing_time_chart', title: 'My Climbing Hours Per Day', xtitle: 'Date', ytitle: 'Hours' %>
   </div>

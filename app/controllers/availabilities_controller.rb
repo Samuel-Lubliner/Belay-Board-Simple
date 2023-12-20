@@ -87,6 +87,7 @@ class AvailabilitiesController < ApplicationController
   end
 
   private
+  
   def set_availability
     @availability = Availability.find(params[:id])
     authorize @availability unless action_name == 'show'
